@@ -39,7 +39,7 @@ app.post('/login', (req: Request, res: Response) => {
     // Generate an access token
     const accessToken = jwt.sign(
       { username: user.username, role: user.role },
-      Controller.AccTokenSecret
+      process.env.ACCESS_TOKEN_SECRET!
     );
 
     res.json({ accessToken });
