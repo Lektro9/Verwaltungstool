@@ -1,5 +1,5 @@
 GET http://localhost:3005/getData HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwicm9sZSI6Im1lbWJlciIsImlhdCI6MTYwODEwMzAwMn0.XpwQu_2MVJwFLBxy0ZrV10kSEKn3swOfebRqjB6A814
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwicm9sZSI6Im1lbWJlciIsImlhdCI6MTYwODEwOTM4NywiZXhwIjoxNjA4MTA5NDE3fQ.pPFiNsP_YtAtkn_VM_3wYKy158jWpR_4J9R6z2eOP18
 
 ###
 
@@ -10,6 +10,11 @@ content-type: application/json
     "username": "james",
     "password": "pw123"
 }
+
+
+###
+
+POST http://localhost:3005/token HTTP/1.1
 
 ###
 
