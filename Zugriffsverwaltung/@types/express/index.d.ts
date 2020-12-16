@@ -3,11 +3,10 @@ interface user {
   password: string;
   role: string;
 }
-export {};
+export { };
 declare global {
   namespace Express {
     interface Request {
-        ...
       user: user;
     }
   }
