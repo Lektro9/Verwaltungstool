@@ -1,1 +1,124 @@
-<mxfile host="app.diagrams.net" modified="2021-01-22T10:44:15.751Z" agent="5.0 (Windows)" etag="ba9UiOAgKxxRVeNiT-mA" version="14.2.6" type="github"><diagram id="abdO13sv0OyK5MDHfT0O" name="Page-1">7VxRV+I4FP41nDP7oIemUOFRCjqedXbd0TnzHGikWUvSTYPA/Pq9aVMopggqtp1DkIPNbdok9/sSvpuEtlx/trwWOA6/8YBELdQOli132EII9Xp9+Kcsq8ziOH0ns0wFDbRtY7inv4g2trV1TgOSbGWUnEeSxtvGCWeMTOSWDQvBF9vZHnm0XWqMp8Qw3E9wZFp/0kCGmbWHLjb2r4ROw7xkx9MtnuE8s25JEuKALwomd9RyfcG5zI5mS59Eynu5X7LrrnacXVdMECYPuaDdZ8Of/a/0MuB8+fTnv//8dX17pu/yjKO5brCurFzlHoB6x+pQ4rEyDUI5iyDpwOEipJLcx3iizi+AAWBLJBZS49iGNAAjMWVE6GsmPIpwnND0ZlmOkEbBLV7xucyLyVMDHNEpA2tEHlXymQhJAZxLbZZcFanbAOfIcqdznLXLgayEz4gUK8iiLzhz2l52jSYqamvYFhvUnXZHG8MC5N2cqlhTbbq++wYNONCAvAEc1N0JBrRMUhx9B8pjNj0EF9PvgeDxAxZTIrUh5pRJIkbP4LRE2x5pFPk84go+xpkqKHV6ejJDJT0ccyn5TCeE9s76pqlnugN4g6/89nm31YXW+JB2Nml4q+xC+pwlUgBp1D0ITuSCJCVkOAj23aw3ubAX6l73s5D2SvqhF6lWBvQZDqcyRVjGkOkbkSEMtHkGKLCQ56iMSYdUvGFMkQwt5D521d+bGcEBsscoHQpDGgSEpaOG4E+kcG8vfakyYfwo2LPXMcmQ9bJ9bKiSDBcGGX58v7HAHgvY5QtQC0CjfqW9vmcAfTVnT5JyZtE+Mtpu30TbcXtVot030B6QZBIKQsdzNrWIHxnxrosMxF2vSsRdU10PeLA6u2Ehhq9uC/hxAe+XSfZqZdzh0ZQV8J8g4Ffb+Nan512DCNejh8o6/LtgLuvrx+u5DZPYnZKOeoVjCp8xEQn4j0EzFzBKp9/M2mgBbKyU7podjsjLKPryhwWtsYrYMbvhNR1LVVQELoYTXISYgVfAL6h9p3umOj9P1KQyEfA5xJKwMWZPcPxrLlq+2xr4kyeLe3N18XFlUR3gfGAi+h2Q1a9sy+YnrbKtXNk6F4euSnwaE8zJydOWtl7DpK05p3iYtL1qXQzgxhdDi2VjVa45gwgqN5NFX9SQpC4/ZcH7On4NELwlYUomeANK1gp3rWwzKTsGRwg81SL4Zmhl7kFoN0DmmrNAJYu6MOzuWsk18yIPzxRUbJzE70qnNb5U3ELef3O19UQN+uvjvMyxeFmL/XVT3xyHXv2bc/bY6v91Jtev/vMdLlb+1yv/Ubf2mW3HXNO6+/v+lAMAp12OWW0RgFO2DPVaCMDI4u7UJ7h3odgY7e+YasIXBEui9f8p6/494DVA+JvzZyORSLhSiX9CmVL/jMy3ggC6iQQKc9wW5Mbq/bJVxYr1fpvhGXmp8FNbQeP7n1mBdD/9dvnKVFXx5+fnNoipJYjZ0z/rj2LWP8SwQUuVQYvbqX3NAplBy3B0O3oY/fad+P2goaaFLfmcwsFhS0CiO7t4sRfQxkQwyIxghiQi6wjGrmDsBbH+SAaZIvc2XYvwkkn45pUMi3Njgxlzqar5ixf+caS/Ffof4W79Qt/1rNCvQeh3UO2rE665O+nuxykvTrhN257kvnV/EgmotDJ/P6KNkfmuuUtptMbQivz9ENYv8jvmev+AYDEm4Hur8Y8Ec/0av1P29JeqFyyq2JBkBf1HiNoAQV+2/6gAeAHMnDjqx8hnSfoYIsUu1ImXGU02xErJcFeiOQ4iDXhZbhNkD0ozQDPllCBQrwJltpW+EvN4LnlW9/TGqi36iUqok6d1TZyDYH/94Ucof0pX/isDzwQcdUsAz3F5A+CQ3DzyKj1XeHKYO/of</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-01-22T10:44:44.329Z" agent="5.0 (Windows)" etag="yM9CbWE8FEiHztfpyjZk" version="14.2.6" type="github">
+  <diagram id="abdO13sv0OyK5MDHfT0O" name="Page-1">
+    <mxGraphModel dx="2889" dy="1191" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="09nDW9HiAdooxkKjQNGL-1" value="" style="shape=table;html=1;whiteSpace=wrap;startSize=0;container=1;collapsible=0;childLayout=tableLayout;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="-106" y="200" width="1040" height="510" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-25" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;align=left;" parent="09nDW9HiAdooxkKjQNGL-1" vertex="1">
+          <mxGeometry width="1040" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-26" value="&lt;div&gt;http Methode&lt;/div&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=#f5f5f5;top=0;left=0;bottom=0;right=0;overflow=hidden;strokeColor=#666666;fontColor=#333333;align=left;" parent="09nDW9HiAdooxkKjQNGL-25" vertex="1">
+          <mxGeometry width="104" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-27" value="URI" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=#f5f5f5;top=0;left=0;bottom=0;right=0;overflow=hidden;strokeColor=#666666;fontColor=#333333;align=left;" parent="09nDW9HiAdooxkKjQNGL-25" vertex="1">
+          <mxGeometry x="104" width="290" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-28" value="Funktion" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=#f5f5f5;top=0;left=0;bottom=0;right=0;overflow=hidden;strokeColor=#666666;fontColor=#333333;align=left;" parent="09nDW9HiAdooxkKjQNGL-25" vertex="1">
+          <mxGeometry x="394" width="138" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-29" value="Beschreibung" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=#f5f5f5;top=0;left=0;bottom=0;right=0;overflow=hidden;strokeColor=#666666;fontColor=#333333;align=left;" parent="09nDW9HiAdooxkKjQNGL-25" vertex="1">
+          <mxGeometry x="532" width="368" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-31" value="Body-Inhalt" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=#f5f5f5;top=0;left=0;bottom=0;right=0;overflow=hidden;strokeColor=#666666;fontColor=#333333;align=left;" parent="09nDW9HiAdooxkKjQNGL-25" vertex="1">
+          <mxGeometry x="900" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-2" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;align=left;" parent="09nDW9HiAdooxkKjQNGL-1" vertex="1">
+          <mxGeometry y="85" width="1040" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-3" value="GET" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-2" vertex="1">
+          <mxGeometry width="104" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-4" value="/api/personenverwaltung/person" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-2" vertex="1">
+          <mxGeometry x="104" width="290" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-5" value="GetAll()" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-2" vertex="1">
+          <mxGeometry x="394" width="138" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-14" value="Gibt alle vorhandenen Personen aus der Datenbank zurück" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-2" vertex="1">
+          <mxGeometry x="532" width="368" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-32" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;verticalAlign=top;" parent="09nDW9HiAdooxkKjQNGL-2" vertex="1">
+          <mxGeometry x="900" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-6" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;align=left;" parent="09nDW9HiAdooxkKjQNGL-1" vertex="1">
+          <mxGeometry y="170" width="1040" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-7" value="GET" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-6" vertex="1">
+          <mxGeometry width="104" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-8" value="/api/personenverwaltung/person/{id}" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-6" vertex="1">
+          <mxGeometry x="104" width="290" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-9" value="GetPerson(int id)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-6" vertex="1">
+          <mxGeometry x="394" width="138" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-15" value="Gibt die Person der übertragenen ID zurück" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-6" vertex="1">
+          <mxGeometry x="532" width="368" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-33" value="&lt;div&gt;{&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; id: &quot;id&quot;&lt;br&gt;&lt;/div&gt;&lt;div&gt;}&lt;br&gt;&lt;/div&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;verticalAlign=top;" parent="09nDW9HiAdooxkKjQNGL-6" vertex="1">
+          <mxGeometry x="900" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-10" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;align=left;" parent="09nDW9HiAdooxkKjQNGL-1" vertex="1">
+          <mxGeometry y="255" width="1040" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-11" value="POST" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-10" vertex="1">
+          <mxGeometry width="104" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-12" value="/api/personenverwaltung/newPerson" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-10" vertex="1">
+          <mxGeometry x="104" width="290" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-13" value="CreatePerson()" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-10" vertex="1">
+          <mxGeometry x="394" width="138" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-16" value="Erstellt eine neue Person in der Datenbank" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-10" vertex="1">
+          <mxGeometry x="532" width="368" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-34" value="&lt;div&gt;{&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; name: &quot;name&quot;,&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; age: &quot;age&quot;,&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; ...&lt;br&gt;&lt;/div&gt;&lt;div&gt;}&lt;br&gt;&lt;/div&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;verticalAlign=top;" parent="09nDW9HiAdooxkKjQNGL-10" vertex="1">
+          <mxGeometry x="900" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-20" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;align=left;" parent="09nDW9HiAdooxkKjQNGL-1" vertex="1">
+          <mxGeometry y="340" width="1040" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-21" value="DELETE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-20" vertex="1">
+          <mxGeometry width="104" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-22" value="/api/personenverwaltung/delPerson/{id}" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-20" vertex="1">
+          <mxGeometry x="104" width="290" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-23" value="DeletePerson(int id)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-20" vertex="1">
+          <mxGeometry x="394" width="138" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-24" value="Löscht die Person der übertragenen ID" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-20" vertex="1">
+          <mxGeometry x="532" width="368" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-35" value="&lt;div&gt;{&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; id: &quot;id&quot;,&lt;br&gt;&lt;/div&gt;&lt;div&gt;}&lt;/div&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;verticalAlign=top;" parent="09nDW9HiAdooxkKjQNGL-20" vertex="1">
+          <mxGeometry x="900" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-36" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;align=left;" parent="09nDW9HiAdooxkKjQNGL-1" vertex="1">
+          <mxGeometry y="425" width="1040" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-37" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-36" vertex="1">
+          <mxGeometry width="104" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-38" value="/api/personenverwaltung/editPerson/{id}" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-36" vertex="1">
+          <mxGeometry x="104" width="290" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-39" value="EditPerson(int id)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-36" vertex="1">
+          <mxGeometry x="394" width="138" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-40" value="Bearbeitet die Person der übertragenen ID" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;" parent="09nDW9HiAdooxkKjQNGL-36" vertex="1">
+          <mxGeometry x="532" width="368" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-41" value="&lt;div&gt;{&lt;/div&gt;&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; id: &quot;id&quot;&lt;br&gt;&lt;/div&gt;&lt;div&gt;}&lt;/div&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;align=left;verticalAlign=top;" parent="09nDW9HiAdooxkKjQNGL-36" vertex="1">
+          <mxGeometry x="900" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="09nDW9HiAdooxkKjQNGL-30" value="&lt;div style=&quot;font-size: 24px;&quot;&gt;Personenverwaltung&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=24;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="289" y="160" width="250" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
