@@ -4,7 +4,7 @@ const app = express();
 const port = 3004;
 
 app.get('/', (req: Request, res: Response) => {
-  res.status(200).send('Ich bin die Personenverwaltung!');
+  res.status(200).send('Ich bin die Personenverwaltung von Jonas!');
 });
 
 app.listen(port, () => {
