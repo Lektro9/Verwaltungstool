@@ -1,5 +1,5 @@
 GET http://localhost:3005/getData HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwicm9sZSI6Im1lbWJlciIsImlhdCI6MTYwODEwOTM4NywiZXhwIjoxNjA4MTA5NDE3fQ.pPFiNsP_YtAtkn_VM_3wYKy158jWpR_4J9R6z2eOP18
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwicm9sZSI6Im1lbWJlciIsImlhdCI6MTYwODEwOTc4NywiZXhwIjoxNjA4MTA5Nzk3fQ.8Wkczh2v8CJiXIUhsYeFnFPEIQ6DOCxLF-ZJTJksUjY
 
 ###
 
@@ -18,11 +18,15 @@ POST http://localhost:3005/token HTTP/1.1
 
 ###
 
-GET http://172.31.239.178:3005/getData HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwicm9sZSI6Im1lbWJlciIsImlhdCI6MTYwNzg5NDE0N30.-TUZoN4FjqM4EszawJ9XsIY_OHIJStELKUZwZI7x0XA
+GET http://172.25.108.80:3005/getData HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwicm9sZSI6Im1lbWJlciIsImlhdCI6MTYwODE5ODIzOSwiZXhwIjoxNjA4MTk5MTM5fQ.CVW9kZlZ81X_ZkRzfl5Dm4C3PY60C25vRnHSIMoAjaM
 ###
 
-POST http://172.31.239.178:3005/login HTTP/1.1
+POST http://172.25.108.80:3005/token HTTP/1.1
+
+###
+
+POST http://172.25.108.80:3005/login HTTP/1.1
 content-type: application/json
 
 {
