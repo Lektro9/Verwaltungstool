@@ -1,13 +1,7 @@
-interface user {
-  username: string;
-  password: string;
-  role: string;
-}
-export { };
-declare global {
-  namespace Express {
-    interface Request {
-      user: user;
+import user from '../../model/user'
+
+declare module 'express' {
+    export interface Request {
+        user?: user;
     }
-  }
 }
