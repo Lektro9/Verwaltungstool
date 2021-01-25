@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  dbPersonenverwaltung:
+    image: "mysql:8.0.22"
+    container_name: dbPersonenverwaltung
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: personenverwaltung
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - volPersonenverwaltung:/var/lib/mysql
+
+volumes:
+  volPersonenverwaltung:
