@@ -1,12 +1,40 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from "express";
+import RouteGeneral from "./General.route";
+import RoutePerson from "./person/Person.route";
+import swaggerUi from "swagger-ui-express";
+import Yaml from "yamljs";
+import cors from 'cors'
+import "reflect-metadata";
 
-const app = express();
-const port = 3004;
+const swaggerDocument = Yaml.load("./config/swagger.yaml");
+class App {
+  private httpServer: any;
 
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).send('Ich bin die Personenverwaltung von Jonas!');
-});
+  constructor() {
+    this.httpServer = express();
+    this.httpServer.use(cors());
+    this.httpServer.use(express.json());
+    this.httpServer.use(express.urlencoded({ extended: false }));
 
-app.listen(port, () => {
-  console.log(`Server Started at Port, ${port}`);
-});
+    new RouteGeneral(this.httpServer);
+    new RoutePerson(this.httpServer);
+
+    this.httpServer.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument)
+    );
+  }
+
+  public StartServer = (port: number) => {
+    return new Promise((resolve, reject) => {
+      this.httpServer
+        .listen(port, () => {
+          resolve(port);
+        })
+        .on("error", (err: object) => reject(err));
+    });
+  };
+}
+
+export default App;
