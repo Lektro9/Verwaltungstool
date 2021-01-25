@@ -1,5 +1,5 @@
 GET http://localhost:3005/getData HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwicm9sZSI6Im1lbWJlciIsImlhdCI6MTYwODEwOTc4NywiZXhwIjoxNjA4MTA5Nzk3fQ.8Wkczh2v8CJiXIUhsYeFnFPEIQ6DOCxLF-ZJTJksUjY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjExNTgyMzQ4LCJleHAiOjE2MTE1ODMyNDh9.52Xd4nJO7hLoZfa-YwuB5UYKDHcDrtZRBfRYVBjxmII
 
 ###
 
@@ -7,9 +7,25 @@ POST http://localhost:3005/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "james",
-    "password": "pw123"
+    "login": "admin",
+    "password": "admin"
 }
+
+###
+
+GET http://google.com HTTP/1.1
+
+###
+
+POST http://localhost:3005/user
+content-type: application/json
+
+{
+    "login": "admin", 
+    "password": "admin", 
+    "role": 1
+}
+###
 
 
 ###

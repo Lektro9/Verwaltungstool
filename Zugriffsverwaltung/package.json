@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./App.ts",
-    "start": "node ./build/App.js",
+    "start": "ts-node ./App.ts",
+    "startBuildJs": "node ./build/App.js",
     "build": "tsc",
     "lint": "eslint . --ext .ts"
   },
@@ -31,6 +32,9 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "typeorm": "0.2.30",
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^4.0.3"
   }
 }
