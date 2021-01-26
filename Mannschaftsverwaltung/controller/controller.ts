@@ -67,8 +67,8 @@ export class Controller {
      * zeige alle Mannschaften aus der Datenbank an
      */
     public async getMannschaften(req: Request, res: Response): Promise<void> {
-        const persons = await this.mannschaftRepository.find();
-        res.json(persons);
+        const mannschaften = await this.mannschaftRepository.find();
+        res.json(mannschaften);
     }
 
     /**
@@ -78,10 +78,10 @@ export class Controller {
     public async createMannschaft(req: Request, res: Response): Promise<void> {
         //TODO: better typechecking?
         if (req.is("json") && req.body) {
-            const newPerson = new Mannschaft(req.body);
-            const person = await this.mannschaftRepository.create(newPerson);
-            await this.mannschaftRepository.save(person);
-            res.json(person);
+            const newMannschaft = new Mannschaft(req.body);
+            const mannschaft = await this.mannschaftRepository.create(newMannschaft);
+            await this.mannschaftRepository.save(mannschaft);
+            res.json(mannschaft);
         } else {
             res.status(400);
             res.send(
@@ -96,8 +96,8 @@ export class Controller {
      */
     public async deleteMannschaft(req: Request, res: Response): Promise<void> {
         const mannID = req.params.mannID;
-        const user = await this.mannschaftRepository.findOne(mannID);
-        if (user) {
+        const mannschaft = await this.mannschaftRepository.findOne(mannID);
+        if (mannschaft) {
             // sqlite treiber gibt leider keine antwort zurück ...
             await this.mannschaftRepository.delete(mannID);
             res.send(`Mannschaft mit ID "${mannID}" gelöscht`);
