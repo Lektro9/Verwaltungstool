@@ -1,25 +1,37 @@
 import { Container, Button, TextField } from '@material-ui/core';
 import axios from 'axios';
 import { useState } from 'react'
+import { Redirect, useLocation } from "react-router-dom";
+import { fakeAuth } from "../RouteDefs";
 
 const URL = 'http://localhost:3005/login'
 const URLData = 'http://localhost:3005/getData'
 let accessToken = ""
 
 const LoginPage = () => {
+    const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+    const { state } = useLocation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState();
+
+    if (redirectToReferrer === true) {
+        return <Redirect to={state?.from || '/'} />
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
         axios.post(URL, { login: username, password: password }, { withCredentials: true }).then(function (response) {
             if (response.data.accessToken) {
                 accessToken = response.data.accessToken;
+                setMessage();
+                fakeAuth.authenticate(() => {
+                    console.log("hello")
+                    setRedirectToReferrer(true)
+                })
             } else {
                 setMessage(response);
             }
-            setMessage();
             console.log(response);
         }).catch(function (error) {
             setMessage(error.message);
@@ -70,7 +82,7 @@ const LoginPage = () => {
                         color="primary"
                     >
                         Log In
-            </Button>
+                        </Button>
                 </form>
                 <Button
                     fullWidth
@@ -80,7 +92,7 @@ const LoginPage = () => {
                     onClick={getMyData}
                 >
                     MyData
-            </Button>
+                    </Button>
                 <p>{JSON.stringify(message)}</p>
             </Container>
         </div>
