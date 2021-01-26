@@ -1,6 +1,6 @@
 # den accesstoken austesten (hier die Antwort vom login request einfügen)
 GET http://localhost:3004/getCurrentUser HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjExNTg4MDIwLCJleHAiOjE2MTE1ODg5MjB9.Ual6KMot4Pv6vdGtQo01bkyXDpN1eP_OTltJmXwDJWc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjExNjUxODM2LCJleHAiOjE2MTE2NTI3MzZ9.9sjkvH0tAli1PQxphowvK_Fo4deQF6kofwmLaaCMukw
 
 ###
 
