@@ -9,12 +9,20 @@ let accessToken = ""
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState();
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post(URL, { username: username, password: password }).then(function (response) {
-            accessToken = response.data.accessToken
+        axios.post(URL, { login: username, password: password }, { withCredentials: true }).then(function (response) {
+            if (response.data.accessToken) {
+                accessToken = response.data.accessToken;
+            } else {
+                setMessage(response);
+            }
+            setMessage();
             console.log(response);
         }).catch(function (error) {
+            setMessage(error.message);
             console.log(error);
         })
     }
@@ -73,6 +81,7 @@ const LoginPage = () => {
                 >
                     MyData
             </Button>
+                <p>{JSON.stringify(message)}</p>
             </Container>
         </div>
     )

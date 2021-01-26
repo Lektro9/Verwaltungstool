@@ -54,7 +54,7 @@ export class Controller {
         this.app.use(express.json());
         //setzt CORS Header 'Access-Control-Allow-Origin' und welche REST-Methoden von wem genutzt werden dürfen
         //hier: alle dürfen alles
-        this.app.use(cors());
+        this.app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
         //statische html-Dateien im Ordner freigeben
         this.app.use(express.static("buildFrontend", { etag: false }));
     }
@@ -136,7 +136,8 @@ export class Controller {
             res.cookie('jwt', refreshToken, { httpOnly: true });
             res.json({ accessToken });
         } else {
-            res.send('Username or password incorrect');
+            res.status(401)
+            res.send({ error: 'Username or password incorrect' });
         }
     }
 
