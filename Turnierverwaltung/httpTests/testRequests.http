@@ -1,0 +1,25 @@
+
+GET http://google.com HTTP/1.1
+
+###
+POST http://localhost:3007/createTurnier
+content-type: application/json
+
+{
+    "name": "testTurnier"
+}
+###
+
+POST http://localhost:3007/addTeilnehmerToTurnier
+content-type: application/json
+
+{
+    "turnierID": 3,
+    "teilnehmerIDs": [2, 3, 4]
+}
+###
+GET http://localhost:3007/getTurniere
+
+###
+
+DELETE  http://localhost:3007/deleteTurnier/3
