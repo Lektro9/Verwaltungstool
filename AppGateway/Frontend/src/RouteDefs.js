@@ -1,48 +1,13 @@
-import { useContext } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  Redirect,
-  useHistory
+  Link
 } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import { useAuth } from "./hooks/useAuth";
 import { AuthProvider } from "./components/AuthProvider"
-
-
-
-const AuthButton = () => {
-  const authState = useContext(useAuth);
-  const history = useHistory();
-  return authState.isAuthenticated === true
-    ?
-    <p>
-      <button onClick={() => {
-        authState.setIsAuthenticated(false);
-        history.push('/');
-      }}>sign out</button>
-    </p>
-    :
-    <p>
-      You are not logged in!
-    </p>
-}
-
-const PrivateRoute = ({ children, ...rest }) => {
-  const authState = useContext(useAuth);
-  return (
-    <Route {...rest} render={({ location }) => {
-      return authState.isAuthenticated === true
-        ? children
-        : <Redirect to={{
-          pathname: '/login',
-          state: { from: location }
-        }} />
-    }} />
-  )
-}
+import { AuthButton } from "./components/AuthButton"
+import { PrivateRoute } from "./components/PrivateRoute"
 
 function RouteDefs() {
   return (
@@ -62,7 +27,6 @@ function RouteDefs() {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
-
             <Route path="/login">
               <LoginPage />
             </Route>
@@ -72,7 +36,6 @@ function RouteDefs() {
             <Route path="/">
               <Home />
             </Route>
-
           </Switch>
         </div>
       </Router>

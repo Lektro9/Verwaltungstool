@@ -21,7 +21,6 @@ const LoginPage = () => {
     }
 
     const handleSubmit = (e) => {
-
         e.preventDefault()
         axios.post(URL, { login: username, password: password }, { withCredentials: true }).then(function (response) {
             if (response.data.accessToken) {
@@ -95,7 +94,7 @@ const LoginPage = () => {
                     MyData
                     </Button>
                 <p>{JSON.stringify(message)}</p>
-                <p>{JSON.stringify(state)}</p>
+                <p>{JSON.stringify(authState)}</p>
             </Container>
         </div>
     )
