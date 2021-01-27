@@ -1,4 +1,4 @@
-
+import { useContext } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,27 +8,20 @@ import {
   useHistory
 } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
+import { useAuth } from "./hooks/useAuth";
+import { AuthProvider } from "./components/AuthProvider"
 
 
-export const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    cb();
-  },
-  signout(cb) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 100); //fake async
-  }
-}
 
 const AuthButton = () => {
+  const authState = useContext(useAuth);
   const history = useHistory();
-  return fakeAuth.isAuthenticated === true
+  return authState.isAuthenticated === true
     ?
     <p>
       <button onClick={() => {
-        fakeAuth.signout(() => history.push('/'))
+        authState.setIsAuthenticated(false);
+        history.push('/');
       }}>sign out</button>
     </p>
     :
@@ -38,9 +31,10 @@ const AuthButton = () => {
 }
 
 const PrivateRoute = ({ children, ...rest }) => {
+  const authState = useContext(useAuth);
   return (
     <Route {...rest} render={({ location }) => {
-      return fakeAuth.isAuthenticated === true
+      return authState.isAuthenticated === true
         ? children
         : <Redirect to={{
           pathname: '/login',
@@ -52,34 +46,37 @@ const PrivateRoute = ({ children, ...rest }) => {
 
 function RouteDefs() {
   return (
-    <Router>
-      <div>
-        <AuthButton />
+    <AuthProvider>
+      <Router>
         <div>
-          <Link to="/">Home</Link>
-        </div>
-        <div>
-          <Link to="/login">Login</Link>
-        </div>
-        <div>
-          <Link to="/protected">Protected</Link>
-        </div>
-
-        {/* A <Switch> looks through its children <Route>s and
+          <AuthButton />
+          <div>
+            <Link to="/">Home</Link>
+          </div>
+          <div>
+            <Link to="/login">Login</Link>
+          </div>
+          <div>
+            <Link to="/protected">Protected</Link>
+          </div>
+          {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <PrivateRoute path="/protected">
-            <Private />
-          </PrivateRoute>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+          <Switch>
+
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <PrivateRoute path="/protected">
+              <Private />
+            </PrivateRoute>
+            <Route path="/">
+              <Home />
+            </Route>
+
+          </Switch>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 const Home = () => {
