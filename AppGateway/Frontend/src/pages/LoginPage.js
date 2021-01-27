@@ -5,29 +5,20 @@ import { Redirect, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const URL = 'http://localhost:3005/login'
-const URLData = 'http://localhost:3005/getData'
-let accessToken = ""
 
 const LoginPage = () => {
-    const [redirectToReferrer, setRedirectToReferrer] = useState(false);
     const { state } = useLocation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState();
     const authState = useContext(useAuth);
 
-    if (redirectToReferrer === true) {
-        return <Redirect to={state?.from || '/'} />
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault()
         axios.post(URL, { login: username, password: password }, { withCredentials: true }).then(function (response) {
             if (response.data.accessToken) {
-                accessToken = response.data.accessToken;
                 setMessage();
-                authState.setIsAuthenticated(true)
-                setRedirectToReferrer(true);
+                authState.setAccessToken(response.data.accessToken);
 
             } else {
                 setMessage(response);
@@ -38,16 +29,12 @@ const LoginPage = () => {
             console.log(error);
         })
     }
-    const getMyData = (e) => {
-        axios.get(URLData, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        }).then((response) => console.log(response))
-            .catch(function (error) {
-                console.log(error);
-            })
+
+    // when somebody is logged in, always get him back where he came from or to home
+    if (authState.accessToken) {
+        return <Redirect to={state?.from || '/'} />
     }
+
     return (
         <div className="App">
             <h1>Verwaltungstool</h1>
@@ -84,15 +71,6 @@ const LoginPage = () => {
                         Log In
                         </Button>
                 </form>
-                <Button
-                    fullWidth
-                    style={{ marginTop: 10 }}
-                    variant="contained"
-                    color="primary"
-                    onClick={getMyData}
-                >
-                    MyData
-                    </Button>
                 <p>{JSON.stringify(message)}</p>
                 <p>{JSON.stringify(authState)}</p>
             </Container>

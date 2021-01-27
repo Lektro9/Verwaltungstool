@@ -75,7 +75,7 @@ export class Controller {
                 res.send(req.user);
             },
         );
-        this.app.post('/token', this.generateNewAccessToken.bind(this));
+        this.app.get('/token', this.generateNewAccessToken.bind(this));
 
         this.app.post('/login', this.login.bind(this));
         this.app.get("/users", this.getAllUsers.bind(this));

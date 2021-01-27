@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./components/AuthProvider"
 import { AuthButton } from "./components/AuthButton"
 import { PrivateRoute } from "./components/PrivateRoute"
+import { PersonenVeraltungsPage } from "./pages/PersonenVerwaltungsPage";
 
 function RouteDefs() {
   return (
@@ -31,7 +32,7 @@ function RouteDefs() {
               <LoginPage />
             </Route>
             <PrivateRoute path="/protected">
-              <Private />
+              <PersonenVeraltungsPage />
             </PrivateRoute>
             <Route path="/">
               <Home />
@@ -44,13 +45,7 @@ function RouteDefs() {
 }
 const Home = () => {
   return (
-    <div>home</div>
-  )
-}
-
-const Private = () => {
-  return (
-    <div>Private Content</div>
+    <h2>Willkommen zum Verwaltungstool</h2>
   )
 }
 

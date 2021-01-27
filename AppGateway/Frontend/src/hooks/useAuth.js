@@ -1,8 +1,8 @@
 import { createContext } from 'react'
 
 const AuthObj = {
-    isAuthenticated: false,
-    setIsAuthenticated: () => { }
+    accessToken: "",
+    setAccessToken: () => { }
 }
 
 export const useAuth = createContext(AuthObj);

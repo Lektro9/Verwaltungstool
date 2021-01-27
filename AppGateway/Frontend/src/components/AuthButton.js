@@ -5,11 +5,11 @@ import { useAuth } from "../hooks/useAuth";
 export const AuthButton = () => {
     const authState = useContext(useAuth);
     const history = useHistory();
-    return authState.isAuthenticated === true
+    return authState.accessToken
         ?
         <p>
             <button onClick={() => {
-                authState.setIsAuthenticated(false);
+                authState.setAccessToken("");
                 history.push('/');
             }}>sign out</button>
         </p>

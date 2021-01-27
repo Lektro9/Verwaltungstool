@@ -6,7 +6,7 @@ export const PrivateRoute = ({ children, ...rest }) => {
     const authState = useContext(useAuth);
     return (
         <Route {...rest} render={({ location }) => {
-            return authState.isAuthenticated === true
+            return authState.accessToken
                 ? children
                 : <Redirect to={{
                     pathname: '/login',
