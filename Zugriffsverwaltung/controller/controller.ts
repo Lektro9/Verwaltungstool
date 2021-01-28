@@ -78,6 +78,7 @@ export class Controller {
         this.app.get('/token', this.generateNewAccessToken.bind(this));
 
         this.app.post('/login', this.login.bind(this));
+        this.app.get('/logout', this.logout.bind(this));
         this.app.get("/users", this.getAllUsers.bind(this));
         this.app.post("/user", this.createUser.bind(this));
         this.app.delete("/user/:personID", this.deleteUser.bind(this));
@@ -139,6 +140,14 @@ export class Controller {
             res.status(401)
             res.send({ error: 'Username or password incorrect' });
         }
+    }
+
+    /**
+     * logout
+     */
+    public async logout(req: Request, res: Response): Promise<void> {
+        res.cookie('jwt', "", { httpOnly: true });
+        res.send("logged out.");
     }
 
     /**
