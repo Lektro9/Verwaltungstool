@@ -1,4 +1,4 @@
-import { Controller } from "./controller/Controller";
+import { Controller } from "./controller/controller";
 
 const verwalter = new Controller();
 verwalter.useMiddleware();
