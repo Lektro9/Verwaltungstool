@@ -1,0 +1,27 @@
+
+GET http://google.com HTTP/1.1
+
+###
+POST http://localhost:3004/persons
+content-type: application/json
+
+{
+    "firstName": "testName", 
+    "lastName": "testLastname", 
+    "birthday": 1611586940792
+}
+###
+
+GET http://localhost:3004/persons
+
+###
+
+GET http://localhost:3004/persons/2
+
+###
+
+DELETE  http://localhost:3004/person/5
+
+###
+
+PUT  http://localhost:3004/person/5
