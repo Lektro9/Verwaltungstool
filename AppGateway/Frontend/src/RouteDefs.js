@@ -9,22 +9,42 @@ import { AuthProvider } from "./components/AuthProvider"
 import { AuthButton } from "./components/AuthButton"
 import { PrivateRoute } from "./components/PrivateRoute"
 import { PersonenVeraltungsPage } from "./pages/PersonenVerwaltungsPage";
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 function RouteDefs() {
   return (
     <AuthProvider>
       <Router>
         <div>
+          <Route path="/" render={(history) => (
+            <AppBar position="static">
+              <Tabs
+                value={history.location.pathname}
+              >
+                <Tab
+                  value={"/"}
+                  label="Home"
+                  component={Link}
+                  to={"/"}
+                />
+                <Tab
+                  value={"/login"}
+                  label="Login"
+                  component={Link}
+                  to={"/login"}
+                />
+                <Tab
+                  value={"/protected"}
+                  label="Personenverwaltung"
+                  component={Link}
+                  to={"/protected"}
+                />
+              </Tabs>
+            </AppBar>
+          )} />
           <AuthButton />
-          <div>
-            <Link to="/">Home</Link>
-          </div>
-          <div>
-            <Link to="/login">Login</Link>
-          </div>
-          <div>
-            <Link to="/protected">Protected</Link>
-          </div>
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
@@ -34,13 +54,14 @@ function RouteDefs() {
             <PrivateRoute path="/protected">
               <PersonenVeraltungsPage />
             </PrivateRoute>
+
             <Route path="/">
               <Home />
             </Route>
           </Switch>
         </div>
       </Router>
-    </AuthProvider>
+    </AuthProvider >
   );
 }
 const Home = () => {
