@@ -10,6 +10,72 @@ content-type: application/json
     "lastName": "testLastname", 
     "birthday": 1611586940792
 }
+
+### Fussballspieler
+
+POST http://localhost:3004/persons
+content-type: application/json
+
+{
+    "type": "fussballspieler",
+    "firstName": "testName", 
+    "lastName": "testLastname", 
+    "birthday": 1611586940792,
+    "fieldPosition": "center"
+}
+
+### Handballspieler
+
+POST http://localhost:3004/persons
+content-type: application/json
+
+{
+    "type": "handballspieler",
+    "firstName": "testName", 
+    "lastName": "testLastname", 
+    "birthday": 1611586940792,
+    "fieldPosition": "center"
+}
+
+### Tennisspieler
+
+POST http://localhost:3004/persons
+content-type: application/json
+
+{
+    "type": "tennisspieler",
+    "firstName": "testName", 
+    "lastName": "testLastname", 
+    "birthday": 1611586940792,
+    "handedness": "left"
+}
+
+### Trainer
+
+POST http://localhost:3004/persons
+content-type: application/json
+
+{
+    "type": "trainer",
+    "firstName": "testName", 
+    "lastName": "testLastname", 
+    "birthday": 1611586940792,
+    "experience": 17
+}
+
+### Physiotherapeut
+
+POST http://localhost:3004/persons
+content-type: application/json
+
+{
+    "type": "physiotherapeut",
+    "firstName": "testName",
+    "lastName": "testLastname",
+    "birthday": 1611586940792,
+    "treatmentType": "Kinesio Taping"
+}
+
 ###
 
 GET http://localhost:3004/persons

@@ -4,21 +4,45 @@ import "reflect-metadata";
 import { createConnection, Repository, Connection } from "typeorm";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Person } from "../model/person";
+import { Person } from "../model/person.entity";
+import { Handballspieler } from "../model/handballspieler.entity";
+import { Fussballspieler } from "../model/fussballspieler.entity";
+import { Tennisspieler } from "../model/tennisspieler.entity";
+import { Trainer } from "../model/trainer.entity";
+import { Physiotherapeut } from "../model/physiotherapeut.entity";
 
 dotenv.config();
 
 export class Controller {
   app: Application;
-  personRepository: Repository<Person>;
   connection: Connection;
   port: number;
   apiPath: string = "/api/v1/personenverwaltung";
+  // Repositories
+  personRepository: Repository<Person>;
+  fussballspielerRepository: Repository<Fussballspieler>;
+  handballspielerRepository: Repository<Handballspieler>;
+  tennisspielerRepository: Repository<Tennisspieler>;
+  trainerRepository: Repository<Trainer>;
+  physiotherapeutRepository: Repository<Physiotherapeut>;
 
   constructor() {
     createConnection().then((connection) => {
       this.connection = connection;
       this.personRepository = this.connection.getRepository(Person);
+      this.fussballspielerRepository = this.connection.getRepository(
+        Fussballspieler
+      );
+      this.handballspielerRepository = this.connection.getRepository(
+        Handballspieler
+      );
+      this.tennisspielerRepository = this.connection.getRepository(
+        Tennisspieler
+      );
+      this.trainerRepository = this.connection.getRepository(Trainer);
+      this.physiotherapeutRepository = this.connection.getRepository(
+        Physiotherapeut
+      );
     });
     this.app = express();
     this.port = 3004;
@@ -100,10 +124,42 @@ export class Controller {
    */
   public async createOnePerson(req: Request, res: Response): Promise<void> {
     if (req.is("json") && req.body) {
-      const newPerson = new Person(req.body);
-      const person = await this.personRepository.create(newPerson);
-      await this.personRepository.save(person);
-      res.json(person);
+      let person, result;
+      let type = req.body.type;
+      delete req.body.type;
+      switch (type) {
+        case "fussballspieler":
+          person = new Fussballspieler(req.body);
+          result = this.fussballspielerRepository.create(person);
+          await this.fussballspielerRepository.save(person);
+          break;
+        case "handballspieler":
+          person = new Handballspieler(req.body);
+          result = this.handballspielerRepository.create(person);
+          await this.handballspielerRepository.save(person);
+          break;
+        case "tennisspieler":
+          person = new Tennisspieler(req.body);
+          result = this.tennisspielerRepository.create(person);
+          await this.tennisspielerRepository.save(person);
+          break;
+        case "trainer":
+          person = new Trainer(req.body);
+          result = this.trainerRepository.create(person);
+          await this.trainerRepository.save(person);
+          break;
+        case "physiotherapeut":
+          person = new Physiotherapeut(req.body);
+          result = this.physiotherapeutRepository.create(person);
+          await this.physiotherapeutRepository.save(person);
+          break;
+        default:
+          res.status(400);
+          res.send("No such person type");
+          break;
+      }
+
+      res.json(result);
     } else {
       res.status(400);
       res.send(
