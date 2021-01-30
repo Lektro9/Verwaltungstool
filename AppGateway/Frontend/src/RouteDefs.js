@@ -7,51 +7,68 @@ import { PersonenVeraltungsPage } from './pages/PersonenVerwaltung/PersonenVerwa
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { MannschaftsVerwaltungsPage } from './pages/MannschaftsVerwaltung/MannschaftsVerwaltungsPage';
+import { PersProvider } from './components/PersProvider';
+import { MannProvider } from './components/MannProvider';
 
 function RouteDefs() {
   return (
     <AuthProvider>
-      <Router>
-        <div>
-          <Route
-            path='/'
-            render={(history) => (
-              <AppBar position='static'>
-                <Tabs value={history.location.pathname}>
-                  <Tab value={'/'} label='Home' component={Link} to={'/'} />
-                  <Tab
-                    value={'/login'}
-                    label='Login'
-                    component={Link}
-                    to={'/login'}
-                  />
-                  <Tab
-                    value={'/perVerw'}
-                    label='Personenverwaltung'
-                    component={Link}
-                    to={'/perVerw'}
-                  />
-                </Tabs>
-              </AppBar>
-            )}
-          />
-          <AuthButton />
-          {/* A <Switch> looks through its children <Route>s and
+      <PersProvider>
+        <MannProvider>
+          <Router>
+            <div>
+              <Route
+                path='/'
+                render={(history) => (
+                  <AppBar position='static'>
+                    <Tabs value={history.location.pathname}>
+                      <Tab value={'/'} label='Home' component={Link} to={'/'} />
+                      <Tab
+                        value={'/login'}
+                        label='Login'
+                        component={Link}
+                        to={'/login'}
+                      />
+                      <Tab
+                        value={'/perVerw'}
+                        label='Personenverwaltung'
+                        component={Link}
+                        to={'/perVerw'}
+                      />
+                      <Tab
+                        value={'/mannVerw'}
+                        label='Mannschaftsverwaltung'
+                        component={Link}
+                        to={'/mannVerw'}
+                      />
+                    </Tabs>
+                  </AppBar>
+                )}
+              />
+              <AuthButton />
+              {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path='/login'>
-              <LoginPage />
-            </Route>
-            <PrivateRoute path='/perVerw'>
-              <PersonenVeraltungsPage />
-            </PrivateRoute>
+              <Switch>
+                <Route path='/login'>
+                  <LoginPage />
+                </Route>
+                <PrivateRoute path='/perVerw'>
+                  <PersonenVeraltungsPage />
+                </PrivateRoute>
 
-            <Route path='/'>
-              <Home />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+                <PrivateRoute path='/mannVerw'>
+                  <MannschaftsVerwaltungsPage />
+                </PrivateRoute>
+
+                <Route path='/'>
+                  <Home />
+                </Route>
+              </Switch>
+            </div>
+          </Router>
+        </MannProvider>
+      </PersProvider>
     </AuthProvider>
   );
 }

@@ -1,56 +1,18 @@
 import { useContext, useState } from 'react';
 import { Button, Container } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import { useAuth } from '../../hooks/useAuth';
 import { CreatePersonModal } from './createPersonModal';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-
-const persons = [
-  {
-    id: 1,
-    firstName: 'testName',
-    lastName: 'testLastname',
-    birthday: 1611586940792,
-  },
-  {
-    id: 2,
-    firstName: 'testName',
-    lastName: 'testLastname',
-    birthday: 1611586940792,
-  },
-  {
-    id: 3,
-    firstName: 'testName',
-    lastName: 'testLastname',
-    birthday: 1611586940792,
-  },
-  {
-    id: 4,
-    firstName: 'testName',
-    lastName: 'testLastname',
-    birthday: 1611586940792,
-  },
-  {
-    id: 5,
-    firstName: 'testName',
-    lastName: 'testLastname',
-    birthday: 1611586940792,
-  },
-  {
-    id: 6,
-    firstName: 'testName',
-    lastName: 'testLastname',
-    birthday: 1611586940792,
-  },
-];
+import { usePersons } from '../../hooks/usePerson';
 
 export const PersonenVeraltungsPage = () => {
-  const authState = useContext(useAuth);
-  const URLData = 'http://localhost:3005/getData';
-  const [myPersons, setMyPersons] = useState(persons);
+  //const authState = useContext(useAuth); //maybe later
+  const PersonState = useContext(usePersons);
+  //const URLData = 'http://localhost:3005/getData';
+  //const [myPersons, setMyPersons] = useState(persons);
   const [open, setOpen] = useState(false);
 
   const columns = [
@@ -96,7 +58,7 @@ export const PersonenVeraltungsPage = () => {
   const deletePerson = (id) => {
     //TODO: post delete here
     console.log(`delete Person with id: ${id}`);
-    setMyPersons(myPersons.filter((per) => per.id !== id));
+    PersonState.setPersons(PersonState.persons.filter((per) => per.id !== id));
   };
 
   const handleClickOpen = () => {
@@ -107,25 +69,13 @@ export const PersonenVeraltungsPage = () => {
   };
 
   const addPersonFromChild = (newPerson) => {
-    const newArr = [...myPersons, newPerson];
-    setMyPersons(newArr);
+    const newArr = [...PersonState.persons, newPerson];
+    PersonState.setPersons(newArr);
   };
 
   return (
     <div>
       <h2>Personenverwaltung</h2>
-      <Button
-        onClick={() => {
-          addPersonFromChild({
-            id: new Date().getTime(),
-            firstName: 'testName',
-            lastName: 'testLastname',
-            birthday: 1611586940792,
-          });
-        }}
-      >
-        addPers
-      </Button>
       <Button variant='contained' color='primary' onClick={handleClickOpen}>
         Person Erstellen
       </Button>
@@ -144,7 +94,11 @@ export const PersonenVeraltungsPage = () => {
               <CreatePersonModal addPersonFromChild={addPersonFromChild} />
             </DialogContent>
           </Dialog>
-          <DataGrid rows={myPersons} columns={columns} pageSize={10} />
+          <DataGrid
+            rows={PersonState.persons}
+            columns={columns}
+            pageSize={10}
+          />
         </div>
       </Container>
     </div>
