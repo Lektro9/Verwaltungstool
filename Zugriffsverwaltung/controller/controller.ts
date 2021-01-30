@@ -1,6 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
-import { User } from '../model/User';
+import { User } from '../model/user';
 import jwt from 'jsonwebtoken';
 
 import 'reflect-metadata';
@@ -11,22 +11,24 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export class Controller {
-    app: Application
-    userRepository: Repository<User>
-    connection: Connection
-    port: number
-    AccessTokenExpiryTime: string
-    RefreshTokenExpiryTime: string
+    app: Application;
+    userRepository: Repository<User>;
+    connection: Connection;
+    port: number;
+    AccessTokenExpiryTime: string;
+    RefreshTokenExpiryTime: string;
 
     constructor() {
-        this.createDBConnection().then((connection) => {
-            this.connection = connection;
-            this.userRepository = this.connection.getRepository(User);
-        });
+        this.createDBConnection()
+            .then((connection) => {
+                this.connection = connection;
+                this.userRepository = this.connection.getRepository(User);
+            })
+            .catch((e) => console.log(e));
         this.app = express();
         this.port = 3005;
-        this.AccessTokenExpiryTime = "15m"
-        this.RefreshTokenExpiryTime = "24h"
+        this.AccessTokenExpiryTime = '15m';
+        this.RefreshTokenExpiryTime = '24h';
     }
 
     /**
@@ -45,7 +47,11 @@ export class Controller {
         //zum Versenden von Cookies
         this.app.use(cookieParser());
         //zum Loggen sämtlicher Zugriffe
-        const infoLogger = (req: Request, res: Response, next: NextFunction) => {
+        const infoLogger = (
+            req: Request,
+            res: Response,
+            next: NextFunction,
+        ) => {
             console.log(`A ${req.method}-request was made by ${req.ip}`);
             next();
         };
@@ -54,23 +60,27 @@ export class Controller {
         this.app.use(express.json());
         //setzt CORS Header 'Access-Control-Allow-Origin' und welche REST-Methoden von wem genutzt werden dürfen
         //hier: alle dürfen alles
-        this.app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+        this.app.use(
+            cors({ credentials: true, origin: 'http://localhost:3000' }),
+        );
         //statische html-Dateien im Ordner freigeben
-        this.app.use(express.static("buildFrontend", { etag: false }));
+        this.app.use(express.static('buildFrontend', { etag: false }));
     }
 
     /**
      * createRoutes
-     * 
+     *
      * Definiert Routen, Methoden und deren zugehörige Funktionen
-     * 
+     *
      * bind() wird benötigt wenn Eigenschaften aus dieser Klasse verwendet werden
      * müssen
      */
     public createRoutes(): void {
         // testen ob JWT korrekt überprüft wird
         // und Beispiel zum Auslesen der Daten aus JWTs
-        this.app.get('/getData', this.authenticateJWT,
+        this.app.get(
+            '/getData',
+            this.authenticateJWT,
             (req: Request, res: Response) => {
                 res.send(req.user);
             },
@@ -79,11 +89,10 @@ export class Controller {
 
         this.app.post('/login', this.login.bind(this));
         this.app.get('/logout', this.logout.bind(this));
-        this.app.get("/users", this.getAllUsers.bind(this));
-        this.app.post("/user", this.createUser.bind(this));
-        this.app.delete("/user/:personID", this.deleteUser.bind(this));
+        this.app.get('/users', this.getAllUsers.bind(this));
+        this.app.post('/user', this.createUser.bind(this));
+        this.app.delete('/user/:personID', this.deleteUser.bind(this));
     }
-
 
     /**
      * generateNewAccessToken
@@ -117,8 +126,7 @@ export class Controller {
 
         // Filter user from the users array by username and password
         const user = await this.userRepository.findOne({
-            where:
-                { login: login }
+            where: { login: login },
         });
 
         if (user && user.password === password) {
@@ -137,7 +145,7 @@ export class Controller {
             res.cookie('jwt', refreshToken, { httpOnly: true });
             res.json({ accessToken });
         } else {
-            res.status(401)
+            res.status(401);
             res.send({ error: 'Username or password incorrect' });
         }
     }
@@ -146,8 +154,8 @@ export class Controller {
      * logout
      */
     public async logout(req: Request, res: Response): Promise<void> {
-        res.cookie('jwt', "", { httpOnly: true });
-        res.send("logged out.");
+        res.cookie('jwt', '', { httpOnly: true });
+        res.send('logged out.');
     }
 
     /**
@@ -169,7 +177,7 @@ export class Controller {
      * Erstellt eine neue Person
      */
     public async createUser(req: Request, res: Response): Promise<void> {
-        if (req.is("json") && req.body) {
+        if (req.is('json') && req.body) {
             const newUser = new User(req.body);
             const user = await this.userRepository.create(newUser);
             await this.userRepository.save(user);
@@ -177,7 +185,7 @@ export class Controller {
         } else {
             res.status(400);
             res.send(
-                "wrong format, only json allowed: {'firstName': 'string', 'lastName': 'string', 'age': number}"
+                "wrong format, only json allowed: {'firstName': 'string', 'lastName': 'string', 'age': number}",
             );
         }
     }
@@ -192,8 +200,8 @@ export class Controller {
         if (deleteResult.affected) {
             res.send(`Person mit ID "${personID}" gelöscht`);
         } else {
-            res.status(400)
-            res.send("Person nicht gefunden")
+            res.status(400);
+            res.send('Person nicht gefunden');
         }
     }
 
@@ -211,7 +219,11 @@ export class Controller {
      * authenticateJWT
      * prüft JWT auf Gültigkeit
      */
-    public authenticateJWT(req: Request, res: Response, next: NextFunction): void {
+    public authenticateJWT(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): void {
         const authHeader = req.headers.authorization;
         if (authHeader) {
             const token = authHeader.split(' ')[1];
