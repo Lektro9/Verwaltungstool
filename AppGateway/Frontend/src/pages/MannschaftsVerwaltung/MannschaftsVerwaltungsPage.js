@@ -29,6 +29,7 @@ export const MannschaftsVerwaltungsPage = () => {
   };
 
   const addTeam = (teamInfo) => {
+    //TODO: here has to happen server communication?
     MannschaftenState.setMannschaften([
       ...MannschaftenState.mannschaften,
       teamInfo,
