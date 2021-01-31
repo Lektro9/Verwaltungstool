@@ -3,15 +3,20 @@ import {
   Card,
   CardActions,
   CardContent,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Typography,
 } from '@material-ui/core';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useMannschaften } from '../../hooks/useMannschaft';
 import { usePersons } from '../../hooks/usePerson';
+import { CreateMannschaftModal } from './createMannschaftModal';
 
 export const MannschaftsVerwaltungsPage = () => {
   const PersonState = useContext(usePersons);
   const MannschaftenState = useContext(useMannschaften);
+  const [open, setOpen] = useState(false);
 
   const getPerson = (personId) => {
     return PersonState.persons.find((person) => person.id === personId);
@@ -23,28 +28,36 @@ export const MannschaftsVerwaltungsPage = () => {
     );
   };
 
-  const addTeam = (newTeam) => {
+  const addTeam = (teamInfo) => {
     MannschaftenState.setMannschaften([
       ...MannschaftenState.mannschaften,
-      newTeam,
+      teamInfo,
     ]);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <>
       <Button
         size='small'
+        variant='contained'
         color='primary'
-        onClick={() =>
-          addTeam({
-            id: new Date().getTime() / 10000,
-            name: 'newTeam',
-            mitglieder: [2, 3],
-          })
-        }
+        onClick={() => {
+          setOpen(true);
+        }}
       >
-        Team add
+        Team hinzufügen
       </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id='createPerson' onClose={handleClose}>
+          Neue Mannschaft
+        </DialogTitle>
+        <DialogContent>
+          <CreateMannschaftModal addTeam={addTeam} />
+        </DialogContent>
+      </Dialog>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {MannschaftenState.mannschaften.map((team) => (
           <Card style={{ width: '50vh', margin: 10 }} key={team.id}>
