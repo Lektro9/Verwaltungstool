@@ -10,13 +10,14 @@ import { Fussballspieler } from "../model/fussballspieler.entity";
 import { Tennisspieler } from "../model/tennisspieler.entity";
 import { Trainer } from "../model/trainer.entity";
 import { Physiotherapeut } from "../model/physiotherapeut.entity";
+import { Query } from "./query";
 
 dotenv.config();
 
 export class Controller {
   app: Application;
   connection: Connection;
-  port: number;
+  port: number = 3004;
   apiPath: string = "/api/v1/personenverwaltung";
   // Repositories
   personRepository: Repository<Person>;
@@ -26,9 +27,11 @@ export class Controller {
   trainerRepository: Repository<Trainer>;
   physiotherapeutRepository: Repository<Physiotherapeut>;
 
+  query: Query;
   constructor() {
     createConnection().then((connection) => {
       this.connection = connection;
+
       this.personRepository = this.connection.getRepository(Person);
       this.fussballspielerRepository = this.connection.getRepository(
         Fussballspieler
@@ -45,7 +48,7 @@ export class Controller {
       );
     });
     this.app = express();
-    this.port = 3004;
+    this.query = new Query();
   }
 
   /**
@@ -84,19 +87,27 @@ export class Controller {
         res.send(req.user);
       }
     );
+
+    // CREATE
     this.app.post(this.apiPath + "/persons", this.createOnePerson.bind(this));
+
+    // READ
     this.app.get(this.apiPath + "/persons", this.getAllPersons.bind(this));
     this.app.get(
       this.apiPath + "/persons/:personId",
       this.getPersonById.bind(this)
     );
-    this.app.delete(
-      this.apiPath + "/persons/:personId",
-      this.deletePerson.bind(this)
-    );
+
+    // UPDATE
     this.app.put(
       this.apiPath + "/persons/:personId",
-      this.updateOnePerson.bind(this)
+      this.updatePersonById.bind(this)
+    );
+
+    // DELETE
+    this.app.delete(
+      this.apiPath + "/persons/:personId",
+      this.deletePersonById.bind(this)
     );
   }
 
@@ -105,7 +116,23 @@ export class Controller {
    * zeige alle Nutzer aus der Datenbank an
    */
   public async getAllPersons(req: Request, res: Response): Promise<void> {
-    const persons = await this.personRepository.find();
+    let persons = [
+      ...(await this.query.qGetPersons(
+        this.personRepository,
+        "fussballspieler"
+      )),
+      ...(await this.query.qGetPersons(
+        this.personRepository,
+        "handballspieler"
+      )),
+      ...(await this.query.qGetPersons(this.personRepository, "tennisspieler")),
+      ...(await this.query.qGetPersons(this.personRepository, "trainer")),
+      ...(await this.query.qGetPersons(
+        this.personRepository,
+        "physiotherapeut"
+      )),
+    ];
+
     res.json(persons);
   }
 
@@ -114,8 +141,21 @@ export class Controller {
    * zeige einen Nutzer aus der Datenbank an
    */
   public async getPersonById(req: Request, res: Response): Promise<void> {
-    const persons = await this.personRepository.findOne(req.params.personId);
-    res.json(persons);
+    try {
+      const person = await this.personRepository.findOne(req.params.personId);
+      const persons = await this.query.qGetPersonById(
+        this.personRepository,
+        person.type,
+        person.id
+      );
+      res.json(persons);
+    } catch (err) {
+      res.status(404).send({
+        error: err,
+        message: `Person with Id ${req.params.personId} is not available.`,
+      });
+      console.error(err);
+    }
   }
 
   /**
@@ -124,47 +164,47 @@ export class Controller {
    */
   public async createOnePerson(req: Request, res: Response): Promise<void> {
     if (req.is("json") && req.body) {
-      let person, result;
-      let type = req.body.type;
-      delete req.body.type;
-      switch (type) {
+      let person, result, personType;
+      person = new Person(req.body);
+      await this.personRepository.save(person);
+
+      switch (req.body.type) {
         case "fussballspieler":
-          person = new Fussballspieler(req.body);
-          result = this.fussballspielerRepository.create(person);
-          await this.fussballspielerRepository.save(person);
+          personType = new Fussballspieler(req.body);
+          personType.person = person;
+          result = await this.fussballspielerRepository.save(personType);
           break;
         case "handballspieler":
-          person = new Handballspieler(req.body);
-          result = this.handballspielerRepository.create(person);
-          await this.handballspielerRepository.save(person);
+          personType = new Handballspieler(req.body);
+          personType.person = person;
+          result = await this.handballspielerRepository.save(personType);
           break;
         case "tennisspieler":
-          person = new Tennisspieler(req.body);
-          result = this.tennisspielerRepository.create(person);
-          await this.tennisspielerRepository.save(person);
+          personType = new Tennisspieler(req.body);
+          personType.person = person;
+          result = await this.tennisspielerRepository.save(personType);
           break;
         case "trainer":
-          person = new Trainer(req.body);
-          result = this.trainerRepository.create(person);
-          await this.trainerRepository.save(person);
+          personType = new Trainer(req.body);
+          personType.person = person;
+          result = await this.trainerRepository.save(personType);
           break;
         case "physiotherapeut":
-          person = new Physiotherapeut(req.body);
-          result = this.physiotherapeutRepository.create(person);
-          await this.physiotherapeutRepository.save(person);
+          personType = new Physiotherapeut(req.body);
+          personType.person = person;
+          result = await this.physiotherapeutRepository.save(personType);
           break;
         default:
-          res.status(400);
-          res.send("No such person type");
+          res.status(406).send("No such person type");
           break;
       }
-
-      res.json(result);
+      res.status(200).json(result);
     } else {
-      res.status(400);
-      res.send(
-        "wrong format, only json allowed: {'firstName': 'string', 'lastName': 'string', 'birthday': Date}"
-      );
+      res
+        .status(400)
+        .send(
+          "wrong format, only json allowed: {'firstName': 'string', 'lastName': 'string', 'birthday': Date}"
+        );
     }
   }
 
@@ -172,34 +212,75 @@ export class Controller {
    * deletePerson
    * Löscht eine Person aus der DB
    */
-  public async deletePerson(req: Request, res: Response): Promise<void> {
-    const personID = req.params.personID;
-    const user = await this.personRepository.findOne(personID);
-    if (user) {
-      // sqlite treiber gibt leider keine antwort zurück ...
-      await this.personRepository.delete(personID);
-      res.send(`Person mit ID "${personID}" gelöscht`);
-    } else {
-      res.status(400);
-      res.send("Person nicht gefunden");
+  public async deletePersonById(req: Request, res: Response): Promise<void> {
+    try {
+      await this.personRepository.delete(req.params.personId);
+      res.send(`Person with ID "${req.params.personId}" has been deleted`);
+    } catch (err) {
+      res
+        .status(400)
+        .send({ error: err, message: "Person could not be deleted." });
     }
   }
 
-  public async updateOnePerson(req: Request, res: Response): Promise<void> {
-    const person = await this.personRepository.findOne(req.params.personId);
-    if (person) {
-      if (req.is("json") && req.body) {
-        const results = await this.personRepository.merge(person, req.body);
-        res.json(results);
-      } else {
-        res.status(400);
-        res.send(
-          "wrong format, only json allowed: {'firstName': 'string', 'lastName': 'string', 'birthday': Date}"
-        );
+  public async updatePersonById(req: Request, res: Response): Promise<void> {
+    if (req.is("json") && req.body) {
+      try {
+        const person = await this.personRepository.findOne(req.params.personId);
+        let typeProperties = person[person.type],
+          resultType;
+
+        switch (person.type) {
+          case "fussballspieler":
+            this.fussballspielerRepository.merge(typeProperties, req.body);
+            resultType = await this.fussballspielerRepository.save(
+              typeProperties
+            );
+            break;
+          case "handballspieler":
+            this.handballspielerRepository.merge(typeProperties, req.body);
+            resultType = await this.handballspielerRepository.save(
+              typeProperties
+            );
+            break;
+          case "tennisspieler":
+            this.tennisspielerRepository.merge(typeProperties, req.body);
+            resultType = await this.tennisspielerRepository.save(
+              typeProperties
+            );
+            break;
+          case "trainer":
+            this.trainerRepository.merge(typeProperties, req.body);
+            resultType = await this.trainerRepository.save(typeProperties);
+            break;
+          case "physiotherapeut":
+            this.physiotherapeutRepository.merge(typeProperties, req.body);
+            resultType = await this.physiotherapeutRepository.save(
+              typeProperties
+            );
+            break;
+          default:
+            res.status(406).send("No such person type");
+            break;
+        }
+
+        this.personRepository.merge(person, req.body);
+        const resultPerson = await this.fussballspielerRepository.save(person);
+
+        resultPerson[person.type] = resultType;
+
+        res.status(200).json(resultPerson);
+      } catch (err) {
+        res
+          .status(400)
+          .send({ error: err, message: "Person could not be updated." });
       }
     } else {
-      res.status(400);
-      res.send("Person nicht gefunden");
+      res
+        .status(400)
+        .send(
+          "wrong format, only json allowed: {'firstName': 'string', 'lastName': 'string', 'birthday': Date}"
+        );
     }
   }
 

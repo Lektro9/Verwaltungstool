@@ -1,18 +1,27 @@
-import { Entity, Column } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToOne,
+} from "typeorm";
 import { Person } from "./person.entity";
 
 @Entity()
-export class Tennisspieler extends Person {
+export class Tennisspieler {
   constructor(data?: Tennisspieler) {
-    super();
     if (data) {
-      this.firstName = data.firstName;
-      this.lastName = data.lastName;
-      this.birthday = data.birthday;
       this.handedness = data.handedness;
     }
   }
 
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   handedness: string;
+
+  @OneToOne(() => Person, person => person.tennisspieler, {onDelete: 'CASCADE' })
+  @JoinColumn()
+  person: Person;
 }
