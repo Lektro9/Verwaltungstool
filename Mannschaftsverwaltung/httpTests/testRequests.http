@@ -29,3 +29,12 @@ content-type: application/json
     "personenIDs": [6, 7, 8],
     "mannschaftID": 1
 }
+
+###
+POST http://localhost:3006/deleteFromMann
+content-Type: application/json
+
+{
+    "personenIDs": [6, 7, 8],
+    "mannschaftID": 1
+}
