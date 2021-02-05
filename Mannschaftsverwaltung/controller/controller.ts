@@ -88,19 +88,15 @@ export class Controller {
     }
 
     public async addToMannschaft(req: Request, res: Response): Promise<void> {
-        if (req.is("json") && req.body) {            
+        if (req.is("json") && req.body) {
             const { mannschaftID, personenIDs } = req.body;
             const mannschaft = await this.mannschaftRepository.findOne(mannschaftID, { relations: ["mitglieder"] });
-            console.log(mannschaft);
-            console.log(personenIDs);
-            personenIDs.forEach(async id => {
-                console.log(id);
+            for (const id of personenIDs) {
                 const newMitglied = new MannschaftMitglied();
                 newMitglied.personenId = id;
                 await this.mitgliederRepository.save(newMitglied)
                 mannschaft.mitglieder.push(newMitglied)
-                console.log(mannschaft);
-            });
+            }
             await this.mannschaftRepository.save(mannschaft);
             res.json(mannschaft);
         } else {
@@ -111,8 +107,8 @@ export class Controller {
         }
     }
 
-    public async getMannschaftsMitglieder(req: Request, res: Response) : Promise<void> {
-        const mitglieder = await this.mannschaftRepository.find({ relations: ["mitglieder"]})
+    public async getMannschaftsMitglieder(req: Request, res: Response): Promise<void> {
+        const mitglieder = await this.mannschaftRepository.find({ relations: ["mitglieder"] })
         res.send(mitglieder);
     }
 

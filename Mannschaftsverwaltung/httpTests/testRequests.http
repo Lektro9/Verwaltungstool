@@ -27,7 +27,7 @@ content-type: application/json
 
 {
     "personenIDs": [6, 7, 8],
-    "mannschaftID": 1
+    "mannschaftID": 3
 }
 
 ###
