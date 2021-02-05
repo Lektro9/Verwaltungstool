@@ -17,16 +17,16 @@ content-type: application/json
 GET http://localhost:3006/getMannschaften
 
 ###
-GET http://localhost:3006/getMannschaft/4
+GET http://localhost:3006/getMannschaft/1
 
 ###
-DELETE  http://localhost:3006/deleteMannschaft/1
+DELETE  http://localhost:3006/deleteMannschaft/5
 
 ###
 POST http://localhost:3006/addToMannschaft
 content-type: application/json
 
 {
-    "personenIDs": [2, 3],
+    "personenIDs": [6, 7, 8],
     "mannschaftID": 1
 }

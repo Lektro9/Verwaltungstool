@@ -12,6 +12,7 @@ dotenv.config();
 export class Controller {
     app: Application
     mannschaftRepository: Repository<Mannschaft>
+    mitgliederRepository: Repository<MannschaftMitglied>
     connection: Connection
     port: number
 
@@ -19,6 +20,7 @@ export class Controller {
         createConnection().then((connection) => {
             this.connection = connection;
             this.mannschaftRepository = this.connection.getRepository(Mannschaft);
+            this.mitgliederRepository = this.connection.getRepository(MannschaftMitglied)
         });
         this.app = express();
         this.port = 3006;
@@ -71,7 +73,7 @@ export class Controller {
      * zeige alle Mannschaften aus der Datenbank an
      */
     public async getMannschaften(req: Request, res: Response): Promise<void> {
-        const mannschaften = await this.mannschaftRepository.find();
+        const mannschaften = await this.mannschaftRepository.find({ relations: ["mitglieder"] });
         res.json(mannschaften);
     }
 
@@ -81,29 +83,30 @@ export class Controller {
      */
     public async getMannschaft(req: Request, res: Response): Promise<void> {
         const mannID = req.params.mannID;
-        const mannschaft = await this.mannschaftRepository.findOne(mannID);
+        const mannschaft = await this.mannschaftRepository.findOne(mannID, { relations: ["mitglieder"] });
         res.json(mannschaft);
     }
 
     public async addToMannschaft(req: Request, res: Response): Promise<void> {
         if (req.is("json") && req.body) {            
             const { mannschaftID, personenIDs } = req.body;
-            console.log(req.body);
             const mannschaft = await this.mannschaftRepository.findOne(mannschaftID, { relations: ["mitglieder"] });
             console.log(mannschaft);
+            console.log(personenIDs);
             personenIDs.forEach(async id => {
+                console.log(id);
                 const newMitglied = new MannschaftMitglied();
                 newMitglied.personenId = id;
-                await this.mannschaftRepository.save(newMitglied)
+                await this.mitgliederRepository.save(newMitglied)
                 mannschaft.mitglieder.push(newMitglied)
+                console.log(mannschaft);
             });
-
             await this.mannschaftRepository.save(mannschaft);
             res.json(mannschaft);
         } else {
             res.status(400);
             res.send(
-                "wrong format, only json allowed: {'turnierID': 2, 'teilnehmerIDs': [1,2,3]}"
+                "wrong format, only json allowed: {'mannschaftID': 2, 'teilnehmerIDs': [1,2,3]}"
             );
         }
     }
