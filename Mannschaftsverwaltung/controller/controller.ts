@@ -5,6 +5,7 @@ import { createConnection, Repository, Connection } from 'typeorm';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { Mannschaft } from '../model/mannschaft';
+import { MannschaftMitglied } from '../model/mannschaftMitglieder';
 
 dotenv.config();
 
@@ -58,7 +59,10 @@ export class Controller {
             },
         );
         this.app.post('/createMannschaft', this.createMannschaft.bind(this));
+        this.app.post('/addToMannschaft', this.addToMannschaft.bind(this));
         this.app.get('/getMannschaften', this.getMannschaften.bind(this));
+        this.app.get('/getMannschaftsMitglieder', this.getMannschaftsMitglieder.bind(this));
+        this.app.get('/getMannschaft/:mannID', this.getMannschaft.bind(this));
         this.app.delete('/deleteMannschaft/:mannID', this.deleteMannschaft.bind(this));
     }
 
@@ -69,6 +73,44 @@ export class Controller {
     public async getMannschaften(req: Request, res: Response): Promise<void> {
         const mannschaften = await this.mannschaftRepository.find();
         res.json(mannschaften);
+    }
+
+    /**
+     * getMannschaft
+     * zeige eine Mannschaft aus der Datenbank an
+     */
+    public async getMannschaft(req: Request, res: Response): Promise<void> {
+        const mannID = req.params.mannID;
+        const mannschaft = await this.mannschaftRepository.findOne(mannID);
+        res.json(mannschaft);
+    }
+
+    public async addToMannschaft(req: Request, res: Response): Promise<void> {
+        if (req.is("json") && req.body) {            
+            const { mannschaftID, personenIDs } = req.body;
+            console.log(req.body);
+            const mannschaft = await this.mannschaftRepository.findOne(mannschaftID, { relations: ["mitglieder"] });
+            console.log(mannschaft);
+            personenIDs.forEach(async id => {
+                const newMitglied = new MannschaftMitglied();
+                newMitglied.personenId = id;
+                await this.mannschaftRepository.save(newMitglied)
+                mannschaft.mitglieder.push(newMitglied)
+            });
+
+            await this.mannschaftRepository.save(mannschaft);
+            res.json(mannschaft);
+        } else {
+            res.status(400);
+            res.send(
+                "wrong format, only json allowed: {'turnierID': 2, 'teilnehmerIDs': [1,2,3]}"
+            );
+        }
+    }
+
+    public async getMannschaftsMitglieder(req: Request, res: Response) : Promise<void> {
+        const mitglieder = await this.mannschaftRepository.find({ relations: ["mitglieder"]})
+        res.send(mitglieder);
     }
 
     /**

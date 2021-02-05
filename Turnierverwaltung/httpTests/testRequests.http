@@ -14,7 +14,7 @@ POST http://localhost:3007/addTeilnehmerToTurnier
 content-type: application/json
 
 {
-    "turnierID": 3,
+    "turnierID": 4,
     "teilnehmerIDs": [2, 3, 4]
 }
 ###

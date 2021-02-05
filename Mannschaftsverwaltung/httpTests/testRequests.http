@@ -6,16 +6,27 @@ POST http://localhost:3006/createMannschaft
 content-type: application/json
 
 {
-    "name": "testMannschaft", 
+    "name": "Arsenal", 
     "sportType": "Fussball", 
-    "gamesWon": 5,
-    "gamesLost": 4,
-    "draws": 1
+    "gamesWon": 3,
+    "gamesLost": 8,
+    "draws": 4
 }
 ###
 
 GET http://localhost:3006/getMannschaften
 
 ###
+GET http://localhost:3006/getMannschaft/4
 
+###
 DELETE  http://localhost:3006/deleteMannschaft/1
+
+###
+POST http://localhost:3006/addToMannschaft
+content-type: application/json
+
+{
+    "personenIDs": [2, 3],
+    "mannschaftID": 1
+}
