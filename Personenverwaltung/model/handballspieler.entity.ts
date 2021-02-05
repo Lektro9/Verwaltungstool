@@ -1,17 +1,27 @@
-import { Entity, Column } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToOne,
+} from "typeorm";
 import { Person } from "./person.entity";
 
 @Entity()
-export class Handballspieler extends Person {
+export class Handballspieler {
   constructor(data?: Handballspieler) {
-    super();
     if (data) {
-      this.firstName = data.firstName;
-      this.lastName = data.lastName;
-      this.birthday = data.birthday;
       this.fieldPosition = data.fieldPosition;
     }
   }
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   fieldPosition: string;
+
+  @OneToOne(() => Person, person => person.handballspieler, {onDelete: 'CASCADE' })
+  @JoinColumn()
+  person: Person;
 }

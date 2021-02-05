@@ -1,17 +1,27 @@
-import { Entity, Column } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToOne,
+} from "typeorm";
 import { Person } from "./person.entity";
 
 @Entity()
-export class Physiotherapeut extends Person {
+export class Physiotherapeut {
   constructor(data?: Physiotherapeut) {
-    super();
     if (data) {
-      this.firstName = data.firstName;
-      this.lastName = data.lastName;
-      this.birthday = data.birthday;
       this.treatmentType = data.treatmentType;
     }
   }
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   treatmentType: string;
+
+  @OneToOne(() => Person, person => person.physiotherapeut, {onDelete: 'CASCADE' })
+  @JoinColumn()
+  person: Person;
 }

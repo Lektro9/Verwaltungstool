@@ -1,17 +1,27 @@
-import { Entity, Column } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToOne,
+} from "typeorm";
 import { Person } from "./person.entity";
 
 @Entity()
-export class Trainer extends Person {
+export class Trainer {
   constructor(data?: Trainer) {
-    super();
     if (data) {
-      this.firstName = data.firstName;
-      this.lastName = data.lastName;
-      this.birthday = data.birthday;
       this.experience = data.experience;
     }
   }
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   experience: number;
+
+  @OneToOne(() => Person, person => person.trainer, {onDelete: 'CASCADE' })
+  @JoinColumn()
+  person: Person;
 }
