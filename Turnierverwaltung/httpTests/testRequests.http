@@ -14,8 +14,8 @@ POST http://localhost:3007/addTeilnehmerToTurnier
 content-type: application/json
 
 {
-    "turnierID": 4,
-    "teilnehmerIDs": [2, 3, 4]
+    "turnierID": 5,
+    "teilnehmerIDs": [7, 8, 9]
 }
 ###
 GET http://localhost:3007/getTurniere

@@ -101,16 +101,15 @@ export class Controller {
     public async addTeilnehmerToTurnier(req: Request, res: Response): Promise<void> {
         if (req.is("json") && req.body) {
             const { turnierID, teilnehmerIDs } = req.body;
-            const turnier = await this.turnierRepository.findOne(turnierID, { relations: ["teilnehmer"] });
+            let turnier = await this.turnierRepository.findOne(turnierID, { relations: ["teilnehmer"] });
             teilnehmerIDs.forEach(async id => {
                 const newTeilnehmer = new TurnierTeilnehmer();
                 newTeilnehmer.mannschaftID = id;
                 await this.teilnehmerRepository.save(newTeilnehmer)
                 turnier.teilnehmer.push(newTeilnehmer)
+                await this.turnierRepository.save(turnier);
             });
-
-            await this.turnierRepository.save(turnier);
-            res.json(turnier);
+            res.json("OK");
         } else {
             res.status(400);
             res.send(
