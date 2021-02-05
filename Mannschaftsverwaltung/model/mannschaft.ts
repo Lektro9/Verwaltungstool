@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { MannschaftMitglied } from "./mannschaftMitglieder";
 @Entity()
 export class Mannschaft {
 
@@ -30,6 +30,9 @@ export class Mannschaft {
 
     @Column()
     draws: number;
+
+    @OneToMany(() => MannschaftMitglied, mannschaftMitglied => mannschaftMitglied.mannschaft)
+    mitglieder: MannschaftMitglied[];
 
     //TODO: how many goals, how many "enemygoals"
 }
