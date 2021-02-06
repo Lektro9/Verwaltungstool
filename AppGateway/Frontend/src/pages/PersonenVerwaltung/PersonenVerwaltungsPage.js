@@ -16,7 +16,7 @@ export const PersonenVeraltungsPage = () => {
   const [open, setOpen] = useState(false);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'id', headerName: 'ID', width: 100 },
     { field: 'firstName', headerName: 'Vorname', width: 130 },
     { field: 'lastName', headerName: 'Nachname', width: 130 },
     {

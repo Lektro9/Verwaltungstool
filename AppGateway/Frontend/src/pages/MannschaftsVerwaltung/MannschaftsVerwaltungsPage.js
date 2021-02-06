@@ -8,10 +8,13 @@ import {
   DialogTitle,
   Typography,
 } from '@material-ui/core';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useMannschaften } from '../../hooks/useMannschaft';
 import { usePersons } from '../../hooks/usePerson';
 import { CreateMannschaftModal } from './createMannschaftModal';
+import axios from 'axios';
+
+const BASE_URL = 'http://localhost:3006';
 
 export const MannschaftsVerwaltungsPage = () => {
   const PersonState = useContext(usePersons);
@@ -38,6 +41,20 @@ export const MannschaftsVerwaltungsPage = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // Daten werden einmal beim Aufruf der Seite geholt
+  useEffect(() => {
+    axios
+      .get(BASE_URL + '/getMannschaften')
+      .then(function (response) {
+        console.log(response.data);
+        MannschaftenState.setMannschaften(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -66,17 +83,18 @@ export const MannschaftsVerwaltungsPage = () => {
               <Typography gutterBottom variant='h5' component='h2'>
                 {team.name}
               </Typography>
-              {team.mitglieder.map((personId) => {
-                const foundPers = getPerson(personId);
+              {team.mitglieder.map((personObject) => {
+                const foundPers = getPerson(personObject.personenId);
                 if (foundPers) {
                   return (
-                    <div key={personId}>
-                      {getPerson(personId).id} - {getPerson(personId).firstName}
-                      {getPerson(personId).lastName}
+                    <div key={personObject.personenId}>
+                      {getPerson(personObject.personenId).id} -{' '}
+                      {getPerson(personObject.personenId).firstName}
+                      {getPerson(personObject.personenId).lastName}
                     </div>
                   );
                 } else {
-                  return;
+                  return <div key={personObject.personenId}></div>;
                 }
               })}
             </CardContent>

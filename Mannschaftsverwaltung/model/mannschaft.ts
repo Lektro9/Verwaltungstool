@@ -1,38 +1,37 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { MannschaftMitglied } from "./mannschaftMitglieder";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { MannschaftMitglied } from './mannschaftMitglieder';
 @Entity()
 export class Mannschaft {
-
-    constructor(data?: Mannschaft) {
-        if (data) {
-            this.name = data.name;
-            this.sportType = data.sportType;
-            this.gamesWon = data.gamesWon;
-            this.gamesLost = data.gamesLost;
-            this.draws = data.draws;
-        }
+  constructor(data?: Mannschaft) {
+    if (data) {
+      this.name = data.name;
+      this.sportType = data.sportType;
     }
+  }
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    sportType: string;
+  @Column()
+  sportType: string;
 
-    @Column()
-    gamesWon: number;
+  @Column({ default: 0 })
+  gamesWon: number;
 
-    @Column()
-    gamesLost: number;
+  @Column({ default: 0 })
+  gamesLost: number;
 
-    @Column()
-    draws: number;
+  @Column({ default: 0 })
+  draws: number;
 
-    @OneToMany(() => MannschaftMitglied, mannschaftMitglied => mannschaftMitglied.mannschaft)
-    mitglieder: MannschaftMitglied[];
+  @OneToMany(
+    () => MannschaftMitglied,
+    (mannschaftMitglied) => mannschaftMitglied.mannschaft
+  )
+  mitglieder: MannschaftMitglied[];
 
-    //TODO: how many goals, how many "enemygoals"
+  //TODO: how many goals, how many "enemygoals"
 }

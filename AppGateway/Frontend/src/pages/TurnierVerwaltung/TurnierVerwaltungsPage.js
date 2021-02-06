@@ -1,15 +1,10 @@
 import {
-  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Typography,
 } from '@material-ui/core';
 import { useContext } from 'react';
@@ -19,9 +14,7 @@ import { useTurniere } from '../../hooks/useTurnier';
 export const TurnierVerwaltungsPage = () => {
   const TurniereState = useContext(useTurniere);
   const MannschaftenState = useContext(useMannschaften);
-  const handleChange = (event) => {
-    console.log(event);
-  };
+
   const getTeamName = (teamId) => {
     const teamName = MannschaftenState.mannschaften.find(
       (team) => team.id === teamId
@@ -37,6 +30,7 @@ export const TurnierVerwaltungsPage = () => {
     );
     TurniereState.setTurniere(newArr);
   };
+
   return (
     <>
       <Button
