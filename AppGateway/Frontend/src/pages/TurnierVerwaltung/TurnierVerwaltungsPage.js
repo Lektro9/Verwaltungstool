@@ -4,16 +4,21 @@ import {
   CardActions,
   CardContent,
   Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Paper,
   Typography,
 } from '@material-ui/core';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useMannschaften } from '../../hooks/useMannschaft';
 import { useTurniere } from '../../hooks/useTurnier';
+import { CreateTurnierModal } from './createTurnierModal';
 
 export const TurnierVerwaltungsPage = () => {
   const TurniereState = useContext(useTurniere);
   const MannschaftenState = useContext(useMannschaften);
+  const [open, setOpen] = useState(false);
 
   const getTeamName = (teamId) => {
     const teamName = MannschaftenState.mannschaften.find(
@@ -29,6 +34,10 @@ export const TurnierVerwaltungsPage = () => {
       (turnier) => turnier.id !== turnierId
     );
     TurniereState.setTurniere(newArr);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -63,6 +72,23 @@ export const TurnierVerwaltungsPage = () => {
       >
         addTourney
       </Button>
+      <Button
+        variant='outlined'
+        color='primary'
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        Turnier hinzufügen
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id='createPerson' onClose={handleClose}>
+          Turnier hinzufügen
+        </DialogTitle>
+        <DialogContent>
+          <CreateTurnierModal addTurnier={addTurnier} />
+        </DialogContent>
+      </Dialog>
       <Container maxWidth='md'>
         {TurniereState.turniere.map((turnier) => (
           <Card style={{ width: '100%', margin: 10 }} key={turnier.id}>
