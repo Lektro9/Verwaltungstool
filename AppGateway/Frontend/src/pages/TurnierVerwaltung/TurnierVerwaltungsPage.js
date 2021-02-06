@@ -7,6 +7,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   Paper,
   Typography,
 } from '@material-ui/core';
@@ -14,11 +15,13 @@ import { useContext, useState } from 'react';
 import { useMannschaften } from '../../hooks/useMannschaft';
 import { useTurniere } from '../../hooks/useTurnier';
 import { CreateTurnierModal } from './createTurnierModal';
+import { SelectTeamsAndPoints } from './selectTeamsAndPoints';
 
 export const TurnierVerwaltungsPage = () => {
   const TurniereState = useContext(useTurniere);
   const MannschaftenState = useContext(useMannschaften);
   const [open, setOpen] = useState(false);
+  const [openAddTeam, setOpenAddTeam] = useState(false);
 
   const getTeamName = (teamId) => {
     const teamName = MannschaftenState.mannschaften.find(
@@ -27,7 +30,7 @@ export const TurnierVerwaltungsPage = () => {
     return teamName || 'Team not Found';
   };
   const addTurnier = (newTurnier) => {
-    TurniereState.setTurniere([...TurniereState.turniere, newTurnier]);
+    TurniereState.setTurniere([newTurnier, ...TurniereState.turniere]);
   };
   const deleteTurnier = (turnierId) => {
     const newArr = TurniereState.turniere.filter(
@@ -38,6 +41,18 @@ export const TurnierVerwaltungsPage = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const closeAddTeam = () => {
+    setOpenAddTeam(false);
+  };
+
+  const addGame = (game) => {
+    const modifyTourney = TurniereState.turniere.find(
+      (turnier) => turnier.id === game.turnierId
+    );
+    modifyTourney.games.push(game);
+    TurniereState.setTurniere([...TurniereState.turniere]);
   };
 
   return (
@@ -96,7 +111,15 @@ export const TurnierVerwaltungsPage = () => {
               <Typography gutterBottom variant='h5' component='h2'>
                 {turnier.name}
               </Typography>
-
+              <Button
+                size='small'
+                color='primary'
+                onClick={() => {
+                  setOpenAddTeam(true);
+                }}
+              >
+                Mannschaften hinzufügen
+              </Button>
               {turnier.games.map((game) => (
                 <div style={{ display: 'flex' }} key={game.id}>
                   <Paper
@@ -125,6 +148,8 @@ export const TurnierVerwaltungsPage = () => {
                   </Paper>
                 </div>
               ))}
+              <Divider style={{ marginTop: 20 }} />
+              <SelectTeamsAndPoints turnier={turnier} addGame={addGame} />
             </CardContent>
             <CardActions>
               <Button
@@ -140,6 +165,12 @@ export const TurnierVerwaltungsPage = () => {
           </Card>
         ))}
       </Container>
+      <Dialog open={openAddTeam} onClose={closeAddTeam}>
+        <DialogTitle id='createTurnier' onClose={closeAddTeam}>
+          Mannschaft hinzufügen
+        </DialogTitle>
+        <DialogContent>test</DialogContent>
+      </Dialog>
     </>
   );
 };

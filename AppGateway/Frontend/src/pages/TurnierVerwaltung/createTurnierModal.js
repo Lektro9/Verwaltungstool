@@ -21,6 +21,7 @@ export const CreateTurnierModal = (props) => {
         onClick={() => {
           props.addTurnier({
             id: Math.floor(Math.random() * 1000),
+            teamIds: [],
             name: turnierName,
             games: [],
           });
