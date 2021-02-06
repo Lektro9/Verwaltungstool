@@ -141,14 +141,32 @@ export class Controller {
     //TODO: better typechecking?
     if (req.is('json') && req.body) {
       const newMannschaft = new Mannschaft(req.body);
-      const mannschaft = await this.mannschaftRepository.create(newMannschaft);
-      await this.mannschaftRepository.save(mannschaft);
-      res.json(mannschaft);
+      const createdMannschaft = await this.mannschaftRepository.create(
+        newMannschaft
+      );
+      const savedMannschaft = await this.mannschaftRepository.save(
+        createdMannschaft
+      );
+      const modiefiedMannschaft = await this.mannschaftRepository.findOne(
+        savedMannschaft.id,
+        {
+          relations: ['mitglieder'],
+        }
+      );
+      const personIds = req.body.mitglieder;
+
+      for (const id of personIds) {
+        const newMitglied = new MannschaftMitglied();
+        newMitglied.personenId = id;
+        await this.mitgliederRepository.save(newMitglied);
+        modiefiedMannschaft.mitglieder.push(newMitglied);
+      }
+
+      await this.mannschaftRepository.save(modiefiedMannschaft);
+      res.json(modiefiedMannschaft);
     } else {
       res.status(400);
-      res.send(
-        "wrong format, only json allowed: {'firstName': 'string', 'lastName': 'string', 'birthday': Date}"
-      );
+      res.send('wrong format, only json allowed');
     }
   }
 

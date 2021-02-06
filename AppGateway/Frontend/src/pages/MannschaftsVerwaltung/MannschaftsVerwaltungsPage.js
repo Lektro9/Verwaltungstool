@@ -26,13 +26,31 @@ export const MannschaftsVerwaltungsPage = () => {
   };
 
   const deleteTeam = (teamId) => {
-    MannschaftenState.setMannschaften(
-      MannschaftenState.mannschaften.filter((team) => team.id !== teamId)
-    );
+    axios
+      .delete(BASE_URL + '/deleteMannschaft/' + teamId)
+      .then((response) => {
+        MannschaftenState.setMannschaften(
+          MannschaftenState.mannschaften.filter((team) => team.id !== teamId)
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const addTeam = (teamInfo) => {
-    //TODO: here has to happen server communication?
+    axios
+      .post(BASE_URL + '/createMannschaft', teamInfo)
+      .then(function (response) {
+        MannschaftenState.setMannschaften([
+          ...MannschaftenState.mannschaften,
+          response.data,
+        ]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     MannschaftenState.setMannschaften([
       ...MannschaftenState.mannschaften,
       teamInfo,
@@ -47,7 +65,6 @@ export const MannschaftsVerwaltungsPage = () => {
     axios
       .get(BASE_URL + '/getMannschaften')
       .then(function (response) {
-        console.log(response.data);
         MannschaftenState.setMannschaften(response.data);
       })
       .catch(function (error) {

@@ -43,7 +43,7 @@ export const CreateMannschaftModal = (props) => {
         autoFocus
         onInput={(e) => setTeamName(e.target.value)}
       />
-      <FormControl>
+      <FormControl style={{ width: '100%' }}>
         <InputLabel id='sportart'>Sportart</InputLabel>
         <Select
           labelId='sportart'
@@ -102,6 +102,7 @@ export const CreateMannschaftModal = (props) => {
           }
           props.addTeam({
             id: Math.floor(Math.random() * 1000),
+            sportType,
             name: teamName,
             mitglieder: teamIds,
           });

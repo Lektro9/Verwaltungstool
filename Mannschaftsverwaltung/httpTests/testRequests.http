@@ -5,11 +5,9 @@ POST http://localhost:3006/createMannschaft
 content-type: application/json
 
 {
-    "name": "Arsenal", 
+    "name": "Arsenal22323", 
     "sportType": "Fussball", 
-    "gamesWon": 3,
-    "gamesLost": 8,
-    "draws": 4
+    "mitglieder": [2,3]
 }
 ###
 
@@ -19,7 +17,7 @@ GET http://localhost:3006/getMannschaften
 GET http://localhost:3006/getMannschaft/1
 
 ###
-DELETE  http://localhost:3006/deleteMannschaft/5
+DELETE http://localhost:3006/deleteMannschaft/1
 
 ###
 POST http://localhost:3006/addToMannschaft
