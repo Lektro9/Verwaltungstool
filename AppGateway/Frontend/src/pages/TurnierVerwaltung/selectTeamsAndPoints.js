@@ -54,7 +54,16 @@ export const SelectTeamsAndPoints = (props) => {
           setTeam1Points(event.target.value);
         }}
       />
-      <FormControl style={{ width: '35%', marginLeft: 40 }}>
+      <TextField
+        style={{ width: '5%', marginLeft: 40 }}
+        id='standard-number'
+        label='Pts'
+        type='number'
+        onChange={(event) => {
+          setTeam2Points(event.target.value);
+        }}
+      />
+      <FormControl style={{ width: '35%', marginLeft: 10 }}>
         <InputLabel id='team2'>Team 2</InputLabel>
         <Select
           labelId='team2'
@@ -73,15 +82,6 @@ export const SelectTeamsAndPoints = (props) => {
           })}
         </Select>
       </FormControl>
-      <TextField
-        style={{ width: '5%', marginLeft: 10 }}
-        id='standard-number'
-        label='Pts'
-        type='number'
-        onChange={(event) => {
-          setTeam2Points(event.target.value);
-        }}
-      />
       <Button
         color='primary'
         onClick={() => {

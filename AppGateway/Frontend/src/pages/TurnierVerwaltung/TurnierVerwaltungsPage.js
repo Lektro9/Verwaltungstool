@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useContext, useState } from 'react';
+import { ChoosingTable } from '../../components/ChoosingTable';
 import { useMannschaften } from '../../hooks/useMannschaft';
 import { useTurniere } from '../../hooks/useTurnier';
 import { CreateTurnierModal } from './createTurnierModal';
@@ -21,13 +22,29 @@ export const TurnierVerwaltungsPage = () => {
   const TurniereState = useContext(useTurniere);
   const MannschaftenState = useContext(useMannschaften);
   const [open, setOpen] = useState(false);
-  const [openAddTeam, setOpenAddTeam] = useState(false);
+  const [openRemoveTeam, setOpenRemoveTeam] = useState(false);
+  const [turnierModals, setTurnierModals] = useState(
+    TurniereState.turniere.reduce((accumulator, currentValue) => {
+      return { ...accumulator, [currentValue.id]: false };
+    }, {})
+  );
 
   const getTeamName = (teamId) => {
     const teamName = MannschaftenState.mannschaften.find(
       (team) => team.id === teamId
     )?.name;
     return teamName || 'Team not Found';
+  };
+  const getTeamsFromIds = (teamIds) => {
+    const teamsInTourney = [];
+    teamIds.forEach((teamId) => {
+      MannschaftenState.mannschaften.forEach((mannschaft) => {
+        if (mannschaft.id === teamId) {
+          teamsInTourney.push(mannschaft);
+        }
+      });
+    });
+    return teamsInTourney;
   };
   const addTurnier = (newTurnier) => {
     TurniereState.setTurniere([newTurnier, ...TurniereState.turniere]);
@@ -43,8 +60,8 @@ export const TurnierVerwaltungsPage = () => {
     setOpen(false);
   };
 
-  const closeAddTeam = () => {
-    setOpenAddTeam(false);
+  const closeRemoveTeam = () => {
+    setOpenRemoveTeam(false);
   };
 
   const addGame = (game) => {
@@ -53,6 +70,33 @@ export const TurnierVerwaltungsPage = () => {
     );
     modifyTourney.games.push(game);
     TurniereState.setTurniere([...TurniereState.turniere]);
+  };
+
+  const action = (teamIds) => {
+    console.log(teamIds);
+  };
+
+  const addTeamsToTurnier = (
+    teamIds,
+    teamsAlreadyInTurnier = [],
+    turnier = {}
+  ) => {
+    //find duplicates, so they won't be added twice
+    const teamsNotAlreadyInTurnier = teamIds.filter(
+      (x) => !teamsAlreadyInTurnier.includes(x)
+    );
+    turnier.teamIds = [...turnier.teamIds, ...teamsNotAlreadyInTurnier];
+    TurniereState.setTurniere([...TurniereState.turniere]);
+  };
+
+  const openAddTeam = (turnierId) => {
+    turnierModals[turnierId] = true;
+    setTurnierModals({ ...turnierModals });
+  };
+
+  const closeAddTeam = (turnierId) => {
+    turnierModals[turnierId] = false;
+    setTurnierModals({ ...turnierModals });
   };
 
   return (
@@ -97,7 +141,7 @@ export const TurnierVerwaltungsPage = () => {
         Turnier hinzufügen
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle id='createPerson' onClose={handleClose}>
+        <DialogTitle id='createTurnier' onClose={handleClose}>
           Turnier hinzufügen
         </DialogTitle>
         <DialogContent>
@@ -115,10 +159,19 @@ export const TurnierVerwaltungsPage = () => {
                 size='small'
                 color='primary'
                 onClick={() => {
-                  setOpenAddTeam(true);
+                  openAddTeam(turnier.id);
                 }}
               >
                 Mannschaften hinzufügen
+              </Button>
+              <Button
+                size='small'
+                color='secondary'
+                onClick={() => {
+                  setOpenRemoveTeam(true);
+                }}
+              >
+                Mannschaften entfernen
               </Button>
               {turnier.games.map((game) => (
                 <div style={{ display: 'flex' }} key={game.id}>
@@ -162,15 +215,37 @@ export const TurnierVerwaltungsPage = () => {
                 Turnier Löschen
               </Button>
             </CardActions>
+            <Dialog
+              open={openRemoveTeam}
+              onClose={() => {
+                closeAddTeam(turnier.id);
+              }}
+            >
+              <ChoosingTable
+                title={'Mannschaften entfernen'}
+                teams={getTeamsFromIds(turnier.teamIds)}
+                action={action}
+                buttonInfo={['secondary', 'entfernen']}
+              />
+            </Dialog>
+            <Dialog
+              open={turnierModals[turnier.id]}
+              onClose={() => {
+                closeAddTeam(turnier.id);
+              }}
+            >
+              <ChoosingTable
+                title={'Mannschaften hinzufügen'}
+                teams={MannschaftenState.mannschaften}
+                teamsAlreadyInTurnier={turnier.teamIds}
+                action={addTeamsToTurnier}
+                turnier={turnier}
+                buttonInfo={['primary', 'hinzufügen']}
+              />
+            </Dialog>
           </Card>
         ))}
       </Container>
-      <Dialog open={openAddTeam} onClose={closeAddTeam}>
-        <DialogTitle id='createTurnier' onClose={closeAddTeam}>
-          Mannschaft hinzufügen
-        </DialogTitle>
-        <DialogContent>test</DialogContent>
-      </Dialog>
     </>
   );
 };
