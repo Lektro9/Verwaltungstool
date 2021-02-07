@@ -23,7 +23,6 @@ export const ChoosingTable = (props) => {
     chosenTeams[teamId] = checked;
     setChosenTeams({ ...chosenTeams });
   };
-  console.log(props.turnier);
   return (
     <>
       <DialogTitle id='createTurnier'>{props.title}</DialogTitle>

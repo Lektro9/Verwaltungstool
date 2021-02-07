@@ -22,8 +22,12 @@ export const TurnierVerwaltungsPage = () => {
   const TurniereState = useContext(useTurniere);
   const MannschaftenState = useContext(useMannschaften);
   const [open, setOpen] = useState(false);
-  const [openRemoveTeam, setOpenRemoveTeam] = useState(false);
-  const [turnierModals, setTurnierModals] = useState(
+  const [turnierRemoveMannModals, setTurnierRemoveMannModals] = useState(
+    TurniereState.turniere.reduce((accumulator, currentValue) => {
+      return { ...accumulator, [currentValue.id]: false };
+    }, {})
+  );
+  const [turnierAddMannModals, setTurnierAddMannModals] = useState(
     TurniereState.turniere.reduce((accumulator, currentValue) => {
       return { ...accumulator, [currentValue.id]: false };
     }, {})
@@ -60,10 +64,6 @@ export const TurnierVerwaltungsPage = () => {
     setOpen(false);
   };
 
-  const closeRemoveTeam = () => {
-    setOpenRemoveTeam(false);
-  };
-
   const addGame = (game) => {
     const modifyTourney = TurniereState.turniere.find(
       (turnier) => turnier.id === game.turnierId
@@ -72,8 +72,28 @@ export const TurnierVerwaltungsPage = () => {
     TurniereState.setTurniere([...TurniereState.turniere]);
   };
 
-  const action = (teamIds) => {
-    console.log(teamIds);
+  const removeTeamsFromTurnier = (
+    teamIds,
+    teamsAlreadyInTurnier = [],
+    turnier
+  ) => {
+    teamIds.forEach((teamId) => {
+      const index = turnier.teamIds.indexOf(teamId);
+      if (index > -1) {
+        turnier.teamIds.splice(index, 1);
+      }
+      //remove all games with those teams
+      turnier.games.forEach((game) => {
+        if (game.team1Id === teamId || game.team2Id === teamId) {
+          const indexOfGame = turnier.games.indexOf(game);
+          if (indexOfGame > -1) {
+            turnier.games.splice(indexOfGame, 1);
+          }
+        }
+      });
+    });
+
+    TurniereState.setTurniere([...TurniereState.turniere]);
   };
 
   const addTeamsToTurnier = (
@@ -90,13 +110,29 @@ export const TurnierVerwaltungsPage = () => {
   };
 
   const openAddTeam = (turnierId) => {
-    turnierModals[turnierId] = true;
-    setTurnierModals({ ...turnierModals });
+    turnierAddMannModals[turnierId] = true;
+    setTurnierAddMannModals({ ...turnierAddMannModals });
+  };
+
+  const openRemoveTeam = (turnierId) => {
+    turnierRemoveMannModals[turnierId] = true;
+    setTurnierRemoveMannModals({ ...turnierRemoveMannModals });
   };
 
   const closeAddTeam = (turnierId) => {
-    turnierModals[turnierId] = false;
-    setTurnierModals({ ...turnierModals });
+    turnierAddMannModals[turnierId] = false;
+    setTurnierAddMannModals({ ...turnierAddMannModals });
+  };
+  const closeRemoveTeam = (turnierId) => {
+    turnierRemoveMannModals[turnierId] = false;
+    setTurnierRemoveMannModals({ ...turnierRemoveMannModals });
+  };
+  const deleteGame = (turnier, game) => {
+    const indexOfGame = turnier.games.indexOf(game);
+    if (indexOfGame > -1) {
+      turnier.games.splice(indexOfGame, 1);
+    }
+    TurniereState.setTurniere([...TurniereState.turniere]);
   };
 
   return (
@@ -168,7 +204,7 @@ export const TurnierVerwaltungsPage = () => {
                 size='small'
                 color='secondary'
                 onClick={() => {
-                  openAddTeam(turnier.id);
+                  openRemoveTeam(turnier.id);
                 }}
               >
                 Mannschaften entfernen
@@ -199,6 +235,17 @@ export const TurnierVerwaltungsPage = () => {
                   >
                     {game.team2Points} - {getTeamName(game.team2Id)}
                   </Paper>
+                  <Button
+                    style={{ height: '40%', marginTop: 15 }}
+                    size='small'
+                    variant='contained'
+                    color='secondary'
+                    onClick={() => {
+                      deleteGame(turnier, game);
+                    }}
+                  >
+                    X
+                  </Button>
                 </div>
               ))}
               <Divider style={{ marginTop: 20 }} />
@@ -216,20 +263,21 @@ export const TurnierVerwaltungsPage = () => {
               </Button>
             </CardActions>
             <Dialog
-              open={turnierModals[turnier.id]}
+              open={turnierRemoveMannModals[turnier.id]}
               onClose={() => {
-                closeAddTeam(turnier.id);
+                closeRemoveTeam(turnier.id);
               }}
             >
               <ChoosingTable
                 title={'Mannschaften entfernen'}
                 teams={getTeamsFromIds(turnier.teamIds)}
-                action={action}
+                action={removeTeamsFromTurnier}
+                turnier={turnier}
                 buttonInfo={['secondary', 'entfernen']}
               />
             </Dialog>
             <Dialog
-              open={turnierModals[turnier.id]}
+              open={turnierAddMannModals[turnier.id]}
               onClose={() => {
                 closeAddTeam(turnier.id);
               }}
