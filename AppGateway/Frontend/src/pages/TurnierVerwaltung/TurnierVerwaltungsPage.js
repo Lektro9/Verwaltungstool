@@ -168,7 +168,7 @@ export const TurnierVerwaltungsPage = () => {
                 size='small'
                 color='secondary'
                 onClick={() => {
-                  setOpenRemoveTeam(true);
+                  openAddTeam(turnier.id);
                 }}
               >
                 Mannschaften entfernen
@@ -216,7 +216,7 @@ export const TurnierVerwaltungsPage = () => {
               </Button>
             </CardActions>
             <Dialog
-              open={openRemoveTeam}
+              open={turnierModals[turnier.id]}
               onClose={() => {
                 closeAddTeam(turnier.id);
               }}
