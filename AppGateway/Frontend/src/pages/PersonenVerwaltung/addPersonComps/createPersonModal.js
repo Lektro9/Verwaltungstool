@@ -26,16 +26,27 @@ const getSteps = () => {
   return ["Personendaten", "Typdaten"];
 };
 
+const initPersonObj = {
+  type: "",
+  firstName: "",
+  lastName: "",
+  date: "",
+};
+
+const personObj = {
+  type: "",
+  firstName: "",
+  lastName: "",
+  date: "",
+};
+
 const CreatePersonModal = () => {
   const classes = useStyles();
 
-  const initPersonObj = {
-    type: "",
-    firstName: "",
-    lastName: "",
-    date: "",
-  };
-  const personObj = initPersonObj;
+  
+  console.log("ini", initPersonObj);
+ 
+  console.log("ob", personObj);
   const specificObj = {};
 
   const [personGeneral, setPersonGeneral] = useState(initPersonObj);
@@ -59,8 +70,9 @@ const CreatePersonModal = () => {
   };
 
   const handleNext = () => {
-    // console.log(personGeneral);
+     console.log("g",personGeneral);
     // console.log(personSpecific);
+    console.log(personObj)
     setPersonGeneral(personObj);
     setPersonSpecific(personSpecific)
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
