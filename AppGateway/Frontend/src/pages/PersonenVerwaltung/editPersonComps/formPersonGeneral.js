@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const FormPersonGeneral = ({ onAddPersonData }) => {
+const FormPersonGeneral = ({ onAddPersonData, person }) => {
   const classes = useStyles();
 
   const [menu, setMenu] = useState("");
@@ -38,6 +38,7 @@ const FormPersonGeneral = ({ onAddPersonData }) => {
           label="Vorname"
           name="firstName"
           autoFocus
+          value={person.firstName}
           onInput={onAddPersonData}
         />
       </FormControl>

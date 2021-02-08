@@ -13,8 +13,8 @@ import ErrorIcon from "@material-ui/icons/Error";
 
 /*---Comps---*/
 import FormPersonGeneral from "./formPersonGeneral";
-import FormPersonSpecific from "./formPersonSpecific";
-import OverviewPersonData from "./overviewPersonData";
+import FormPersonSpecific from "../addPersonComps/formPersonSpecific";
+import OverviewPersonData from "../addPersonComps/overviewPersonData";
 
 import { createPerson } from "../../../components/personCrud";
 
@@ -45,15 +45,20 @@ const personObj = {
 const initSpecificObj = {};
 const specificObj = {};
 
-const CreatePersonModal = ({ handleDialogClose }) => {
+const CreatePersonModal = ({handleDialogClose, person}) => {
   const classes = useStyles();
+
+
   const [personGeneral, setPersonGeneral] = useState(initPersonObj);
   const [personSpecific, setPersonSpecific] = useState(initSpecificObj);
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
   const onChangePersonDataGeneral = (e) => {
+    e.preventDefault();
     personObj[e.target.name] = e.target.value;
+    setPersonGeneral(personObj);
+    console.log(personGeneral)
   };
 
   const onChangePersonDataSpecific = (e) => {
@@ -62,7 +67,7 @@ const CreatePersonModal = ({ handleDialogClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let merged = { ...personObj, ...specificObj };
+    let merged = {...personObj, ...specificObj};
     merged.birthday = new Date(merged.birthday).getTime();
     createPerson(merged);
     handleDialogClose();
@@ -85,7 +90,7 @@ const CreatePersonModal = ({ handleDialogClose }) => {
       case 0:
         return (
           <div>
-            <FormPersonGeneral onAddPersonData={onChangePersonDataGeneral} />
+            <FormPersonGeneral onAddPersonData={onChangePersonDataGeneral} person={personGeneral} />
           </div>
         );
       case 1:
@@ -93,6 +98,7 @@ const CreatePersonModal = ({ handleDialogClose }) => {
           <FormPersonSpecific
             personType={personGeneral.type}
             handleSpecificData={onChangePersonDataSpecific}
+            person={person[0]}
           />
         );
       default:

@@ -14,7 +14,7 @@ const AddPerson = ({ onClick, dialogState }) => {
           Person hinzufügen
         </DialogTitle>
         <DialogContent>
-          <CreatePersonModal />
+          <CreatePersonModal handleDialogClose={onClick}/>
         </DialogContent>
       </Dialog>
     </div>

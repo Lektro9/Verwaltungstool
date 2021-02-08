@@ -15,7 +15,6 @@ const useStyles = makeStyles({
 const FormPersonSpecific = ({ handleSpecificData, personType }) => {
   const classes = useStyles();
 
-  console.log(personType);
   const displayInputfield = () => {
     switch (personType) {
       case "fussballspieler":
@@ -66,6 +65,7 @@ const FormPersonSpecific = ({ handleSpecificData, personType }) => {
             <TextField
               variant="outlined"
               required
+              type="number"
               name="experience"
               label="Erfahrung"
               id="experience"

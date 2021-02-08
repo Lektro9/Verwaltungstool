@@ -20,10 +20,6 @@ const useStyles = makeStyles({
 });
 
 export const PersonenVeraltungsPage = () => {
-  //const authState = useContext(useAuth); //maybe later
-  //const URLData = 'http://localhost:3005/getData';
-  //const [myPersons, setMyPersons] = useState(persons);
-
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 

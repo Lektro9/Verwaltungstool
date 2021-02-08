@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 
 /*---Material---*/
 import { Container } from "@material-ui/core";
@@ -9,9 +9,18 @@ import { DataGrid } from "@material-ui/data-grid";
 import { usePersons } from "../../hooks/usePerson";
 
 import { deletePerson } from "../../components/personCrud";
+import EditPerson from "./editPerson";
 
 const DataTablePerson = () => {
   const PersonState = useContext(usePersons);
+
+  const [open, setOpen] = useState(false);
+  const [personId, setPersonId] = useState(0);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -72,9 +81,9 @@ const DataTablePerson = () => {
     deletePerson(id);
   };
 
-  const editPer = () => {
-    //TODO: edit Person here
-    console.log("edit working");
+  const editPer = (id) => {
+    setPersonId(id);
+    setOpen(true);
   };
   return (
     <Container>
@@ -86,6 +95,7 @@ const DataTablePerson = () => {
       >
         <DataGrid rows={PersonState.persons} columns={columns} pageSize={10} />
       </div>
+      <EditPerson onClick={handleClose} dialogState={open} person={PersonState.persons.filter((person) => person.id === personId)} />
     </Container>
   );
 };

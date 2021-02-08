@@ -11,3 +11,14 @@ export const deletePerson = async (personId) => {
 const getPersonById = async (personId) => {
   return await fetch(SERVER_URL + personId);
 };
+
+export const createPerson = async (personData) => {
+  console.log(JSON.stringify(personData));
+  return await fetch(SERVER_URL, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(personData),
+  });
+};
