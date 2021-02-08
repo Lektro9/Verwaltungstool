@@ -39,7 +39,7 @@ content-type: application/json
 
 ### Tennisspieler
 
-POST http://localhost:3004/persons
+POST http://localhost:3004/api/v1/personenverwaltung/persons
 content-type: application/json
 
 {
@@ -90,4 +90,16 @@ DELETE  http://localhost:3004/person/5
 
 ###
 
-PUT  http://localhost:3004/person/5
+PUT  http://localhost:3004/api/v1/personenverwaltung/persons/1
+content-type: application/json
+
+{
+    "type": "fussballspieler",
+    "firstName": "asdasd",
+    "lastName": "fgg",
+    "birthday": 1611586940792,
+    "fussballspieler": {
+      "id": 1,
+      "fieldPosition": "af"
+    }
+  }

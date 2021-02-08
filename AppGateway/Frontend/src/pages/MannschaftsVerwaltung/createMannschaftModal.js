@@ -1,6 +1,10 @@
 import {
   Button,
   Checkbox,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -20,9 +24,13 @@ export const CreateMannschaftModal = (props) => {
     }, {})
   );
   const [teamName, setTeamName] = useState('');
+  const [sportType, setSportType] = useState('');
   const togglePerson = (personId, checked) => {
     chosenOnes[personId] = checked;
     setChosenOnes({ ...chosenOnes });
+  };
+  const handleChange = (event) => {
+    setSportType(event.target.value);
   };
   return (
     <>
@@ -35,6 +43,19 @@ export const CreateMannschaftModal = (props) => {
         autoFocus
         onInput={(e) => setTeamName(e.target.value)}
       />
+      <FormControl style={{ width: '100%' }}>
+        <InputLabel id='sportart'>Sportart</InputLabel>
+        <Select
+          labelId='sportart'
+          id='simple-sportart'
+          value={sportType}
+          onChange={handleChange}
+        >
+          <MenuItem value={'Fussball'}>Fussball</MenuItem>
+          <MenuItem value={'Handball'}>Handball</MenuItem>
+          <MenuItem value={'Tennis'}>Tennis</MenuItem>
+        </Select>
+      </FormControl>
       <TableContainer>
         <Table size='small' aria-label='a dense table'>
           <TableHead>
@@ -81,6 +102,7 @@ export const CreateMannschaftModal = (props) => {
           }
           props.addTeam({
             id: Math.floor(Math.random() * 1000),
+            sportType,
             name: teamName,
             mitglieder: teamIds,
           });

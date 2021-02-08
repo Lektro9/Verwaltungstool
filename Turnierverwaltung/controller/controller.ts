@@ -102,13 +102,12 @@ export class Controller {
         if (req.is("json") && req.body) {
             const { turnierID, teilnehmerIDs } = req.body;
             const turnier = await this.turnierRepository.findOne(turnierID, { relations: ["teilnehmer"] });
-            teilnehmerIDs.forEach(async id => {
+            for (const id of teilnehmerIDs) {
                 const newTeilnehmer = new TurnierTeilnehmer();
                 newTeilnehmer.mannschaftID = id;
                 await this.teilnehmerRepository.save(newTeilnehmer)
                 turnier.teilnehmer.push(newTeilnehmer)
-            });
-
+            }
             await this.turnierRepository.save(turnier);
             res.json(turnier);
         } else {
