@@ -1,50 +1,24 @@
-import React, { useState } from 'react';
-import { usePersons } from '../hooks/usePerson';
+import React, { useState, useEffect } from "react";
+import { usePersons } from "../hooks/usePerson";
+import { getAllPersons } from "./personCrud";
 
 export const PersProvider = (props) => {
   const setPersons = (PersonArr) => {
     setState({ ...state, persons: PersonArr });
   };
 
+  useEffect(async () => {
+    try {
+      let res = await getAllPersons();
+      let data = await res.json();
+      setPersons(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
   const initState = {
-    persons: [
-      {
-        id: 1,
-        firstName: 'testName',
-        lastName: 'testLastname',
-        birthday: 1611586940792,
-      },
-      {
-        id: 2,
-        firstName: 'testName',
-        lastName: 'testLastname',
-        birthday: 1611586940792,
-      },
-      {
-        id: 3,
-        firstName: 'testName',
-        lastName: 'testLastname',
-        birthday: 1611586940792,
-      },
-      {
-        id: 4,
-        firstName: 'testName',
-        lastName: 'testLastname',
-        birthday: 1611586940792,
-      },
-      {
-        id: 5,
-        firstName: 'testName',
-        lastName: 'testLastname',
-        birthday: 1611586940792,
-      },
-      {
-        id: 6,
-        firstName: 'testName',
-        lastName: 'testLastname',
-        birthday: 1611586940792,
-      },
-    ],
+    persons: [],
     setPersons: setPersons,
   };
 
