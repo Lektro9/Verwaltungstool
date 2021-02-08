@@ -131,7 +131,7 @@ export class Controller {
     public async addSpielToTurnier(req: Request, res: Response): Promise<void> {
         if (req.is("json") && req.body) {
             const { turnierID, game } = req.body;
-            const turnier = await this.turnierRepository.findOne(turnierID, { relations: ["games"] });
+            const turnier = await this.turnierRepository.findOne(turnierID, { relations: ["teilnehmer", "games"] });
 
             const newSpiel = new Spiel(game);
             await this.spieleRepository.save(newSpiel)
