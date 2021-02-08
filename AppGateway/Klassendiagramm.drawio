@@ -1,0 +1,106 @@
+<mxfile host="65bd71144e" modified="2021-02-08T09:01:39.507Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.52.1 Chrome/83.0.4103.122 Electron/9.3.5 Safari/537.36" version="13.10.0" etag="iUsRp41_QsFlGtJgeZM0" type="embed">
+    <diagram id="4aTYOzH11wWc6JgkM8FL" name="Page-1">
+        <mxGraphModel dx="820" dy="713" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="9" value="MannschaftsVerwaltungsPage" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="460" y="180" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="PersonenVerwaltungsPage" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="180" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="TurnierVerwaltungsPage" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="670" y="180" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Login" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="180" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="AuthProvider" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="70" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="PersProvider" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="70" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="MannProvider" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="460" y="70" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="TurnierProvider" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="670" y="70" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="createPersonModal" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="280" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="createMannschaftModal" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="460" y="280" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="createTurnierModal" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="670" y="280" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="12" target="13">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="340" y="220" as="sourcePoint"/>
+                        <mxPoint x="500" y="220" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="21" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="10" target="14">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="140" y="190" as="sourcePoint"/>
+                        <mxPoint x="140" y="140" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="22" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="9">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="350" y="190" as="sourcePoint"/>
+                        <mxPoint x="340" y="130" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="23" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="9" target="15">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="350" y="190" as="sourcePoint"/>
+                        <mxPoint x="350" y="140" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="15">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="560" y="190" as="sourcePoint"/>
+                        <mxPoint x="350" y="140" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="16">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="560" y="190" as="sourcePoint"/>
+                        <mxPoint x="560" y="140" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="26" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="10" target="17">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="140" y="190" as="sourcePoint"/>
+                        <mxPoint x="140" y="140" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="27" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="9" target="18">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="350" y="250" as="sourcePoint"/>
+                        <mxPoint x="350" y="290" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="19">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="560" y="250" as="sourcePoint"/>
+                        <mxPoint x="560" y="290" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="selectTeamsAndPoints" style="html=1;" vertex="1" parent="1">
+                    <mxGeometry x="880" y="280" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="29">
+                    <mxGeometry width="160" relative="1" as="geometry">
+                        <mxPoint x="770" y="250" as="sourcePoint"/>
+                        <mxPoint x="770" y="290" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
