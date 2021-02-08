@@ -16,7 +16,7 @@ import {
 import { useContext, useState } from 'react';
 import { usePersons } from '../../hooks/usePerson';
 
-export const CreateMannschaftModal = (props) => {
+export const AddMannschaftModal = (props) => {
   const PersonState = useContext(usePersons);
   const [chosenOnes, setChosenOnes] = useState(
     PersonState.persons.reduce((accumulator, currentValue) => {
@@ -34,7 +34,7 @@ export const CreateMannschaftModal = (props) => {
   };
   return (
     <>
-      <TextField
+      {props.inputFields && <TextField
         variant='outlined'
         required
         id='teamName'
@@ -42,8 +42,8 @@ export const CreateMannschaftModal = (props) => {
         name='teamName'
         autoFocus
         onInput={(e) => setTeamName(e.target.value)}
-      />
-      <FormControl style={{ width: '100%' }}>
+      />}
+      {props.inputFields && <FormControl style={{ width: '100%' }}>
         <InputLabel id='sportart'>Sportart</InputLabel>
         <Select
           labelId='sportart'
@@ -55,7 +55,8 @@ export const CreateMannschaftModal = (props) => {
           <MenuItem value={'Handball'}>Handball</MenuItem>
           <MenuItem value={'Tennis'}>Tennis</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl>}
+
       <TableContainer>
         <Table size='small' aria-label='a dense table'>
           <TableHead>
@@ -94,18 +95,23 @@ export const CreateMannschaftModal = (props) => {
         variant='contained'
         color='primary'
         onClick={() => {
-          let teamIds = [];
+          let personIds = [];
           for (const property in chosenOnes) {
             if (chosenOnes[property]) {
-              teamIds.push(+property);
+              personIds.push(+property);
             }
           }
-          props.addTeam({
-            id: Math.floor(Math.random() * 1000),
-            sportType,
-            name: teamName,
-            mitglieder: teamIds,
-          });
+          if (props.inputFields) {
+            props.addTeam({
+              id: Math.floor(Math.random() * 1000),
+              sportType,
+              name: teamName,
+              mitglieder: personIds,
+            });
+          } else {
+            props.addTeam(personIds)
+          }
+
         }}
       >
         neue Mannschaft erstellen
