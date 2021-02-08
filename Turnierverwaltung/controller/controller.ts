@@ -6,6 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { Turnier } from '../model/turnier';
 import { TurnierTeilnehmer } from '../model/turnierTeilnehmer';
+import { Spiel } from '../model/spiel';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ export class Controller {
     app: Application
     turnierRepository: Repository<Turnier>
     teilnehmerRepository: Repository<TurnierTeilnehmer>
+    spieleRepository: Repository<Spiel>
     connection: Connection
     port: number
 
@@ -21,6 +23,7 @@ export class Controller {
             this.connection = connection;
             this.turnierRepository = this.connection.getRepository(Turnier);
             this.teilnehmerRepository = this.connection.getRepository(TurnierTeilnehmer);
+            this.spieleRepository = this.connection.getRepository(Spiel);
         });
         this.app = express();
         this.port = 3007;
@@ -64,6 +67,9 @@ export class Controller {
         this.app.get('/getTurniere', this.getTurniere.bind(this));
         this.app.delete('/deleteTurnier/:turnierID', this.deleteTurnier.bind(this));
         this.app.post('/addTeilnehmerToTurnier', this.addTeilnehmerToTurnier.bind(this));
+        this.app.delete('/removeTeilnehmerFromTurnier/:turnierID/:teilnehmerID', this.removeTeilnehmerFromTurnier.bind(this));
+        this.app.post('/addSpielToTurnier', this.addSpielToTurnier.bind(this));
+        this.app.delete('/removeSpielFromTurnier/:gameID', this.removeSpielFromTurnier.bind(this));
     }
 
     /**
@@ -71,7 +77,7 @@ export class Controller {
      * zeige alle Mannschaften aus der Datenbank an
      */
     public async getTurniere(req: Request, res: Response): Promise<void> {
-        const persons = await this.turnierRepository.find({ relations: ["teilnehmer"] });
+        const persons = await this.turnierRepository.find({ relations: ["teilnehmer", "games"] });
         res.json(persons);
     }
 
@@ -116,6 +122,84 @@ export class Controller {
                 "wrong format, only json allowed: {'turnierID': 2, 'teilnehmerIDs': [1,2,3]}"
             );
         }
+    }
+
+    /**
+    * addSpielToTurnier
+    * ein Spiel einem Turnier zuteilen
+    */
+    public async addSpielToTurnier(req: Request, res: Response): Promise<void> {
+        if (req.is("json") && req.body) {
+            const { turnierID, game } = req.body;
+            const turnier = await this.turnierRepository.findOne(turnierID, { relations: ["games"] });
+
+            const newSpiel = new Spiel(game);
+            await this.spieleRepository.save(newSpiel)
+            turnier.games.push(newSpiel)
+
+            await this.turnierRepository.save(turnier);
+            res.json(turnier);
+        } else {
+            res.status(400);
+            res.send(
+                "wrong format, only json allowed: {'turnierID': 2, 'teilnehmerIDs': [1,2,3]}"
+            );
+        }
+    }
+
+    /**
+    * removeSpielFromTurnier
+    * ein Spiel einem Turnier entfernen
+    */
+    public async removeSpielFromTurnier(req: Request, res: Response): Promise<void> {
+        const { gameID } = req.params;
+        const spiel = await this.spieleRepository.findOne(gameID);
+        if (spiel) {
+            // sqlite treiber gibt leider keine antwort zurück ...
+            await this.spieleRepository.delete(gameID);
+            res.send(`Spiel mit ID "${gameID}" gelöscht`);
+        } else {
+            res.status(400)
+            res.send("Spiel nicht gefunden")
+        }
+    }
+
+    /**
+    * removeTeilnehmerFromTurnier
+    * ein Teilnehmer mit den verbundenen Spielen aus dem Turnier entfernen
+    */
+    public async removeTeilnehmerFromTurnier(req: Request, res: Response): Promise<void> {
+        const { turnierID, teilnehmerID } = req.params;
+        const teilnehmerIDNumber = +teilnehmerID
+        const turnier = await this.turnierRepository.findOne(turnierID, { relations: ['teilnehmer', 'games'] });
+
+        const teilnehmerToBeDeleted = [];
+        turnier.teilnehmer = turnier.teilnehmer.filter((mannschaft) => {
+            if (mannschaft.mannschaftID !== teilnehmerIDNumber) {
+                return mannschaft;
+            } else {
+                teilnehmerToBeDeleted.push(mannschaft);
+            }
+        })
+        // aufräumen in der Teilnehmertabelle
+        if (teilnehmerToBeDeleted.length > 0)
+            await this.teilnehmerRepository.delete(teilnehmerToBeDeleted);
+
+        const gamesToBeDeleted = [];
+        turnier.games = turnier.games.filter((spiel) => {
+            if (spiel.team1Id !== teilnehmerIDNumber && spiel.team2Id !== teilnehmerIDNumber) {
+                return spiel;
+            } else {
+                gamesToBeDeleted.push(spiel);
+            }
+        })
+        // aufräumen in der SpieleTabelle
+        if (gamesToBeDeleted.length > 0)
+            await this.spieleRepository.delete(gamesToBeDeleted);
+
+        // neues Turnierobjekt abspeichern
+        const newTurnier = await this.turnierRepository.save(turnier);
+        res.send(newTurnier)
     }
 
     /**

@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Spiel } from "./spiel";
 import { TurnierTeilnehmer } from "./turnierTeilnehmer";
 
 @Entity()
@@ -19,5 +20,7 @@ export class Turnier {
     @OneToMany(() => TurnierTeilnehmer, turnierTeilnehmer => turnierTeilnehmer.turnier)
     teilnehmer: TurnierTeilnehmer[];
 
-    //TODO: vielleicht noch turnierstatus und die sportArt?
+    @OneToMany(() => Spiel, spiel => spiel.turnier)
+    games: Spiel[];
+
 }
