@@ -20,12 +20,22 @@ GET http://localhost:3006/getMannschaft/1
 DELETE http://localhost:3006/deleteMannschaft/1
 
 ###
-POST http://localhost:3006/addToMannschaft
+PUT http://localhost:3006/addToMannschaft
 content-type: application/json
 
 {
     "personenIDs": [6, 7, 8],
-    "mannschaftID": 3
+    "mannschaftID": 16
+}
+
+###
+
+PUT http://localhost:3006/removeFromMannschaft
+content-type: application/json
+
+{
+    "personenID": 7,
+    "mannschaftID": 16
 }
 
 ###

@@ -65,7 +65,8 @@ export class Controller {
       }
     );
     this.app.post('/createMannschaft', this.createMannschaft.bind(this));
-    this.app.post('/addToMannschaft', this.addToMannschaft.bind(this));
+    this.app.put('/addToMannschaft', this.addToMannschaft.bind(this));
+    this.app.put('/removeFromMannschaft', this.removeFromMannschaft.bind(this));
     this.app.get('/getMannschaften', this.getMannschaften.bind(this));
     this.app.get(
       '/getMannschaftsMitglieder',
@@ -119,6 +120,29 @@ export class Controller {
       res.status(400);
       res.send(
         "wrong format, only json allowed: {'mannschaftID': 2, 'teilnehmerIDs': [1,2,3]}"
+      );
+    }
+  }
+
+  /**
+   * removeFromMannschaft
+   * entferne Person aus Mannschaft
+   */
+  public async removeFromMannschaft(req: Request, res: Response): Promise<void> {
+    if (req.is('json') && req.body) {
+      const { mannschaftID, personenID } = req.body;
+      const mannschaft = await this.mannschaftRepository.findOne(mannschaftID, {
+        relations: ['mitglieder'],
+      });
+      mannschaft.mitglieder = mannschaft.mitglieder.filter((person) => person.personenId !== personenID);
+      // in MitgliederTabelle aufräumen ...
+      await this.mitgliederRepository.delete(personenID);
+      await this.mannschaftRepository.save(mannschaft);
+      res.json(mannschaft);
+    } else {
+      res.status(400);
+      res.send(
+        "wrong format, only json allowed"
       );
     }
   }
