@@ -64,17 +64,17 @@ export class Controller {
         res.send(req.user);
       }
     );
-    this.app.post('/createMannschaft', this.createMannschaft.bind(this));
-    this.app.put('/addToMannschaft', this.addToMannschaft.bind(this));
-    this.app.put('/removeFromMannschaft', this.removeFromMannschaft.bind(this));
-    this.app.get('/getMannschaften', this.getMannschaften.bind(this));
+    this.app.post('/createMannschaft', this.authenticateJWT, this.createMannschaft.bind(this));
+    this.app.put('/addToMannschaft', this.authenticateJWT, this.addToMannschaft.bind(this));
+    this.app.put('/removeFromMannschaft', this.authenticateJWT, this.removeFromMannschaft.bind(this));
+    this.app.get('/getMannschaften', this.authenticateJWT, this.getMannschaften.bind(this));
     this.app.get(
-      '/getMannschaftsMitglieder',
+      '/getMannschaftsMitglieder', this.authenticateJWT,
       this.getMannschaftsMitglieder.bind(this)
     );
-    this.app.get('/getMannschaft/:mannID', this.getMannschaft.bind(this));
+    this.app.get('/getMannschaft/:mannID', this.authenticateJWT, this.getMannschaft.bind(this));
     this.app.delete(
-      '/deleteMannschaft/:mannID',
+      '/deleteMannschaft/:mannID', this.authenticateJWT,
       this.deleteMannschaft.bind(this)
     );
   }

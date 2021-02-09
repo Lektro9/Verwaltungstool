@@ -63,13 +63,13 @@ export class Controller {
                 res.send(req.user);
             },
         );
-        this.app.post('/createTurnier', this.createTurnier.bind(this));
-        this.app.get('/getTurniere', this.getTurniere.bind(this));
-        this.app.delete('/deleteTurnier/:turnierID', this.deleteTurnier.bind(this));
-        this.app.post('/addTeilnehmerToTurnier', this.addTeilnehmerToTurnier.bind(this));
-        this.app.delete('/removeTeilnehmerFromTurnier', this.removeTeilnehmerFromTurnier.bind(this));
-        this.app.post('/addSpielToTurnier', this.addSpielToTurnier.bind(this));
-        this.app.delete('/removeSpielFromTurnier/:gameID', this.removeSpielFromTurnier.bind(this));
+        this.app.post('/createTurnier', this.authenticateJWT, this.createTurnier.bind(this));
+        this.app.get('/getTurniere', this.authenticateJWT, this.getTurniere.bind(this));
+        this.app.delete('/deleteTurnier/:turnierID', this.authenticateJWT, this.deleteTurnier.bind(this));
+        this.app.post('/addTeilnehmerToTurnier', this.authenticateJWT, this.addTeilnehmerToTurnier.bind(this));
+        this.app.delete('/removeTeilnehmerFromTurnier', this.authenticateJWT, this.removeTeilnehmerFromTurnier.bind(this));
+        this.app.post('/addSpielToTurnier', this.authenticateJWT, this.addSpielToTurnier.bind(this));
+        this.app.delete('/removeSpielFromTurnier/:gameID', this.authenticateJWT, this.removeSpielFromTurnier.bind(this));
     }
 
     /**
