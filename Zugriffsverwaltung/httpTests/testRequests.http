@@ -21,7 +21,7 @@ POST http://localhost:3005/user
 content-type: application/json
 
 {
-    "login": "user4", 
+    "login": "user7", 
     "password": "user", 
     "role": 0
 }

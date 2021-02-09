@@ -12,6 +12,7 @@ import { TurnierVerwaltungsPage } from './pages/TurnierVerwaltung/TurnierVerwalt
 import { PersProvider } from './components/PersProvider';
 import { MannProvider } from './components/MannProvider';
 import { TurnierProvider } from './components/TurnierProvider';
+import { UserCreationPage } from './pages/UserCreationPage';
 
 function RouteDefs() {
   return (
@@ -33,12 +34,6 @@ function RouteDefs() {
                           to={'/'}
                         />
                         <Tab
-                          value={'/login'}
-                          label='Login'
-                          component={Link}
-                          to={'/login'}
-                        />
-                        <Tab
                           value={'/perVerw'}
                           label='Personenverwaltung'
                           component={Link}
@@ -55,6 +50,18 @@ function RouteDefs() {
                           label='Turnierverwaltung'
                           component={Link}
                           to={'/turnierVerw'}
+                        />
+                        <Tab
+                          value={'/createUser'}
+                          label='Nutzer erstellen'
+                          component={Link}
+                          to={'/createUser'}
+                        />
+                        <Tab
+                          value={'/login'}
+                          label='Login'
+                          component={Link}
+                          to={'/login'}
                         />
                       </Tabs>
                     </AppBar>
@@ -77,6 +84,10 @@ function RouteDefs() {
 
                   <PrivateRoute path='/turnierVerw'>
                     <TurnierVerwaltungsPage />
+                  </PrivateRoute>
+
+                  <PrivateRoute path='/createUser'>
+                    <UserCreationPage />
                   </PrivateRoute>
 
                   <Route path='/'>

@@ -185,10 +185,12 @@ export class Controller {
                 ]
             });
             if (IsUserAlreadyExisting.length > 0) {
+                res.status(403);
                 res.send(`User with the login '${newUser.login}' already in use.`)
             } else {
-                const createNewUser = await this.userRepository.create(newUser);
+                let createNewUser = await this.userRepository.create(newUser);
                 await this.userRepository.save(createNewUser);
+                delete createNewUser.password;
                 res.json(createNewUser);
             }
         } else {
