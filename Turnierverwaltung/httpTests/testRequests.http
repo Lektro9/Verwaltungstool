@@ -28,7 +28,7 @@ content-type: application/json
     "game": {
         "team1Id": 16,
         "team2Id": 17,
-        "team1Punkte": 0,
+        "team1Punkte": 1,
         "team2Punkte": 2
     }
 }
