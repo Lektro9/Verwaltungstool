@@ -21,3 +21,14 @@ export const createPerson = async (personData) => {
     body: JSON.stringify(personData),
   });
 };
+
+
+export const updatePerson = async (personId, personData) => {
+  return await fetch(SERVER_URL + personId, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(personData),
+  });
+};

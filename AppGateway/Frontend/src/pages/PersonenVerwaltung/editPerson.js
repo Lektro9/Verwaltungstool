@@ -7,7 +7,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 
 const EditPerson = ({ onClick, dialogState, person }) => {
-    console.log("s,", person)
   return (
     <div>
       <Dialog open={dialogState} onClose={onClick}>
@@ -15,7 +14,7 @@ const EditPerson = ({ onClick, dialogState, person }) => {
           Person hinzufügen
         </DialogTitle>
         <DialogContent>
-          <CreatePersonModal handleDialogClose={onClick} person={person}/>
+          <CreatePersonModal handleDialogClose={onClick} person={person} />
         </DialogContent>
       </Dialog>
     </div>

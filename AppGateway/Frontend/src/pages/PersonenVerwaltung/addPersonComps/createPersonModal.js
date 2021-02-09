@@ -48,7 +48,7 @@ const specificObj = {};
 
 const CreatePersonModal = ({ handleDialogClose }) => {
   const personState = useContext(usePersons);
-  console.log(personState);
+
   const classes = useStyles();
   const [personGeneral, setPersonGeneral] = useState(initPersonObj);
   const [personSpecific, setPersonSpecific] = useState(initSpecificObj);

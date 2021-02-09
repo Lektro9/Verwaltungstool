@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 /*---Material---*/
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,19 +8,26 @@ import {
   Typography,
   Step,
   StepLabel,
+  TextField,
+  FormControl,
 } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
 
 /*---Comps---*/
-import FormPersonGeneral from "./formPersonGeneral";
-import FormPersonSpecific from "../addPersonComps/formPersonSpecific";
-import OverviewPersonData from "../addPersonComps/overviewPersonData";
-
-import { createPerson } from "../../../components/personCrud";
+import { updatePerson } from "../../../components/personCrud";
+import { usePersons } from "../../../hooks/usePerson";
 
 const useStyles = makeStyles({
-  root: {
+  main: {
     width: "100%",
+  },
+  root: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  formControl: {
+    margin: "5px 10px",
+    width: "60ch",
   },
 });
 
@@ -28,60 +35,74 @@ const getSteps = () => {
   return ["Personendaten", "Typdaten"];
 };
 
-const initPersonObj = {
-  type: "",
-  firstName: "",
-  lastName: "",
-  birthday: "",
-};
-
-const personObj = {
-  type: "",
-  firstName: "",
-  lastName: "",
-  birthday: "",
-};
-
-const initSpecificObj = {};
-const specificObj = {};
-
-const CreatePersonModal = ({handleDialogClose, person}) => {
+const CreatePersonModal = ({ handleDialogClose, person }) => {
   const classes = useStyles();
+  const personState = useContext(usePersons);
+console.log(person[0])
+  const personSpecificKeys = {
+    fussballspieler: "fieldPosition",
+    handballspieler: "fieldPosition",
+    tennisspieler: "handedness",
+    trainer: "experience",
+    physiotherapeut: "treatmentType",
+  };
 
+  const translation = {
+    fieldPosition: "Position",
+    handedness: "Handigkeit",
+    experience: "Erfahrung",
+    treatmentType: "Therapiemethode",
+  };
 
-  const [personGeneral, setPersonGeneral] = useState(initPersonObj);
-  const [personSpecific, setPersonSpecific] = useState(initSpecificObj);
+  const [firstName, setFirstName] = useState(person[0].firstName);
+  const [lastName, setLastName] = useState(person[0].lastName);
+  const [birthday, setBirthday] = useState(
+    new Date(person[0].birthday).toISOString().split("T")[0]
+  );
+  const [specific, setSpecific] = useState(
+    person[0][person[0].type][personSpecificKeys[person[0].type]]
+  );
+
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
-  const onChangePersonDataGeneral = (e) => {
-    e.preventDefault();
-    personObj[e.target.name] = e.target.value;
-    setPersonGeneral(personObj);
-    console.log(personGeneral)
-  };
-
-  const onChangePersonDataSpecific = (e) => {
-    specificObj[e.target.name] = e.target.value;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    let merged = {...personObj, ...specificObj};
-    merged.birthday = new Date(merged.birthday).getTime();
-    createPerson(merged);
+    let updated = {
+      type: person[0].type,
+      firstName: firstName,
+      lastName: lastName,
+      birthday: new Date(birthday).getTime(),
+    };
+    updated[personSpecificKeys[person[0].type]] = specific;
+
+    let result = updatePerson(person[0].id, updated);
+    result.then((response) => {
+      if (response.status === 200) {
+        personState.persons.forEach((p) => {
+          if (p.id === person[0].id) {
+            p.firstName = firstName;
+            p.lastName = lastName;
+            p.birthday = birthday;
+            p[personSpecificKeys[person[0].type]] = specific;
+            personState.setPersons([...personState.persons]);
+          }
+        });
+      }
+    });
+
     handleDialogClose();
   };
 
   const handleNext = () => {
-    setPersonGeneral(personObj);
-    setPersonSpecific(specificObj);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleReset = () => {
-    setPersonGeneral(initPersonObj);
-    setPersonSpecific(initSpecificObj);
+    setFirstName(person[0].firstName);
+    setLastName(person[0].lastName);
+    setBirthday(new Date(person[0].birthday).toISOString().split("T")[0]);
+    setSpecific(person[0][person[0].type][personSpecificKeys[person[0].type]]);
     setActiveStep(0);
   };
 
@@ -89,18 +110,140 @@ const CreatePersonModal = ({handleDialogClose, person}) => {
     switch (step) {
       case 0:
         return (
-          <div>
-            <FormPersonGeneral onAddPersonData={onChangePersonDataGeneral} person={personGeneral} />
+          <div className={classes.root}>
+            <FormControl className={classes.formControl}>
+              <TextField
+                variant="outlined"
+                required
+                id="firstName"
+                label="Vorname"
+                name="firstName"
+                autoFocus
+                value={firstName}
+                onInput={(e) => {
+                  setFirstName(e.target.value);
+                }}
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <TextField
+                variant="outlined"
+                required
+                name="lastName"
+                label="Nachname"
+                id="lastName"
+                value={lastName}
+                onInput={(e) => {
+                  setLastName(e.target.value);
+                }}
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <TextField
+                variant="outlined"
+                required
+                name="birthday"
+                id="birthday"
+                fullWidth
+                type="date"
+                value={birthday}
+                onInput={(e) => {
+                  setBirthday(e.target.value);
+                }}
+              />
+            </FormControl>
           </div>
         );
       case 1:
-        return (
-          <FormPersonSpecific
-            personType={personGeneral.type}
-            handleSpecificData={onChangePersonDataSpecific}
-            person={person[0]}
-          />
-        );
+        switch (person[0].type) {
+          case "fussballspieler":
+            return (
+              <FormControl className={classes.formControl}>
+                <TextField
+                  variant="outlined"
+                  required
+                  name="fieldPosition"
+                  label="Spielposition"
+                  id="fussballfieldPosition"
+                  value={specific}
+                  onInput={(e) => {
+                    setSpecific(e.target.value);
+                  }}
+                />
+              </FormControl>
+            );
+
+          case "handballspieler":
+            return (
+              <FormControl className={classes.formControl}>
+                <TextField
+                  variant="outlined"
+                  required
+                  name="fieldPosition"
+                  label="Spielposition"
+                  id="handballfieldPosition"
+                  value={specific}
+                  onInput={(e) => {
+                    setSpecific(e.target.value);
+                  }}
+                />
+              </FormControl>
+            );
+
+          case "tennisspieler":
+            return (
+              <FormControl className={classes.formControl}>
+                <TextField
+                  variant="outlined"
+                  required
+                  name="handedness"
+                  label="Händigkeit"
+                  id="handedness"
+                  value={specific}
+                  onInput={(e) => {
+                    setSpecific(e.target.value);
+                  }}
+                />
+              </FormControl>
+            );
+
+          case "trainer":
+            return (
+              <FormControl className={classes.formControl}>
+                <TextField
+                  variant="outlined"
+                  required
+                  type="number"
+                  name="experience"
+                  label="Erfahrung"
+                  id="experience"
+                  value={specific}
+                  onInput={(e) => {
+                    setSpecific(e.target.value);
+                  }}
+                />
+              </FormControl>
+            );
+
+          case "physiotherapeut":
+            return (
+              <FormControl className={classes.formControl}>
+                <TextField
+                  variant="outlined"
+                  required
+                  name="treatmentType"
+                  label="Behandlungsmethode"
+                  id="treatmentType"
+                  value={specific}
+                  onInput={(e) => {
+                    setSpecific(e.target.value);
+                  }}
+                />
+              </FormControl>
+            );
+          default:
+            return <div>Wrong Persontype</div>;
+        }
       default:
         return (
           <div>
@@ -112,7 +255,7 @@ const CreatePersonModal = ({handleDialogClose, person}) => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.main}>
       <Stepper activeStep={activeStep}>
         {steps.map((label) => {
           const stepProps = {};
@@ -129,10 +272,13 @@ const CreatePersonModal = ({handleDialogClose, person}) => {
         {activeStep === steps.length ? (
           <div>
             <Typography className={classes.instructions}>
-              <OverviewPersonData
-                general={personGeneral}
-                specific={personSpecific}
-              />
+              <div>
+                Type: {person[0].type} <br />
+                Vorname: {firstName} <br />
+                Nachname: {lastName} <br />
+                Geburtstag: {birthday} <br />
+                {translation[personSpecificKeys[person[0].type]]}: {specific}
+              </div>
             </Typography>
             <Button onClick={handleReset} className={classes.button}>
               Reset

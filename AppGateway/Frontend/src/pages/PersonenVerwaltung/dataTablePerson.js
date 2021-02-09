@@ -21,7 +21,6 @@ const DataTablePerson = () => {
     setOpen(false);
   };
 
-
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "type", headerName: "Type", width: 130 },
@@ -78,7 +77,10 @@ const DataTablePerson = () => {
   ];
 
   const deletePer = (id) => {
-    deletePerson(id);
+     deletePerson(id);
+
+     let arrPerson = PersonState.persons.filter(person => person.id !== id);
+     PersonState.setPersons(arrPerson);
   };
 
   const editPer = (id) => {
@@ -95,7 +97,11 @@ const DataTablePerson = () => {
       >
         <DataGrid rows={PersonState.persons} columns={columns} pageSize={10} />
       </div>
-      <EditPerson onClick={handleClose} dialogState={open} person={PersonState.persons.filter((person) => person.id === personId)} />
+      <EditPerson
+        onClick={handleClose}
+        dialogState={open}
+        person={PersonState.persons.filter((person) => person.id === personId)}
+      />
     </Container>
   );
 };
