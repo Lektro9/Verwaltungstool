@@ -18,11 +18,13 @@ import { useTurniere } from '../../hooks/useTurnier';
 import { CreateTurnierModal } from './createTurnierModal';
 import { SelectTeamsAndPoints } from './selectTeamsAndPoints';
 import axios from 'axios';
+import { useAuth } from '../../hooks/useAuth';
 
 const BASE_URL_TURNIER = "http://localhost:3007";
 const BASE_URL_MANNSCHAFTEN = "http://localhost:3006";
 
 export const TurnierVerwaltungsPage = () => {
+  const authState = useContext(useAuth);
   const TurniereState = useContext(useTurniere);
   const MannschaftenState = useContext(useMannschaften);
   const [open, setOpen] = useState(false);
@@ -43,7 +45,6 @@ export const TurnierVerwaltungsPage = () => {
       .get(BASE_URL_MANNSCHAFTEN + '/getMannschaften')
       .then(function (response) {
         MannschaftenState.setMannschaften(response.data);
-        console.log(response.data)
       })
       .catch(function (error) {
         console.log(error);
@@ -51,8 +52,7 @@ export const TurnierVerwaltungsPage = () => {
     axios
       .get(BASE_URL_TURNIER + '/getTurniere')
       .then(function (response) {
-        TurniereState.setTurniere(response.data);
-        console.log(response.data)
+        TurniereState.setTurniere([...response.data]);
       })
       .catch(function (error) {
         console.log(error);
@@ -68,7 +68,6 @@ export const TurnierVerwaltungsPage = () => {
     setTurnierAddMannModals(TurniereState.turniere.reduce((accumulator, currentValue) => {
       return { ...accumulator, [currentValue.id]: false };
     }, {}))
-    console.log("useEffect BooleanModals: " + JSON.stringify(turnierRemoveMannModals))
   }, [TurniereState.turniere])
 
   const getTeamName = (teamId) => {
@@ -84,17 +83,14 @@ export const TurnierVerwaltungsPage = () => {
         MannschaftenState.mannschaften.forEach((mannschaft) => {
 
           if (mannschaft.id === team.mannschaftID) {
-            console.log(mannschaft.id, team.mannschaftID)
             teamsInTourney.push(mannschaft);
           }
         });
       });
     }
-    console.log("teamsInTourney: " + JSON.stringify(teamsInTourney))
     return teamsInTourney;
   };
   const addTurnier = (newTurnier) => {
-    console.log(newTurnier)
     axios
       .post(BASE_URL_TURNIER + '/createTurnier', newTurnier)
       .then(function (response) {
@@ -108,11 +104,19 @@ export const TurnierVerwaltungsPage = () => {
       });
     TurniereState.setTurniere([newTurnier, ...TurniereState.turniere]);
   };
-  const deleteTurnier = (turnierId) => {
-    const newArr = TurniereState.turniere.filter(
-      (turnier) => turnier.id !== turnierId
-    );
-    TurniereState.setTurniere(newArr);
+  const deleteTurnier = (turnier) => {
+    axios
+      .delete(BASE_URL_TURNIER + '/deleteTurnier/' + turnier.id)
+      .then(function (response) {
+        const indexOfGame = TurniereState.turniere.indexOf(turnier);
+        if (indexOfGame > -1) {
+          TurniereState.turniere.splice(indexOfGame, 1);
+        }
+        TurniereState.setTurniere([...TurniereState.turniere]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleClose = () => {
@@ -120,11 +124,19 @@ export const TurnierVerwaltungsPage = () => {
   };
 
   const addGame = (game) => {
-    const modifyTourney = TurniereState.turniere.find(
-      (turnier) => turnier.id === game.turnierId
-    );
-    modifyTourney.games.push(game);
-    TurniereState.setTurniere([...TurniereState.turniere]);
+    axios
+      .post(BASE_URL_TURNIER + '/addSpielToTurnier', { turnierID: game.turnierId, game: game })
+      .then(function (response) {
+        const turnier = TurniereState.turniere.find(
+          (turnier) => turnier.id === response.data.id
+        );
+        turnier.games = response.data.games;
+
+        TurniereState.setTurniere([...TurniereState.turniere]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const removeTeamsFromTurnier = (
@@ -201,16 +213,23 @@ export const TurnierVerwaltungsPage = () => {
     setTurnierRemoveMannModals({ ...turnierRemoveMannModals });
   };
   const deleteGame = (turnier, game) => {
-    const indexOfGame = turnier.games.indexOf(game);
-    if (indexOfGame > -1) {
-      turnier.games.splice(indexOfGame, 1);
-    }
-    TurniereState.setTurniere([...TurniereState.turniere]);
+    axios
+      .delete(BASE_URL_TURNIER + '/removeSpielFromTurnier/' + game.id)
+      .then(function (response) {
+        const indexOfGame = turnier.games.indexOf(game);
+        if (indexOfGame > -1) {
+          turnier.games.splice(indexOfGame, 1);
+        }
+        TurniereState.setTurniere([...TurniereState.turniere]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
     <>
-      <Button
+      {authState.user.role ? <Button
         variant='outlined'
         color='primary'
         onClick={() => {
@@ -218,7 +237,7 @@ export const TurnierVerwaltungsPage = () => {
         }}
       >
         Turnier hinzufügen
-      </Button>
+      </Button> : ''}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle id='createTurnier' onClose={handleClose}>
           Turnier hinzufügen
@@ -234,24 +253,27 @@ export const TurnierVerwaltungsPage = () => {
               <Typography gutterBottom variant='h5' component='h2'>
                 {turnier.name}
               </Typography>
-              <Button
-                size='small'
-                color='primary'
-                onClick={() => {
-                  openAddTeam(turnier.id);
-                }}
-              >
-                Mannschaften hinzufügen
+              {authState.user.role ? <>
+                <Button
+                  size='small'
+                  color='primary'
+                  onClick={() => {
+                    openAddTeam(turnier.id);
+                  }}
+                >
+                  Mannschaften hinzufügen
+                </Button>
+                <Button
+                  size='small'
+                  color='secondary'
+                  onClick={() => {
+                    openRemoveTeam(turnier.id);
+                  }}
+                >
+
+                  Mannschaften entfernen
               </Button>
-              <Button
-                size='small'
-                color='secondary'
-                onClick={() => {
-                  openRemoveTeam(turnier.id);
-                }}
-              >
-                Mannschaften entfernen
-              </Button>
+              </> : ''}
               {turnier.games.map((game) => (
                 <div style={{ display: 'flex' }} key={game.id}>
                   <Paper
@@ -264,7 +286,7 @@ export const TurnierVerwaltungsPage = () => {
                       textAlign: 'center',
                     }}
                   >
-                    {getTeamName(game.team1Id)} - {game.team1Points}
+                    {getTeamName(game.team1Id)} - {game.team1Punkte}
                   </Paper>
                   <Paper
                     elevation={1}
@@ -276,9 +298,9 @@ export const TurnierVerwaltungsPage = () => {
                       textAlign: 'center',
                     }}
                   >
-                    {game.team2Points} - {getTeamName(game.team2Id)}
+                    {game.team2Punkte} - {getTeamName(game.team2Id)}
                   </Paper>
-                  <Button
+                  {authState.user.role ? <Button
                     style={{ height: '40%', marginTop: 15 }}
                     size='small'
                     variant='contained'
@@ -288,23 +310,23 @@ export const TurnierVerwaltungsPage = () => {
                     }}
                   >
                     X
-                  </Button>
+                  </Button> : ''}
                 </div>
               ))}
               <Divider style={{ marginTop: 20 }} />
-              <SelectTeamsAndPoints turnier={turnier} addGame={addGame} />
+              {authState.user.role ? <SelectTeamsAndPoints turnier={turnier} addGame={addGame} /> : ''}
             </CardContent>
-            <CardActions>
+            {authState.user.role ? <CardActions>
               <Button
                 size='small'
                 color='secondary'
                 onClick={() => {
-                  deleteTurnier(turnier.id);
+                  deleteTurnier(turnier);
                 }}
               >
                 Turnier Löschen
               </Button>
-            </CardActions>
+            </CardActions> : ''}
             <Dialog
               open={turnierRemoveMannModals[turnier.id]}
               onClose={() => {

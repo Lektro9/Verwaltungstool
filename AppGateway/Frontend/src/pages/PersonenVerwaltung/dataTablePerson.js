@@ -10,8 +10,10 @@ import { usePersons } from "../../hooks/usePerson";
 
 import { deletePerson } from "../../components/personCrud";
 import EditPerson from "./editPerson";
+import { useAuth } from "../../hooks/useAuth";
 
 const DataTablePerson = () => {
+  const authState = useContext(useAuth);
   const PersonState = useContext(usePersons);
 
   const [open, setOpen] = useState(false);
@@ -40,39 +42,48 @@ const DataTablePerson = () => {
       sortable: false,
       width: 180,
       valueGetter: (params) =>
-        `${params.getValue("firstName") || ""} ${
-          params.getValue("lastName") || ""
+        `${params.getValue("firstName") || ""} ${params.getValue("lastName") || ""
         }`,
     },
     {
       field: "delete",
       headerName: "Löschen",
 
-      renderCell: (params) => (
-        <IconButton
-          aria-label="delete"
-          onClick={() => {
-            deletePer(params.getValue("id"));
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
-      ),
+      renderCell: (params) => {
+        if (authState.user.role) {
+          return (
+            <IconButton
+              aria-label="delete"
+              onClick={() => {
+                deletePer(params.getValue("id"));
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )
+        }
+      }
+
+      ,
     },
     {
       field: "edit",
       headerName: "Editieren",
 
-      renderCell: (params) => (
-        <IconButton
-          aria-label="edit"
-          onClick={() => {
-            editPer(params.getValue("id"));
-          }}
-        >
-          <EditIcon />
-        </IconButton>
-      ),
+      renderCell: (params) => {
+        if (authState.user.role) {
+          return (
+            <IconButton
+              aria-label="edit"
+              onClick={() => {
+                editPer(params.getValue("id"));
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          )
+        }
+      },
     },
   ];
 

@@ -13,9 +13,11 @@ export const AuthButton = () => {
             console.log(error);
         })
     }
+    console.log(authState.user);
     return authState.accessToken
         ?
         <p>
+            eingeloggt als {authState.user.username}
             <button onClick={() => {
                 authState.setAccessToken("");
                 history.push('/');

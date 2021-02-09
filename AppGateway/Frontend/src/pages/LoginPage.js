@@ -19,7 +19,7 @@ const LoginPage = () => {
             if (response.data.accessToken) {
                 setMessage();
                 authState.setAccessToken(response.data.accessToken);
-
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken; // for all requests
             } else {
                 setMessage(response);
             }

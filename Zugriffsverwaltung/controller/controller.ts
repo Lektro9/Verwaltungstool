@@ -89,9 +89,9 @@ export class Controller {
 
         this.app.post('/login', this.login.bind(this));
         this.app.get('/logout', this.logout.bind(this));
-        this.app.get('/users', this.getAllUsers.bind(this));
-        this.app.post('/user', this.createUser.bind(this));
-        this.app.delete('/user/:personID', this.deleteUser.bind(this));
+        this.app.get('/users', [this.authenticateJWT, this.isUserAdmin], this.getAllUsers.bind(this));
+        this.app.post('/user', [this.authenticateJWT, this.isUserAdmin], this.createUser.bind(this));
+        this.app.delete('/user/:personID', [this.authenticateJWT, this.isUserAdmin], this.deleteUser.bind(this));
     }
 
     /**
@@ -179,9 +179,20 @@ export class Controller {
     public async createUser(req: Request, res: Response): Promise<void> {
         if (req.is('json') && req.body) {
             const newUser = new User(req.body);
-            const user = await this.userRepository.create(newUser);
-            await this.userRepository.save(user);
-            res.json(user);
+            let IsUserAlreadyExisting = await this.userRepository.find({
+                where: [
+                    { login: newUser.login },
+                ]
+            });
+            if (IsUserAlreadyExisting.length > 0) {
+                res.status(403);
+                res.send(`User with the login '${newUser.login}' already in use.`)
+            } else {
+                let createNewUser = await this.userRepository.create(newUser);
+                await this.userRepository.save(createNewUser);
+                delete createNewUser.password;
+                res.json(createNewUser);
+            }
         } else {
             res.status(400);
             res.send(
@@ -239,6 +250,23 @@ export class Controller {
                     next();
                 },
             );
+        } else {
+            res.sendStatus(401);
+        }
+    }
+
+    /**
+    * isUserAdmin
+    * prüft ob nutzer aus dem validen Token nötige Rechte besitzt
+    */
+    public isUserAdmin(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void {
+        console.log(req.user)
+        if (req.user.role) {
+            next();
         } else {
             res.sendStatus(401);
         }

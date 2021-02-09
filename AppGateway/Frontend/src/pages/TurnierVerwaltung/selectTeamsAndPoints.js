@@ -26,9 +26,9 @@ export const SelectTeamsAndPoints = (props) => {
     });
     return (teamsInTournament)
   }
-  const [team1Id, setTeam1Id] = useState();
+  const [team1Id, setTeam1Id] = useState("");
   const [team1Points, setTeam1Points] = useState(0);
-  const [team2Id, setTeam2Id] = useState();
+  const [team2Id, setTeam2Id] = useState("");
   const [team2Points, setTeam2Points] = useState(0);
   return (
     <>
@@ -95,9 +95,9 @@ export const SelectTeamsAndPoints = (props) => {
             id: Math.floor(Math.random() * 1000),
             turnierId: props.turnier.id,
             team1Id,
-            team1Points,
+            team1Punkte: team1Points,
             team2Id,
-            team2Points,
+            team2Punkte: team2Points,
           });
         }}
       >

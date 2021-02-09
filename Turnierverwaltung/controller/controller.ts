@@ -63,13 +63,13 @@ export class Controller {
                 res.send(req.user);
             },
         );
-        this.app.post('/createTurnier', this.createTurnier.bind(this));
-        this.app.get('/getTurniere', this.getTurniere.bind(this));
-        this.app.delete('/deleteTurnier/:turnierID', this.deleteTurnier.bind(this));
-        this.app.post('/addTeilnehmerToTurnier', this.addTeilnehmerToTurnier.bind(this));
-        this.app.delete('/removeTeilnehmerFromTurnier', this.removeTeilnehmerFromTurnier.bind(this));
-        this.app.post('/addSpielToTurnier', this.addSpielToTurnier.bind(this));
-        this.app.delete('/removeSpielFromTurnier/:gameID', this.removeSpielFromTurnier.bind(this));
+        this.app.post('/createTurnier', [this.authenticateJWT, this.isUserAdmin], this.createTurnier.bind(this));
+        this.app.get('/getTurniere', this.authenticateJWT, this.getTurniere.bind(this));
+        this.app.delete('/deleteTurnier/:turnierID', [this.authenticateJWT, this.isUserAdmin], this.deleteTurnier.bind(this));
+        this.app.post('/addTeilnehmerToTurnier', [this.authenticateJWT, this.isUserAdmin], this.addTeilnehmerToTurnier.bind(this));
+        this.app.delete('/removeTeilnehmerFromTurnier', [this.authenticateJWT, this.isUserAdmin], this.removeTeilnehmerFromTurnier.bind(this));
+        this.app.post('/addSpielToTurnier', [this.authenticateJWT, this.isUserAdmin], this.addSpielToTurnier.bind(this));
+        this.app.delete('/removeSpielFromTurnier/:gameID', [this.authenticateJWT, this.isUserAdmin], this.removeSpielFromTurnier.bind(this));
     }
 
     /**
@@ -259,6 +259,23 @@ export class Controller {
                     next();
                 },
             );
+        } else {
+            res.sendStatus(401);
+        }
+    }
+
+    /**
+    * isUserAdmin
+    * prüft ob nutzer aus dem validen Token nötige Rechte besitzt
+    */
+    public isUserAdmin(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void {
+        console.log(req.user)
+        if (req.user.role) {
+            next();
         } else {
             res.sendStatus(401);
         }
