@@ -89,9 +89,9 @@ export class Controller {
 
         this.app.post('/login', this.login.bind(this));
         this.app.get('/logout', this.logout.bind(this));
-        this.app.get('/users', this.getAllUsers.bind(this));
-        this.app.post('/user', this.createUser.bind(this));
-        this.app.delete('/user/:personID', this.deleteUser.bind(this));
+        this.app.get('/users', [this.authenticateJWT, this.isUserAdmin], this.getAllUsers.bind(this));
+        this.app.post('/user', [this.authenticateJWT, this.isUserAdmin], this.createUser.bind(this));
+        this.app.delete('/user/:personID', [this.authenticateJWT, this.isUserAdmin], this.deleteUser.bind(this));
     }
 
     /**
@@ -250,6 +250,23 @@ export class Controller {
                     next();
                 },
             );
+        } else {
+            res.sendStatus(401);
+        }
+    }
+
+    /**
+    * isUserAdmin
+    * prüft ob nutzer aus dem validen Token nötige Rechte besitzt
+    */
+    public isUserAdmin(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void {
+        console.log(req.user)
+        if (req.user.role) {
+            next();
         } else {
             res.sendStatus(401);
         }

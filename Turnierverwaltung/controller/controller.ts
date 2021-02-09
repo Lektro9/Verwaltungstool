@@ -266,7 +266,7 @@ export class Controller {
 
     /**
     * isUserAdmin
-    * prüft ob nutzer aus dem tvaliden Token nötige Rechte besitzt
+    * prüft ob nutzer aus dem validen Token nötige Rechte besitzt
     */
     public isUserAdmin(
         req: Request,
