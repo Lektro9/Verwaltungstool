@@ -13,11 +13,10 @@ const getPersonById = async (personId) => {
 };
 
 export const createPerson = async (personData) => {
-  console.log(JSON.stringify(personData));
   return await fetch(SERVER_URL, {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(personData),
   });

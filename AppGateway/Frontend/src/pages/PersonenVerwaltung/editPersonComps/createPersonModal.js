@@ -159,16 +159,3 @@ const CreatePersonModal = ({handleDialogClose, person}) => {
 };
 
 export default CreatePersonModal;
-
-// const [date, setDate] = useState("");
-// const handleAddPersonGeneralData = (pType, fName, lName, bDate) => {
-//   setDate(new Date(bDate).getTime());
-// };
-// {
-//   /* <Button disabled={activeStep === 0} onClick={handleBack}>
-//                 Zurück
-//               </Button> */
-// }
-// const handleBack = () => {
-//   setActiveStep((prevActiveStep) => prevActiveStep - 1);
-// };

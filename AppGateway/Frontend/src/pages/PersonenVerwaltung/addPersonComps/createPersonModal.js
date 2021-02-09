@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 /*---Material---*/
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,6 +17,7 @@ import FormPersonSpecific from "./formPersonSpecific";
 import OverviewPersonData from "./overviewPersonData";
 
 import { createPerson } from "../../../components/personCrud";
+import { usePersons } from "../../../hooks/usePerson";
 
 const useStyles = makeStyles({
   root: {
@@ -46,6 +47,8 @@ const initSpecificObj = {};
 const specificObj = {};
 
 const CreatePersonModal = ({ handleDialogClose }) => {
+  const personState = useContext(usePersons);
+  console.log(personState);
   const classes = useStyles();
   const [personGeneral, setPersonGeneral] = useState(initPersonObj);
   const [personSpecific, setPersonSpecific] = useState(initSpecificObj);
@@ -64,7 +67,13 @@ const CreatePersonModal = ({ handleDialogClose }) => {
     e.preventDefault();
     let merged = { ...personObj, ...specificObj };
     merged.birthday = new Date(merged.birthday).getTime();
-    createPerson(merged);
+    let person = createPerson(merged);
+    person
+      .then((response) => response.json())
+      .then((data) => {
+        personState.persons.push(data.person);
+        personState.setPersons([...personState.persons]);
+      });
     handleDialogClose();
   };
 
