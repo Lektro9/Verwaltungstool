@@ -109,12 +109,13 @@ export const AddMannschaftModal = (props) => {
               mitglieder: personIds,
             });
           } else {
-            props.addTeam(personIds)
+            const currentTeamIds = props.currentTeam.mitglieder.map((team) => team.personenId)
+            props.addTeam(personIds, currentTeamIds, props.currentTeam.id)
           }
 
         }}
       >
-        neue Mannschaft erstellen
+        {props.inputFields ? "neue Mannschaft erstellen" : "Personen hinzufügen"}
       </Button>
     </>
   );

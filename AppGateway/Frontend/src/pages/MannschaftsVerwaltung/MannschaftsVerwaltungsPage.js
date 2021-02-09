@@ -31,7 +31,6 @@ export const MannschaftsVerwaltungsPage = () => {
     setMannschaftAddPersModals(MannschaftenState.mannschaften.reduce((accumulator, currentValue) => {
       return { ...accumulator, [currentValue.id]: false };
     }, {}))
-    console.log(mannschaftAddPersModals)
   }, [MannschaftenState.mannschaften])
 
   const getPerson = (personId) => {
@@ -85,11 +84,34 @@ export const MannschaftsVerwaltungsPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const addToTeam = (personIds, personsAlreadyInMannschaft) => {
-    console.log(personIds)
-    const personsNotAlreadyInMannschaft = personIds.filter(
+  const addToTeam = (selectedPersonIds, personsAlreadyInMannschaft, mannschaftID) => {
+
+    const personsNotInMannschaft = selectedPersonIds.filter(
       (x) => !personsAlreadyInMannschaft.includes(x)
     );
+
+    axios
+      .put(BASE_URL + '/addToMannschaft', { personenIDs: personsNotInMannschaft, mannschaftID })
+      .then(function (response) {
+        const mannschaft = MannschaftenState.mannschaften.find((team) => team.id === response.data.id)
+        mannschaft.mitglieder = response.data.mitglieder;
+        MannschaftenState.setMannschaften([...MannschaftenState.mannschaften]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  const deleteMitglied = (mitglied, team) => {
+    axios
+      .put(BASE_URL + '/removeFromMannschaft', { personenID: mitglied.personenId, mannschaftID: team.id })
+      .then(function (response) {
+        team.mitglieder = team.mitglieder.filter((person) => person.personenId !== mitglied.personenId)
+        MannschaftenState.setMannschaften([...MannschaftenState.mannschaften]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   const openAddPersons = (mannschaftsId) => {
@@ -141,10 +163,15 @@ export const MannschaftsVerwaltungsPage = () => {
                 const foundPers = getPerson(personObject.personenId);
                 if (foundPers) {
                   return (
-                    <div key={personObject.personenId}>
-                      {getPerson(personObject.personenId).id} -{' '}
+                    <div key={personObject.personenId} style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+                      <div>
+                        {getPerson(personObject.personenId).id} -
                       {getPerson(personObject.personenId).firstName}
-                      {getPerson(personObject.personenId).lastName}
+                        {getPerson(personObject.personenId).lastName}
+                      </div>
+                      <Button width='10' color='secondary' size='small' variant='text' onClick={() => {
+                        deleteMitglied(personObject, team);
+                      }}>x</Button>
                     </div>
                   );
                 } else {

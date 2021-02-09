@@ -89,7 +89,6 @@ export const TurnierVerwaltungsPage = () => {
     return teamsInTourney;
   };
   const addTurnier = (newTurnier) => {
-    console.log(newTurnier)
     axios
       .post(BASE_URL_TURNIER + '/createTurnier', newTurnier)
       .then(function (response) {
