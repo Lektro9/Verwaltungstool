@@ -18,11 +18,13 @@ import { useTurniere } from '../../hooks/useTurnier';
 import { CreateTurnierModal } from './createTurnierModal';
 import { SelectTeamsAndPoints } from './selectTeamsAndPoints';
 import axios from 'axios';
+import { useAuth } from '../../hooks/useAuth';
 
 const BASE_URL_TURNIER = "http://localhost:3007";
 const BASE_URL_MANNSCHAFTEN = "http://localhost:3006";
 
 export const TurnierVerwaltungsPage = () => {
+  const authState = useContext(useAuth);
   const TurniereState = useContext(useTurniere);
   const MannschaftenState = useContext(useMannschaften);
   const [open, setOpen] = useState(false);
@@ -227,7 +229,7 @@ export const TurnierVerwaltungsPage = () => {
 
   return (
     <>
-      <Button
+      {authState.user.role ? <Button
         variant='outlined'
         color='primary'
         onClick={() => {
@@ -235,7 +237,7 @@ export const TurnierVerwaltungsPage = () => {
         }}
       >
         Turnier hinzufügen
-      </Button>
+      </Button> : ''}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle id='createTurnier' onClose={handleClose}>
           Turnier hinzufügen
@@ -251,24 +253,27 @@ export const TurnierVerwaltungsPage = () => {
               <Typography gutterBottom variant='h5' component='h2'>
                 {turnier.name}
               </Typography>
-              <Button
-                size='small'
-                color='primary'
-                onClick={() => {
-                  openAddTeam(turnier.id);
-                }}
-              >
-                Mannschaften hinzufügen
+              {authState.user.role ? <>
+                <Button
+                  size='small'
+                  color='primary'
+                  onClick={() => {
+                    openAddTeam(turnier.id);
+                  }}
+                >
+                  Mannschaften hinzufügen
+                </Button>
+                <Button
+                  size='small'
+                  color='secondary'
+                  onClick={() => {
+                    openRemoveTeam(turnier.id);
+                  }}
+                >
+
+                  Mannschaften entfernen
               </Button>
-              <Button
-                size='small'
-                color='secondary'
-                onClick={() => {
-                  openRemoveTeam(turnier.id);
-                }}
-              >
-                Mannschaften entfernen
-              </Button>
+              </> : ''}
               {turnier.games.map((game) => (
                 <div style={{ display: 'flex' }} key={game.id}>
                   <Paper
@@ -295,7 +300,7 @@ export const TurnierVerwaltungsPage = () => {
                   >
                     {game.team2Punkte} - {getTeamName(game.team2Id)}
                   </Paper>
-                  <Button
+                  {authState.user.role ? <Button
                     style={{ height: '40%', marginTop: 15 }}
                     size='small'
                     variant='contained'
@@ -305,13 +310,13 @@ export const TurnierVerwaltungsPage = () => {
                     }}
                   >
                     X
-                  </Button>
+                  </Button> : ''}
                 </div>
               ))}
               <Divider style={{ marginTop: 20 }} />
-              <SelectTeamsAndPoints turnier={turnier} addGame={addGame} />
+              {authState.user.role ? <SelectTeamsAndPoints turnier={turnier} addGame={addGame} /> : ''}
             </CardContent>
-            <CardActions>
+            {authState.user.role ? <CardActions>
               <Button
                 size='small'
                 color='secondary'
@@ -321,7 +326,7 @@ export const TurnierVerwaltungsPage = () => {
               >
                 Turnier Löschen
               </Button>
-            </CardActions>
+            </CardActions> : ''}
             <Dialog
               open={turnierRemoveMannModals[turnier.id]}
               onClose={() => {

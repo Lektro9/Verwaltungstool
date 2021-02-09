@@ -179,9 +179,18 @@ export class Controller {
     public async createUser(req: Request, res: Response): Promise<void> {
         if (req.is('json') && req.body) {
             const newUser = new User(req.body);
-            const user = await this.userRepository.create(newUser);
-            await this.userRepository.save(user);
-            res.json(user);
+            let IsUserAlreadyExisting = await this.userRepository.find({
+                where: [
+                    { login: newUser.login },
+                ]
+            });
+            if (IsUserAlreadyExisting.length > 0) {
+                res.send(`User with the login '${newUser.login}' already in use.`)
+            } else {
+                const createNewUser = await this.userRepository.create(newUser);
+                await this.userRepository.save(createNewUser);
+                res.json(createNewUser);
+            }
         } else {
             res.status(400);
             res.send(

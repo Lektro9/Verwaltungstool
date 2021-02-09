@@ -13,10 +13,12 @@ import { useMannschaften } from '../../hooks/useMannschaft';
 import { usePersons } from '../../hooks/usePerson';
 import { AddMannschaftModal } from './addMannschaftModal';
 import axios from 'axios';
+import { useAuth } from '../../hooks/useAuth';
 
 const BASE_URL = 'http://localhost:3006';
 
 export const MannschaftsVerwaltungsPage = () => {
+  const authState = useContext(useAuth);
   const PersonState = useContext(usePersons);
   const MannschaftenState = useContext(useMannschaften);
   const [mannschaftAddPersModals, setMannschaftAddPersModals] = useState(
@@ -123,10 +125,9 @@ export const MannschaftsVerwaltungsPage = () => {
     mannschaftAddPersModals[mannschaftsId] = false;
     setMannschaftAddPersModals({ ...mannschaftAddPersModals });
   };
-
   return (
     <>
-      <Button
+      {authState.user.role ? <Button
         size='small'
         variant='contained'
         color='primary'
@@ -135,7 +136,7 @@ export const MannschaftsVerwaltungsPage = () => {
         }}
       >
         Team hinzufügen
-      </Button>
+      </Button> : ''}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle id='createPerson' onClose={handleClose}>
           Neue Mannschaft
@@ -169,9 +170,9 @@ export const MannschaftsVerwaltungsPage = () => {
                       {getPerson(personObject.personenId).firstName}
                         {getPerson(personObject.personenId).lastName}
                       </div>
-                      <Button width='10' color='secondary' size='small' variant='text' onClick={() => {
+                      {authState.user.role ? <Button width='10' color='secondary' size='small' variant='text' onClick={() => {
                         deleteMitglied(personObject, team);
-                      }}>x</Button>
+                      }}>x</Button> : ''}
                     </div>
                   );
                 } else {
@@ -179,7 +180,7 @@ export const MannschaftsVerwaltungsPage = () => {
                 }
               })}
             </CardContent>
-            <CardActions>
+            {authState.user.role ? <CardActions>
               <Button
                 size='small'
                 color='secondary'
@@ -196,7 +197,7 @@ export const MannschaftsVerwaltungsPage = () => {
               >
                 Personen hinzufügen
               </Button>
-            </CardActions>
+            </CardActions> : ''}
           </Card>
         ))}
       </div>
