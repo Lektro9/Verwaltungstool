@@ -67,7 +67,7 @@ export class Controller {
         this.app.get('/getTurniere', this.getTurniere.bind(this));
         this.app.delete('/deleteTurnier/:turnierID', this.deleteTurnier.bind(this));
         this.app.post('/addTeilnehmerToTurnier', this.addTeilnehmerToTurnier.bind(this));
-        this.app.delete('/removeTeilnehmerFromTurnier/:turnierID/:teilnehmerID', this.removeTeilnehmerFromTurnier.bind(this));
+        this.app.delete('/removeTeilnehmerFromTurnier', this.removeTeilnehmerFromTurnier.bind(this));
         this.app.post('/addSpielToTurnier', this.addSpielToTurnier.bind(this));
         this.app.delete('/removeSpielFromTurnier/:gameID', this.removeSpielFromTurnier.bind(this));
     }
@@ -91,7 +91,8 @@ export class Controller {
             const newTurnier = new Turnier(req.body);
             const turnier = await this.turnierRepository.create(newTurnier);
             await this.turnierRepository.save(turnier);
-            res.json(turnier);
+            const retTurnier = await this.turnierRepository.findOne(turnier.id, { relations: ["teilnehmer", "games"] });
+            res.json(retTurnier);
         } else {
             res.status(400);
             res.send(
@@ -166,40 +167,49 @@ export class Controller {
 
     /**
     * removeTeilnehmerFromTurnier
-    * ein Teilnehmer mit den verbundenen Spielen aus dem Turnier entfernen
+    * Teilnehmer mit den verbundenen Spielen aus dem Turnier entfernen
     */
     public async removeTeilnehmerFromTurnier(req: Request, res: Response): Promise<void> {
-        const { turnierID, teilnehmerID } = req.params;
-        const teilnehmerIDNumber = +teilnehmerID
-        const turnier = await this.turnierRepository.findOne(turnierID, { relations: ['teilnehmer', 'games'] });
-
-        const teilnehmerToBeDeleted = [];
-        turnier.teilnehmer = turnier.teilnehmer.filter((mannschaft) => {
-            if (mannschaft.mannschaftID !== teilnehmerIDNumber) {
-                return mannschaft;
-            } else {
-                teilnehmerToBeDeleted.push(mannschaft);
+        const { turnierID, teilnehmerIDs } = req.body;
+        if (req.is("json") && req.body) {
+            const turnier = await this.turnierRepository.findOne(turnierID, { relations: ['teilnehmer', 'games'] });
+            const teilnehmerToBeDeleted = [];
+            const gamesToBeDeleted = [];
+            for (const id of teilnehmerIDs) {
+                turnier.teilnehmer = turnier.teilnehmer.filter((mannschaft) => {
+                    if (mannschaft.mannschaftID !== id) {
+                        return mannschaft;
+                    } else {
+                        teilnehmerToBeDeleted.push(mannschaft);
+                    }
+                })
+                turnier.games = turnier.games.filter((spiel) => {
+                    if (spiel.team1Id !== id && spiel.team2Id !== id) {
+                        return spiel;
+                    } else {
+                        gamesToBeDeleted.push(spiel);
+                    }
+                })
             }
-        })
-        // aufräumen in der Teilnehmertabelle
-        if (teilnehmerToBeDeleted.length > 0)
-            await this.teilnehmerRepository.delete(teilnehmerToBeDeleted);
 
-        const gamesToBeDeleted = [];
-        turnier.games = turnier.games.filter((spiel) => {
-            if (spiel.team1Id !== teilnehmerIDNumber && spiel.team2Id !== teilnehmerIDNumber) {
-                return spiel;
-            } else {
-                gamesToBeDeleted.push(spiel);
-            }
-        })
-        // aufräumen in der SpieleTabelle
-        if (gamesToBeDeleted.length > 0)
-            await this.spieleRepository.delete(gamesToBeDeleted);
+            // aufräumen in der Teilnehmertabelle
+            if (teilnehmerToBeDeleted.length > 0)
+                await this.teilnehmerRepository.delete(teilnehmerToBeDeleted);
 
-        // neues Turnierobjekt abspeichern
-        const newTurnier = await this.turnierRepository.save(turnier);
-        res.send(newTurnier)
+            // aufräumen in der SpieleTabelle
+            if (gamesToBeDeleted.length > 0)
+                await this.spieleRepository.delete(gamesToBeDeleted);
+
+            // neues Turnierobjekt abspeichern
+            const newTurnier = await this.turnierRepository.save(turnier);
+            res.send(newTurnier)
+        } else {
+            res.status(400);
+            res.send(
+                "wrong format, only json allowed: {'turnierID': 2, 'teilnehmerIDs': [1,2,3]}"
+            );
+        }
+
     }
 
     /**

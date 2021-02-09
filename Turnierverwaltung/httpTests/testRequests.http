@@ -14,8 +14,8 @@ POST http://localhost:3007/addTeilnehmerToTurnier
 content-type: application/json
 
 {
-    "turnierID": 7,
-    "teilnehmerIDs": [7, 8, 9]
+    "turnierID": 1,
+    "teilnehmerIDs": [16]
 }
 
 ###
@@ -24,10 +24,10 @@ POST http://localhost:3007/addSpielToTurnier
 content-type: application/json
 
 {
-    "turnierID": 4,
+    "turnierID": 1,
     "game": {
-        "team1Id": 8,
-        "team2Id": 9,
+        "team1Id": 16,
+        "team2Id": 17,
         "team1Punkte": 0,
         "team2Punkte": 2
     }
@@ -36,7 +36,13 @@ content-type: application/json
 DELETE http://localhost:3007/removeSpielFromTurnier/14
 
 ###
-DELETE http://localhost:3007/removeTeilnehmerFromTurnier/4/7
+DELETE http://localhost:3007/removeTeilnehmerFromTurnier/
+content-type: application/json
+
+{
+    "turnierID": 1,
+    "teilnehmerIDs": [17]
+}
 ###
 GET http://localhost:3007/getTurniere
 

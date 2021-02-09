@@ -11,7 +11,7 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { useMannschaften } from '../../hooks/useMannschaft';
 import { usePersons } from '../../hooks/usePerson';
-import { CreateMannschaftModal } from './createMannschaftModal';
+import { AddMannschaftModal } from './addMannschaftModal';
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3006';
@@ -19,7 +19,20 @@ const BASE_URL = 'http://localhost:3006';
 export const MannschaftsVerwaltungsPage = () => {
   const PersonState = useContext(usePersons);
   const MannschaftenState = useContext(useMannschaften);
+  const [mannschaftAddPersModals, setMannschaftAddPersModals] = useState(
+    MannschaftenState.mannschaften.reduce((accumulator, currentValue) => {
+      return { ...accumulator, [currentValue.id]: false };
+    }, {})
+  );
   const [open, setOpen] = useState(false);
+
+  // update the boolean collection object so modal booleans are tracked correctly
+  useEffect(() => {
+    setMannschaftAddPersModals(MannschaftenState.mannschaften.reduce((accumulator, currentValue) => {
+      return { ...accumulator, [currentValue.id]: false };
+    }, {}))
+    console.log(mannschaftAddPersModals)
+  }, [MannschaftenState.mannschaften])
 
   const getPerson = (personId) => {
     return PersonState.persons.find((person) => person.id === personId);
@@ -59,7 +72,6 @@ export const MannschaftsVerwaltungsPage = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
   // Daten werden einmal beim Aufruf der Seite geholt
   useEffect(() => {
     axios
@@ -72,6 +84,23 @@ export const MannschaftsVerwaltungsPage = () => {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const addToTeam = (personIds, personsAlreadyInMannschaft) => {
+    console.log(personIds)
+    const personsNotAlreadyInMannschaft = personIds.filter(
+      (x) => !personsAlreadyInMannschaft.includes(x)
+    );
+  }
+
+  const openAddPersons = (mannschaftsId) => {
+    mannschaftAddPersModals[mannschaftsId] = true;
+    setMannschaftAddPersModals({ ...mannschaftAddPersModals });
+  };
+
+  const closeAddPersons = (mannschaftsId) => {
+    mannschaftAddPersModals[mannschaftsId] = false;
+    setMannschaftAddPersModals({ ...mannschaftAddPersModals });
+  };
 
   return (
     <>
@@ -90,7 +119,7 @@ export const MannschaftsVerwaltungsPage = () => {
           Neue Mannschaft
         </DialogTitle>
         <DialogContent>
-          <CreateMannschaftModal addTeam={addTeam} />
+          <AddMannschaftModal inputFields={true} addTeam={addTeam} />
         </DialogContent>
       </Dialog>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -100,6 +129,14 @@ export const MannschaftsVerwaltungsPage = () => {
               <Typography gutterBottom variant='h5' component='h2'>
                 {team.name}
               </Typography>
+              <Dialog open={mannschaftAddPersModals[team.id]} onClose={() => { closeAddPersons(team.id) }}>
+                <DialogTitle id='createPerson'>
+                  Personen hinzufügen
+                </DialogTitle>
+                <DialogContent>
+                  <AddMannschaftModal currentTeam={team} inputFields={false} addTeam={addToTeam} />
+                </DialogContent>
+              </Dialog>
               {team.mitglieder.map((personObject) => {
                 const foundPers = getPerson(personObject.personenId);
                 if (foundPers) {
@@ -122,6 +159,15 @@ export const MannschaftsVerwaltungsPage = () => {
                 onClick={() => deleteTeam(team.id)}
               >
                 Team Löschen
+              </Button>
+              <Button
+                size='small'
+                color='primary'
+                onClick={() => {
+                  openAddPersons(team.id)
+                }}
+              >
+                Personen hinzufügen
               </Button>
             </CardActions>
           </Card>

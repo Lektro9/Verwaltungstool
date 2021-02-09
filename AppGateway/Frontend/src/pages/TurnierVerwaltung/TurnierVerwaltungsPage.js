@@ -11,12 +11,16 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ChoosingTable } from '../../components/ChoosingTable';
 import { useMannschaften } from '../../hooks/useMannschaft';
 import { useTurniere } from '../../hooks/useTurnier';
 import { CreateTurnierModal } from './createTurnierModal';
 import { SelectTeamsAndPoints } from './selectTeamsAndPoints';
+import axios from 'axios';
+
+const BASE_URL_TURNIER = "http://localhost:3007";
+const BASE_URL_MANNSCHAFTEN = "http://localhost:3006";
 
 export const TurnierVerwaltungsPage = () => {
   const TurniereState = useContext(useTurniere);
@@ -33,24 +37,75 @@ export const TurnierVerwaltungsPage = () => {
     }, {})
   );
 
+  // Daten werden einmal beim Aufruf der Seite geholt
+  useEffect(() => {
+    axios
+      .get(BASE_URL_MANNSCHAFTEN + '/getMannschaften')
+      .then(function (response) {
+        MannschaftenState.setMannschaften(response.data);
+        console.log(response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    axios
+      .get(BASE_URL_TURNIER + '/getTurniere')
+      .then(function (response) {
+        TurniereState.setTurniere(response.data);
+        console.log(response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // update the boolean collection object so modal booleans are tracked correctly
+  useEffect(() => {
+    setTurnierRemoveMannModals(TurniereState.turniere.reduce((accumulator, currentValue) => {
+      return { ...accumulator, [currentValue.id]: false };
+    }, {}))
+    setTurnierAddMannModals(TurniereState.turniere.reduce((accumulator, currentValue) => {
+      return { ...accumulator, [currentValue.id]: false };
+    }, {}))
+    console.log("useEffect BooleanModals: " + JSON.stringify(turnierRemoveMannModals))
+  }, [TurniereState.turniere])
+
   const getTeamName = (teamId) => {
     const teamName = MannschaftenState.mannschaften.find(
       (team) => team.id === teamId
     )?.name;
     return teamName || 'Team not Found';
   };
-  const getTeamsFromIds = (teamIds) => {
+  const getTeamsFromIds = (teilnehmer) => {
     const teamsInTourney = [];
-    teamIds.forEach((teamId) => {
-      MannschaftenState.mannschaften.forEach((mannschaft) => {
-        if (mannschaft.id === teamId) {
-          teamsInTourney.push(mannschaft);
-        }
+    if (teilnehmer && teilnehmer.length > 0) {
+      teilnehmer.forEach((team) => {
+        MannschaftenState.mannschaften.forEach((mannschaft) => {
+
+          if (mannschaft.id === team.mannschaftID) {
+            console.log(mannschaft.id, team.mannschaftID)
+            teamsInTourney.push(mannschaft);
+          }
+        });
       });
-    });
+    }
+    console.log("teamsInTourney: " + JSON.stringify(teamsInTourney))
     return teamsInTourney;
   };
   const addTurnier = (newTurnier) => {
+    console.log(newTurnier)
+    axios
+      .post(BASE_URL_TURNIER + '/createTurnier', newTurnier)
+      .then(function (response) {
+        TurniereState.setTurniere([
+          ...TurniereState.turniere,
+          response.data,
+        ]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     TurniereState.setTurniere([newTurnier, ...TurniereState.turniere]);
   };
   const deleteTurnier = (turnierId) => {
@@ -77,36 +132,54 @@ export const TurnierVerwaltungsPage = () => {
     teamsAlreadyInTurnier = [],
     turnier
   ) => {
-    teamIds.forEach((teamId) => {
-      const index = turnier.teamIds.indexOf(teamId);
-      if (index > -1) {
-        turnier.teamIds.splice(index, 1);
-      }
-      //remove all games with those teams
-      turnier.games.forEach((game) => {
-        if (game.team1Id === teamId || game.team2Id === teamId) {
-          const indexOfGame = turnier.games.indexOf(game);
-          if (indexOfGame > -1) {
-            turnier.games.splice(indexOfGame, 1);
-          }
-        }
+    axios
+      .delete(BASE_URL_TURNIER + '/removeTeilnehmerFromTurnier', { data: { turnierID: turnier.id, teilnehmerIDs: teamIds } })
+      .then(function (response) {
+        turnier.teilnehmer = response.data.teilnehmer
+        turnier.games = response.data.games
+        TurniereState.setTurniere([
+          ...TurniereState.turniere
+        ]);
+      })
+      .catch(function (error) {
+        console.log(error);
       });
-    });
-
-    TurniereState.setTurniere([...TurniereState.turniere]);
   };
 
   const addTeamsToTurnier = (
-    teamIds,
+    selectedTeamIds,
     teamsAlreadyInTurnier = [],
     turnier = {}
   ) => {
+
     //find duplicates, so they won't be added twice
-    const teamsNotAlreadyInTurnier = teamIds.filter(
-      (x) => !teamsAlreadyInTurnier.includes(x)
+    const teamsIdsAlreadyInTurnier = [];
+    teamsAlreadyInTurnier.forEach((teamInTurnier) => {
+      selectedTeamIds.forEach((teamId) => {
+        if (teamInTurnier.mannschaftID === teamId) {
+          teamsIdsAlreadyInTurnier.push(teamInTurnier.mannschaftID)
+        }
+      })
+    })
+    const teamIdsNotInTurnier = selectedTeamIds.filter(
+      (teamId) => {
+        if (!teamsIdsAlreadyInTurnier.includes(teamId)) {
+          return teamId
+        }
+      }
     );
-    turnier.teamIds = [...turnier.teamIds, ...teamsNotAlreadyInTurnier];
-    TurniereState.setTurniere([...TurniereState.turniere]);
+
+    axios
+      .post(BASE_URL_TURNIER + '/addTeilnehmerToTurnier', { turnierID: turnier.id, teilnehmerIDs: teamIdsNotInTurnier })
+      .then(function (response) {
+        turnier.teilnehmer = response.data.teilnehmer
+        TurniereState.setTurniere([
+          ...TurniereState.turniere
+        ]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const openAddTeam = (turnierId) => {
@@ -137,36 +210,6 @@ export const TurnierVerwaltungsPage = () => {
 
   return (
     <>
-      <Button
-        variant='outlined'
-        color='primary'
-        onClick={() => {
-          const newTourney = {
-            id: Math.floor(Math.random() * 1000),
-            name: 'TestTurnier',
-            teamIds: [1, 2, 3],
-            games: [
-              {
-                id: Math.floor(Math.random() * 1000),
-                team1Id: 1,
-                team2Id: 2,
-                team1Points: 5,
-                team2Points: 4,
-              },
-              {
-                id: Math.floor(Math.random() * 1000),
-                team1Id: 2,
-                team2Id: 1,
-                team1Points: 2,
-                team2Points: 3,
-              },
-            ],
-          };
-          addTurnier(newTourney);
-        }}
-      >
-        addTourney
-      </Button>
       <Button
         variant='outlined'
         color='primary'
@@ -270,7 +313,7 @@ export const TurnierVerwaltungsPage = () => {
             >
               <ChoosingTable
                 title={'Mannschaften entfernen'}
-                teams={getTeamsFromIds(turnier.teamIds)}
+                teams={getTeamsFromIds(turnier.teilnehmer)}
                 action={removeTeamsFromTurnier}
                 turnier={turnier}
                 buttonInfo={['secondary', 'entfernen']}
@@ -285,7 +328,7 @@ export const TurnierVerwaltungsPage = () => {
               <ChoosingTable
                 title={'Mannschaften hinzufügen'}
                 teams={MannschaftenState.mannschaften}
-                teamsAlreadyInTurnier={turnier.teamIds}
+                teamsAlreadyInTurnier={turnier.teilnehmer}
                 action={addTeamsToTurnier}
                 turnier={turnier}
                 buttonInfo={['primary', 'hinzufügen']}

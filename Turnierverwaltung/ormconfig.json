@@ -1,6 +1,6 @@
 {
    "type": "sqlite",
-   "database": "mannschaftsverwaltung.sqlite",
+   "database": "turnierverwaltung.sqlite",
    "synchronize": true,
    "logging": false,
    "entities": [

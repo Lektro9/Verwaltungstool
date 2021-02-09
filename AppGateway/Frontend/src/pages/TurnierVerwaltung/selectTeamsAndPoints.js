@@ -13,16 +13,22 @@ export const SelectTeamsAndPoints = (props) => {
   //this should only be the teams playing in the tourney
   const MannschaftenState = useContext(useMannschaften);
 
-  const teamsInTournament = props.turnier.teamIds.map((id) => {
-    return MannschaftenState.mannschaften.find((team) => team.id === id);
-  });
-  const [team1Id, setTeam1Id] = useState(
-    teamsInTournament[0]?.id ? teamsInTournament[0].id : 0
-  );
+  const teamsInTournament = () => {
+    const teamsInTournament = []
+    props.turnier?.teilnehmer?.map((teilnehmerTeam) => {
+      const returnTeam = MannschaftenState.mannschaften.find((team) => {
+        if (team.id === teilnehmerTeam.mannschaftID) {
+          return team;
+        }
+      });
+      if (returnTeam)
+        teamsInTournament.push(returnTeam)
+    });
+    return (teamsInTournament)
+  }
+  const [team1Id, setTeam1Id] = useState();
   const [team1Points, setTeam1Points] = useState(0);
-  const [team2Id, setTeam2Id] = useState(
-    teamsInTournament[0]?.id ? teamsInTournament[0].id : 0
-  );
+  const [team2Id, setTeam2Id] = useState();
   const [team2Points, setTeam2Points] = useState(0);
   return (
     <>
@@ -36,7 +42,7 @@ export const SelectTeamsAndPoints = (props) => {
             setTeam1Id(event.target.value);
           }}
         >
-          {teamsInTournament.map((team) => {
+          {teamsInTournament().length > 0 && teamsInTournament().map((team) => {
             return (
               <MenuItem value={team.id} key={team.id}>
                 {team.name}
@@ -73,7 +79,7 @@ export const SelectTeamsAndPoints = (props) => {
             setTeam2Id(event.target.value);
           }}
         >
-          {teamsInTournament.map((team) => {
+          {teamsInTournament().length > 0 && teamsInTournament().map((team) => {
             return (
               <MenuItem value={team.id} key={team.id}>
                 {team.name}
