@@ -12,6 +12,7 @@ import { usePersons } from "../../hooks/usePerson";
 import { deletePerson } from "../../components/personCrud";
 import EditPerson from "./editPerson";
 import { useAuth } from "../../hooks/useAuth";
+
 const SERVER_URL = "http://0.0.0.0:3004/api/v1/personenverwaltung/persons/";
 const DataTablePerson = () => {
   const authState = useContext(useAuth);

@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-
+import { useState, useContext, useEffect } from "react";
+import axios from 'axios';
 /*---Material---*/
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -16,6 +16,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 /*---Comps---*/
 import { updatePerson } from "../../../components/personCrud";
 import { usePersons } from "../../../hooks/usePerson";
+import Axios from "axios";
 
 const useStyles = makeStyles({
   main: {
@@ -35,6 +36,7 @@ const getSteps = () => {
   return ["Personendaten", "Typdaten"];
 };
 
+const SERVER_URL = "http://0.0.0.0:3004/api/v1/personenverwaltung/persons/";
 const CreatePersonModal = ({ handleDialogClose, person }) => {
   const classes = useStyles();
   const personState = useContext(usePersons);
@@ -76,8 +78,9 @@ console.log(person[0])
     };
     updated[personSpecificKeys[person[0].type]] = specific;
 
-    let result = updatePerson(person[0].id, updated);
-    result.then((response) => {
+    axios
+    .put(SERVER_URL + person[0].id, { body: updated })
+    then((response) => {
       if (response.status === 200) {
         personState.persons.forEach((p) => {
           if (p.id === person[0].id) {
@@ -87,9 +90,11 @@ console.log(person[0])
             p[personSpecificKeys[person[0].type]] = specific;
             personState.setPersons([...personState.persons]);
           }
-        });
-      }
+        })
+    .catch(function (error) {
+      console.log(error);
     });
+    
 
     handleDialogClose();
   };
