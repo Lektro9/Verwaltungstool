@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 /*---Material---*/
 import { Button } from "@material-ui/core";
@@ -7,6 +7,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import DataTablePerson from "./dataTablePerson";
 import AddPerson from "./addPerson";
 import { useAuth } from "../../hooks/useAuth";
+import { usePersons } from "../../hooks/usePerson";
+import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -20,10 +22,26 @@ const useStyles = makeStyles({
   }
 });
 
+const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+
 export const PersonenVeraltungsPage = () => {
   const authState = useContext(useAuth);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const PersonState = useContext(usePersons);
+
+  useEffect(() => {
+    console.log(authState)
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + authState.accessToken; // for all requests
+    axios
+      .get(BASE_URL_PERSONEN)
+      .then((response) => {
+        PersonState.setPersons(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [authState]);
 
   const handleClickOpen = () => {
     setOpen(true);

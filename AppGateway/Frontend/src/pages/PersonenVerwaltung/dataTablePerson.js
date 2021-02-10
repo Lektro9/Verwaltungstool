@@ -12,7 +12,8 @@ import { usePersons } from "../../hooks/usePerson";
 import { deletePerson } from "../../components/personCrud";
 import EditPerson from "./editPerson";
 import { useAuth } from "../../hooks/useAuth";
-const SERVER_URL = "http://0.0.0.0:3004/api/v1/personenverwaltung/persons/";
+const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+
 const DataTablePerson = () => {
   const authState = useContext(useAuth);
   const PersonState = useContext(usePersons);
@@ -43,8 +44,7 @@ const DataTablePerson = () => {
       sortable: false,
       width: 180,
       valueGetter: (params) =>
-        `${params.getValue("firstName") || ""} ${
-          params.getValue("lastName") || ""
+        `${params.getValue("firstName") || ""} ${params.getValue("lastName") || ""
         }`,
     },
     {
@@ -88,9 +88,8 @@ const DataTablePerson = () => {
   ];
 
   const deletePer = (id) => {
-    deletePerson(id);
     axios
-      .delete(SERVER_URL + id)
+      .delete(BASE_URL_PERSONEN + id)
       .then(() => {
         PersonState.setPersons(
           PersonState.persons.filter((person) => person.id !== id)
@@ -105,17 +104,6 @@ const DataTablePerson = () => {
     setPersonId(id);
     setOpen(true);
   };
-
-  useEffect(() => {
-    axios
-      .get(SERVER_URL)
-      .then((response) => {
-        PersonState.setPersons(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
 
   return (
     <Container>
