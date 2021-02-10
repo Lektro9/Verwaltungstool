@@ -15,6 +15,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-EXPOSE 3006
+EXPOSE 3007
 
 CMD [ "node", "./build/App.js" ]

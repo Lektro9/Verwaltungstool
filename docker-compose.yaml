@@ -7,3 +7,10 @@ services:
       BASE_URL_TURNIER: 'http://localhost:3007/'
     ports:
       - "3007:3007"
+  mannschaftsverwaltung:
+    build: ./Mannschaftsverwaltung
+    container_name: mannschaftsverwaltung
+    environment:
+      BASE_URL_MANNSCHAFT: 'http://localhost:3006/'
+    ports:
+      - "3006:3006"
