@@ -16,8 +16,10 @@ import FormPersonGeneral from "./formPersonGeneral";
 import FormPersonSpecific from "./formPersonSpecific";
 import OverviewPersonData from "./overviewPersonData";
 
-import { createPerson } from "../../../components/personCrud";
 import { usePersons } from "../../../hooks/usePerson";
+import axios from "axios";
+
+const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
 
 const useStyles = makeStyles({
   root: {
@@ -67,13 +69,13 @@ const CreatePersonModal = ({ handleDialogClose }) => {
     e.preventDefault();
     let merged = { ...personObj, ...specificObj };
     merged.birthday = new Date(merged.birthday).getTime();
-    let person = createPerson(merged);
-    person
-      .then((response) => response.json())
-      .then((data) => {
-        personState.persons.push(data.person);
-        personState.setPersons([...personState.persons]);
-      });
+    axios.post(BASE_URL_PERSONEN, merged).then(function (response) {
+      console.log(response.data)
+      personState.persons.push(response.data.person)
+      personState.setPersons([...personState.persons]);
+    }).catch(function (error) {
+      console.log(error);
+    })
     handleDialogClose();
   };
 
@@ -145,17 +147,17 @@ const CreatePersonModal = ({ handleDialogClose }) => {
             </Button>
           </div>
         ) : (
-          <div>
-            <Typography className={classes.instructions}>
-              {getStepContent(activeStep)}
-            </Typography>
             <div>
-              <Button variant="contained" color="primary" onClick={handleNext}>
-                Weiter
+              <Typography className={classes.instructions}>
+                {getStepContent(activeStep)}
+              </Typography>
+              <div>
+                <Button variant="contained" color="primary" onClick={handleNext}>
+                  Weiter
               </Button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );

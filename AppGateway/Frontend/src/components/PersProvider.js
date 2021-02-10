@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { usePersons } from "../hooks/usePerson";
-import { getAllPersons } from "./personCrud";
 
 export const PersProvider = (props) => {
   const setPersons = (PersonArr) => {

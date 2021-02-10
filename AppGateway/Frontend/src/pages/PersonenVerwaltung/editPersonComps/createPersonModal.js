@@ -36,7 +36,8 @@ const getSteps = () => {
   return ["Personendaten", "Typdaten"];
 };
 
-const SERVER_URL = "http://0.0.0.0:3004/api/v1/personenverwaltung/persons/";
+const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+
 const CreatePersonModal = ({ handleDialogClose, person }) => {
   const classes = useStyles();
   const personState = useContext(usePersons);
@@ -79,8 +80,8 @@ console.log(person[0])
     updated[personSpecificKeys[person[0].type]] = specific;
 
     axios
-    .put(SERVER_URL + person[0].id, { body: updated })
-    then((response) => {
+    .put(BASE_URL_PERSONEN + person[0].id, { body: updated })
+    .then((response) => {
       if (response.status === 200) {
         personState.persons.forEach((p) => {
           if (p.id === person[0].id) {
@@ -91,6 +92,8 @@ console.log(person[0])
             personState.setPersons([...personState.persons]);
           }
         })
+      }
+    })
     .catch(function (error) {
       console.log(error);
     });
