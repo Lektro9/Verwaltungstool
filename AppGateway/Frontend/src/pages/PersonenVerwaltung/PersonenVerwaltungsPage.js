@@ -31,7 +31,6 @@ export const PersonenVeraltungsPage = () => {
   const PersonState = useContext(usePersons);
 
   useEffect(() => {
-    console.log(authState)
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + authState.accessToken; // for all requests
     axios
       .get(BASE_URL_PERSONEN)
@@ -39,7 +38,7 @@ export const PersonenVeraltungsPage = () => {
         PersonState.setPersons(response.data);
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   }, [authState]);
 

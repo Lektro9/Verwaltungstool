@@ -70,11 +70,10 @@ const CreatePersonModal = ({ handleDialogClose }) => {
     let merged = { ...personObj, ...specificObj };
     merged.birthday = new Date(merged.birthday).getTime();
     axios.post(BASE_URL_PERSONEN, merged).then(function (response) {
-      console.log(response.data)
       personState.persons.push(response.data.person)
       personState.setPersons([...personState.persons]);
     }).catch(function (error) {
-      console.log(error);
+      console.error(error);
     })
     handleDialogClose();
   };

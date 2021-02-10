@@ -89,24 +89,35 @@ export class Controller {
     );
 
     // CREATE
-    this.app.post(this.apiPath + "/persons",this.authenticateJWT, this.createOnePerson.bind(this));
+    this.app.post(
+      this.apiPath + "/persons",
+      this.authenticateJWT,
+      this.createOnePerson.bind(this)
+    );
 
     // READ
-    this.app.get(this.apiPath + "/persons",this.authenticateJWT, this.getAllPersons.bind(this));
     this.app.get(
-      this.apiPath + "/persons/:personId", this.authenticateJWT,
+      this.apiPath + "/persons",
+      this.authenticateJWT,
+      this.getAllPersons.bind(this)
+    );
+    this.app.get(
+      this.apiPath + "/persons/:personId",
+      this.authenticateJWT,
       this.getPersonById.bind(this)
     );
 
     // UPDATE
     this.app.put(
-      this.apiPath + "/persons/:personId",this.authenticateJWT,
+      this.apiPath + "/persons/:personId",
+      this.authenticateJWT,
       this.updatePersonById.bind(this)
     );
 
     // DELETE
     this.app.delete(
-      this.apiPath + "/persons/:personId",this.authenticateJWT,
+      this.apiPath + "/persons/:personId",
+      this.authenticateJWT,
       this.deletePersonById.bind(this)
     );
   }
@@ -265,7 +276,7 @@ export class Controller {
         }
 
         this.personRepository.merge(person, req.body);
-        const resultPerson = await this.fussballspielerRepository.save(person);
+        const resultPerson = await this.personRepository.save(person);
 
         resultPerson[person.type] = resultType;
 

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 /*---Material---*/
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -14,7 +14,6 @@ import {
 import ErrorIcon from "@material-ui/icons/Error";
 
 /*---Comps---*/
-import { updatePerson } from "../../../components/personCrud";
 import { usePersons } from "../../../hooks/usePerson";
 import Axios from "axios";
 
@@ -36,12 +35,13 @@ const getSteps = () => {
   return ["Personendaten", "Typdaten"];
 };
 
-const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+const BASE_URL_PERSONEN =
+  process.env.BASE_URL_PERSONEN ||
+  "http://localhost:3004/api/v1/personenverwaltung/persons/";
 
 const CreatePersonModal = ({ handleDialogClose, person }) => {
   const classes = useStyles();
   const personState = useContext(usePersons);
-console.log(person[0])
   const personSpecificKeys = {
     fussballspieler: "fieldPosition",
     handballspieler: "fieldPosition",
@@ -80,24 +80,26 @@ console.log(person[0])
     updated[personSpecificKeys[person[0].type]] = specific;
 
     axios
-    .put(BASE_URL_PERSONEN + person[0].id, { body: updated })
-    .then((response) => {
-      if (response.status === 200) {
-        personState.persons.forEach((p) => {
-          if (p.id === person[0].id) {
-            p.firstName = firstName;
-            p.lastName = lastName;
-            p.birthday = birthday;
-            p[personSpecificKeys[person[0].type]] = specific;
-            personState.setPersons([...personState.persons]);
-          }
-        })
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-    
+      .put(BASE_URL_PERSONEN + person[0].id, updated)
+      .then((response) => {
+        if (response.status === 200) {
+          personState.persons.forEach((p) => {
+            if (p.id === person[0].id) {
+              p.firstName = response.data.firstName;
+              p.lastName = response.data.lastName;
+              p.birthday = response.data.birthday;
+              p[p.type][personSpecificKeys[person[0].type]] =
+                response.data[person[0].type][
+                  personSpecificKeys[person[0].type]
+                ];
+              personState.setPersons([...personState.persons]);
+            }
+          });
+        }
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
 
     handleDialogClose();
   };

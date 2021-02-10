@@ -9,7 +9,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import { DataGrid } from "@material-ui/data-grid";
 import { usePersons } from "../../hooks/usePerson";
 
-import { deletePerson } from "../../components/personCrud";
 import EditPerson from "./editPerson";
 import { useAuth } from "../../hooks/useAuth";
 const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
@@ -96,7 +95,7 @@ const DataTablePerson = () => {
         );
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
