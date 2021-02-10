@@ -1,5 +1,12 @@
 version: "3.7"
 services:
+  zugriffsverwaltung:
+    build: ./Zugriffsverwaltung
+    container_name: zugriffsverwaltung
+    environment:
+      BASE_URL_TURNIER: 'http://localhost:3005/'
+    ports:
+      - "3005:3005"
   turnierverwaltung:
     build: ./Turnierverwaltung
     container_name: turnierverwaltung
