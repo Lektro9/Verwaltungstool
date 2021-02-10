@@ -7,15 +7,6 @@ export const PersProvider = (props) => {
     setState({ ...state, persons: PersonArr });
   };
 
-  useEffect(async () => {
-    try {
-      let res = await getAllPersons();
-      let data = await res.json();
-      setPersons(data);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
 
   const initState = {
     persons: [],
