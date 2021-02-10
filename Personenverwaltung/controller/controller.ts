@@ -89,24 +89,24 @@ export class Controller {
     );
 
     // CREATE
-    this.app.post(this.apiPath + "/persons", this.createOnePerson.bind(this));
+    this.app.post(this.apiPath + "/persons",this.authenticateJWT, this.createOnePerson.bind(this));
 
     // READ
-    this.app.get(this.apiPath + "/persons", this.getAllPersons.bind(this));
+    this.app.get(this.apiPath + "/persons",this.authenticateJWT, this.getAllPersons.bind(this));
     this.app.get(
-      this.apiPath + "/persons/:personId",
+      this.apiPath + "/persons/:personId", this.authenticateJWT,
       this.getPersonById.bind(this)
     );
 
     // UPDATE
     this.app.put(
-      this.apiPath + "/persons/:personId",
+      this.apiPath + "/persons/:personId",this.authenticateJWT,
       this.updatePersonById.bind(this)
     );
 
     // DELETE
     this.app.delete(
-      this.apiPath + "/persons/:personId",
+      this.apiPath + "/persons/:personId",this.authenticateJWT,
       this.deletePersonById.bind(this)
     );
   }

@@ -5,8 +5,9 @@
    "logging": false,
    "entities": [
       "./model/**/*.js",
+      "./model/**/*.ts",
       "./build/model/**/*.js"
-   ],
+      ],
    "migrations": [
       "./migration/**/*.ts"
    ],
