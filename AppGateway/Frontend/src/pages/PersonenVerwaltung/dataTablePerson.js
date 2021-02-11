@@ -11,7 +11,8 @@ import { usePersons } from "../../hooks/usePerson";
 
 import EditPerson from "./editPerson";
 import { useAuth } from "../../hooks/useAuth";
-const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+
+const REACT_APP_PERSONEN = process.env.REACT_APP_PERSONEN || "http://localhost:3004/api/personenverwaltung";
 
 const DataTablePerson = () => {
   const authState = useContext(useAuth);
@@ -88,7 +89,7 @@ const DataTablePerson = () => {
 
   const deletePer = (id) => {
     axios
-      .delete(BASE_URL_PERSONEN + id)
+      .delete(REACT_APP_PERSONEN + '/persons/' + id)
       .then(() => {
         PersonState.setPersons(
           PersonState.persons.filter((person) => person.id !== id)

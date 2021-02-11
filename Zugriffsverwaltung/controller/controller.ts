@@ -10,6 +10,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const BASE_URL_ZUGRIFF = process.env.BASE_URL_ZUGRIFF || "/api/zugriffsverwaltung"
+
 export class Controller {
     app: Application;
     userRepository: Repository<User>;
@@ -26,7 +28,8 @@ export class Controller {
             })
             .catch((e) => console.log(e));
         this.app = express();
-        this.port = 3005;
+        this.port = +process.env.PORT || 3005;
+        console.log(BASE_URL_ZUGRIFF)
         this.AccessTokenExpiryTime = '15m';
         this.RefreshTokenExpiryTime = '24h';
     }
@@ -85,13 +88,13 @@ export class Controller {
                 res.send(req.user);
             },
         );
-        this.app.get('/token', this.generateNewAccessToken.bind(this));
+        this.app.get(BASE_URL_ZUGRIFF + '/token', this.generateNewAccessToken.bind(this));
 
-        this.app.post('/login', this.login.bind(this));
-        this.app.get('/logout', this.logout.bind(this));
-        this.app.get('/users', [this.authenticateJWT, this.isUserAdmin], this.getAllUsers.bind(this));
-        this.app.post('/user', [this.authenticateJWT, this.isUserAdmin], this.createUser.bind(this));
-        this.app.delete('/user/:personID', [this.authenticateJWT, this.isUserAdmin], this.deleteUser.bind(this));
+        this.app.post(BASE_URL_ZUGRIFF + '/login', this.login.bind(this));
+        this.app.get(BASE_URL_ZUGRIFF + '/logout', this.logout.bind(this));
+        this.app.get(BASE_URL_ZUGRIFF + '/users', [this.authenticateJWT, this.isUserAdmin], this.getAllUsers.bind(this));
+        this.app.post(BASE_URL_ZUGRIFF + '/user', [this.authenticateJWT, this.isUserAdmin], this.createUser.bind(this));
+        this.app.delete(BASE_URL_ZUGRIFF + '/user/:personID', [this.authenticateJWT, this.isUserAdmin], this.deleteUser.bind(this));
     }
 
     /**
@@ -222,7 +225,7 @@ export class Controller {
      */
     public startWebserver(): void {
         this.app.listen(this.port, () => {
-            console.log(`Zugriffsverwaltung: Server startet unter: http://localhost:${this.port}`);
+            console.log(`Zugriffsverwaltung: Server startet unter dem Path: ${this.port}:${BASE_URL_ZUGRIFF}`);
         });
     }
 

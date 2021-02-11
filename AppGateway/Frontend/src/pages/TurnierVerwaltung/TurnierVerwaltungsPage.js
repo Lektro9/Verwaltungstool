@@ -20,8 +20,9 @@ import { SelectTeamsAndPoints } from './selectTeamsAndPoints';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 
-const BASE_URL_TURNIER = "http://localhost:3007";
-const BASE_URL_MANNSCHAFTEN = "http://localhost:3006";
+const REACT_APP_TURNIER = process.env.REACT_APP_TURNIER || 'http://localhost:3007/api/turnierverwaltung'
+
+const REACT_APP_MANNSCHAFT = process.env.REACT_APP_MANNSCHAFT || 'http://localhost:3006/api/mannschaftsverwaltung'
 
 export const TurnierVerwaltungsPage = () => {
   const authState = useContext(useAuth);
@@ -42,7 +43,7 @@ export const TurnierVerwaltungsPage = () => {
   // Daten werden einmal beim Aufruf der Seite geholt
   useEffect(() => {
     axios
-      .get(BASE_URL_MANNSCHAFTEN + '/getMannschaften')
+      .get(REACT_APP_MANNSCHAFT + '/getMannschaften')
       .then(function (response) {
         MannschaftenState.setMannschaften(response.data);
       })
@@ -50,7 +51,7 @@ export const TurnierVerwaltungsPage = () => {
         console.log(error);
       });
     axios
-      .get(BASE_URL_TURNIER + '/getTurniere')
+      .get(REACT_APP_TURNIER + '/getTurniere')
       .then(function (response) {
         TurniereState.setTurniere([...response.data]);
       })
@@ -92,7 +93,7 @@ export const TurnierVerwaltungsPage = () => {
   };
   const addTurnier = (newTurnier) => {
     axios
-      .post(BASE_URL_TURNIER + '/createTurnier', newTurnier)
+      .post(REACT_APP_TURNIER + '/createTurnier', newTurnier)
       .then(function (response) {
         TurniereState.setTurniere([
           ...TurniereState.turniere,
@@ -106,7 +107,7 @@ export const TurnierVerwaltungsPage = () => {
   };
   const deleteTurnier = (turnier) => {
     axios
-      .delete(BASE_URL_TURNIER + '/deleteTurnier/' + turnier.id)
+      .delete(REACT_APP_TURNIER + '/deleteTurnier/' + turnier.id)
       .then(function (response) {
         const indexOfGame = TurniereState.turniere.indexOf(turnier);
         if (indexOfGame > -1) {
@@ -125,7 +126,7 @@ export const TurnierVerwaltungsPage = () => {
 
   const addGame = (game) => {
     axios
-      .post(BASE_URL_TURNIER + '/addSpielToTurnier', { turnierID: game.turnierId, game: game })
+      .post(REACT_APP_TURNIER + '/addSpielToTurnier', { turnierID: game.turnierId, game: game })
       .then(function (response) {
         const turnier = TurniereState.turniere.find(
           (turnier) => turnier.id === response.data.id
@@ -145,7 +146,7 @@ export const TurnierVerwaltungsPage = () => {
     turnier
   ) => {
     axios
-      .delete(BASE_URL_TURNIER + '/removeTeilnehmerFromTurnier', { data: { turnierID: turnier.id, teilnehmerIDs: teamIds } })
+      .delete(REACT_APP_TURNIER + '/removeTeilnehmerFromTurnier', { data: { turnierID: turnier.id, teilnehmerIDs: teamIds } })
       .then(function (response) {
         turnier.teilnehmer = response.data.teilnehmer
         turnier.games = response.data.games
@@ -182,7 +183,7 @@ export const TurnierVerwaltungsPage = () => {
     );
 
     axios
-      .post(BASE_URL_TURNIER + '/addTeilnehmerToTurnier', { turnierID: turnier.id, teilnehmerIDs: teamIdsNotInTurnier })
+      .post(REACT_APP_TURNIER + '/addTeilnehmerToTurnier', { turnierID: turnier.id, teilnehmerIDs: teamIdsNotInTurnier })
       .then(function (response) {
         turnier.teilnehmer = response.data.teilnehmer
         TurniereState.setTurniere([
@@ -214,7 +215,7 @@ export const TurnierVerwaltungsPage = () => {
   };
   const deleteGame = (turnier, game) => {
     axios
-      .delete(BASE_URL_TURNIER + '/removeSpielFromTurnier/' + game.id)
+      .delete(REACT_APP_TURNIER + '/removeSpielFromTurnier/' + game.id)
       .then(function (response) {
         const indexOfGame = turnier.games.indexOf(game);
         if (indexOfGame > -1) {

@@ -9,6 +9,7 @@ import { MannschaftMitglied } from '../model/mannschaftMitglieder';
 
 dotenv.config();
 
+const BASE_URL_MANNSCHAFT = process.env.BASE_URL_MANNSCHAFT || "/api/mannschaftsverwaltung"
 export class Controller {
   app: Application;
   mannschaftRepository: Repository<Mannschaft>;
@@ -64,17 +65,17 @@ export class Controller {
         res.send(req.user);
       }
     );
-    this.app.post('/createMannschaft', [this.authenticateJWT, this.isUserAdmin], this.createMannschaft.bind(this));
-    this.app.put('/addToMannschaft', [this.authenticateJWT, this.isUserAdmin], this.addToMannschaft.bind(this));
-    this.app.put('/removeFromMannschaft', [this.authenticateJWT, this.isUserAdmin], this.removeFromMannschaft.bind(this));
-    this.app.get('/getMannschaften', this.authenticateJWT, this.getMannschaften.bind(this));
+    this.app.post(BASE_URL_MANNSCHAFT + '/createMannschaft', [this.authenticateJWT, this.isUserAdmin], this.createMannschaft.bind(this));
+    this.app.put(BASE_URL_MANNSCHAFT + '/addToMannschaft', [this.authenticateJWT, this.isUserAdmin], this.addToMannschaft.bind(this));
+    this.app.put(BASE_URL_MANNSCHAFT + '/removeFromMannschaft', [this.authenticateJWT, this.isUserAdmin], this.removeFromMannschaft.bind(this));
+    this.app.get(BASE_URL_MANNSCHAFT + '/getMannschaften', this.authenticateJWT, this.getMannschaften.bind(this));
     this.app.get(
-      '/getMannschaftsMitglieder', this.authenticateJWT,
+      BASE_URL_MANNSCHAFT + '/getMannschaftsMitglieder', this.authenticateJWT,
       this.getMannschaftsMitglieder.bind(this)
     );
-    this.app.get('/getMannschaft/:mannID', this.authenticateJWT, this.getMannschaft.bind(this));
+    this.app.get(BASE_URL_MANNSCHAFT + '/getMannschaft/:mannID', this.authenticateJWT, this.getMannschaft.bind(this));
     this.app.delete(
-      '/deleteMannschaft/:mannID', [this.authenticateJWT, this.isUserAdmin],
+      BASE_URL_MANNSCHAFT + '/deleteMannschaft/:mannID', [this.authenticateJWT, this.isUserAdmin],
       this.deleteMannschaft.bind(this)
     );
   }
@@ -217,7 +218,7 @@ export class Controller {
    */
   public startWebserver(): void {
     this.app.listen(this.port, () => {
-      console.log(`Mannschaftsverwaltung: Server startet unter: http://localhost:${this.port}`);
+      console.log(`Mannschaftsverwaltung: Server startet unter Port: ${this.port}${BASE_URL_MANNSCHAFT}`);
     });
   }
 

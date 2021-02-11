@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 
-const BASE_AUTH_URL = "http://localhost:3005"
+const REACT_APP_ZUGRIFF = process.env.REACT_APP_ZUGRIFF || 'http://localhost:3005/api/zugriffsverwaltung'
 
 export const UserCreationPage = () => {
     const authState = useContext(useAuth);
@@ -15,7 +15,7 @@ export const UserCreationPage = () => {
     const handleSubmit = (event) => {
         event.preventDefault()
         console.log(username, password, role)
-        axios.post(BASE_AUTH_URL + '/user', { login: username, password: password, role }).then(function (response) {
+        axios.post(REACT_APP_ZUGRIFF + '/user', { login: username, password: password, role }).then(function (response) {
             setMessage("User created!: " + JSON.stringify(response.data))
         }).catch(function (error) {
             setMessage(error.message);

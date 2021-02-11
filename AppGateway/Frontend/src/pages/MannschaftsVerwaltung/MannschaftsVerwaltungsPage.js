@@ -15,8 +15,9 @@ import { AddMannschaftModal } from './addMannschaftModal';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 
-const BASE_URL_MANNSCHAFT = process.env.BASE_URL_MANNSCHAFT || 'http://localhost:3006';
-const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+const REACT_APP_MANNSCHAFT = process.env.REACT_APP_MANNSCHAFT || 'http://localhost:3006/api/mannschaftsverwaltung'
+
+const REACT_APP_PERSONEN = process.env.REACT_APP_PERSONEN || "http://localhost:3004/api/personenverwaltung";
 
 export const MannschaftsVerwaltungsPage = () => {
   const authState = useContext(useAuth);
@@ -42,7 +43,7 @@ export const MannschaftsVerwaltungsPage = () => {
 
   const deleteTeam = (teamId) => {
     axios
-      .delete(BASE_URL_MANNSCHAFT + '/deleteMannschaft/' + teamId)
+      .delete(REACT_APP_MANNSCHAFT + '/deleteMannschaft/' + teamId)
       .then((response) => {
         MannschaftenState.setMannschaften(
           MannschaftenState.mannschaften.filter((team) => team.id !== teamId)
@@ -55,7 +56,7 @@ export const MannschaftsVerwaltungsPage = () => {
 
   const addTeam = (teamInfo) => {
     axios
-      .post(BASE_URL_MANNSCHAFT + '/createMannschaft', teamInfo)
+      .post(REACT_APP_MANNSCHAFT + '/createMannschaft', teamInfo)
       .then(function (response) {
         MannschaftenState.setMannschaften([
           ...MannschaftenState.mannschaften,
@@ -77,7 +78,7 @@ export const MannschaftsVerwaltungsPage = () => {
   // Daten werden einmal beim Aufruf der Seite geholt
   useEffect(() => {
     axios
-      .get(BASE_URL_MANNSCHAFT + '/getMannschaften')
+      .get(REACT_APP_MANNSCHAFT + '/getMannschaften')
       .then(function (response) {
         MannschaftenState.setMannschaften(response.data);
       })
@@ -86,7 +87,7 @@ export const MannschaftsVerwaltungsPage = () => {
       });
 
     axios
-      .get(BASE_URL_PERSONEN)
+      .get(REACT_APP_PERSONEN + '/persons')
       .then((response) => {
         PersonState.setPersons(response.data);
       })
@@ -103,7 +104,7 @@ export const MannschaftsVerwaltungsPage = () => {
     );
 
     axios
-      .put(BASE_URL_MANNSCHAFT + '/addToMannschaft', { personenIDs: personsNotInMannschaft, mannschaftID })
+      .put(REACT_APP_MANNSCHAFT + '/addToMannschaft', { personenIDs: personsNotInMannschaft, mannschaftID })
       .then(function (response) {
         const mannschaft = MannschaftenState.mannschaften.find((team) => team.id === response.data.id)
         mannschaft.mitglieder = response.data.mitglieder;
@@ -116,7 +117,7 @@ export const MannschaftsVerwaltungsPage = () => {
 
   const deleteMitglied = (mitglied, team) => {
     axios
-      .put(BASE_URL_MANNSCHAFT + '/removeFromMannschaft', { personenID: mitglied.personenId, mannschaftID: team.id })
+      .put(REACT_APP_MANNSCHAFT + '/removeFromMannschaft', { personenID: mitglied.personenId, mannschaftID: team.id })
       .then(function (response) {
         team.mitglieder = team.mitglieder.filter((person) => person.personenId !== mitglied.personenId)
         MannschaftenState.setMannschaften([...MannschaftenState.mannschaften]);

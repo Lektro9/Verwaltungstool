@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   }
 });
 
-const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+const REACT_APP_PERSONEN = process.env.REACT_APP_PERSONEN || "http://localhost:3004/api/personenverwaltung";
 
 export const PersonenVeraltungsPage = () => {
   const authState = useContext(useAuth);
@@ -33,7 +33,7 @@ export const PersonenVeraltungsPage = () => {
   useEffect(() => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + authState.accessToken; // for all requests
     axios
-      .get(BASE_URL_PERSONEN)
+      .get(REACT_APP_PERSONEN + '/persons')
       .then((response) => {
         PersonState.setPersons(response.data);
       })

@@ -19,7 +19,7 @@ import OverviewPersonData from "./overviewPersonData";
 import { usePersons } from "../../../hooks/usePerson";
 import axios from "axios";
 
-const BASE_URL_PERSONEN = process.env.BASE_URL_PERSONEN || "http://localhost:3004/api/v1/personenverwaltung/persons/";
+const REACT_APP_PERSONEN = process.env.REACT_APP_PERSONEN || "http://localhost:3004/api/personenverwaltung";
 
 const useStyles = makeStyles({
   root: {
@@ -69,7 +69,7 @@ const CreatePersonModal = ({ handleDialogClose }) => {
     e.preventDefault();
     let merged = { ...personObj, ...specificObj };
     merged.birthday = new Date(merged.birthday).getTime();
-    axios.post(BASE_URL_PERSONEN, merged).then(function (response) {
+    axios.post(REACT_APP_PERSONEN + '/persons', merged).then(function (response) {
       personState.persons.push(response.data.person)
       personState.setPersons([...personState.persons]);
     }).catch(function (error) {

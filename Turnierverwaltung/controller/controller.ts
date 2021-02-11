@@ -10,6 +10,7 @@ import { Spiel } from '../model/spiel';
 
 dotenv.config();
 
+const BASE_URL_TURNIER = process.env.BASE_URL_TURNIER || "/api/turnierverwaltung"
 export class Controller {
     app: Application
     turnierRepository: Repository<Turnier>
@@ -63,13 +64,13 @@ export class Controller {
                 res.send(req.user);
             },
         );
-        this.app.post('/createTurnier', [this.authenticateJWT, this.isUserAdmin], this.createTurnier.bind(this));
-        this.app.get('/getTurniere', this.authenticateJWT, this.getTurniere.bind(this));
-        this.app.delete('/deleteTurnier/:turnierID', [this.authenticateJWT, this.isUserAdmin], this.deleteTurnier.bind(this));
-        this.app.post('/addTeilnehmerToTurnier', [this.authenticateJWT, this.isUserAdmin], this.addTeilnehmerToTurnier.bind(this));
-        this.app.delete('/removeTeilnehmerFromTurnier', [this.authenticateJWT, this.isUserAdmin], this.removeTeilnehmerFromTurnier.bind(this));
-        this.app.post('/addSpielToTurnier', [this.authenticateJWT, this.isUserAdmin], this.addSpielToTurnier.bind(this));
-        this.app.delete('/removeSpielFromTurnier/:gameID', [this.authenticateJWT, this.isUserAdmin], this.removeSpielFromTurnier.bind(this));
+        this.app.post(BASE_URL_TURNIER + '/createTurnier', [this.authenticateJWT, this.isUserAdmin], this.createTurnier.bind(this));
+        this.app.get(BASE_URL_TURNIER + '/getTurniere', this.authenticateJWT, this.getTurniere.bind(this));
+        this.app.delete(BASE_URL_TURNIER + '/deleteTurnier/:turnierID', [this.authenticateJWT, this.isUserAdmin], this.deleteTurnier.bind(this));
+        this.app.post(BASE_URL_TURNIER + '/addTeilnehmerToTurnier', [this.authenticateJWT, this.isUserAdmin], this.addTeilnehmerToTurnier.bind(this));
+        this.app.delete(BASE_URL_TURNIER + '/removeTeilnehmerFromTurnier', [this.authenticateJWT, this.isUserAdmin], this.removeTeilnehmerFromTurnier.bind(this));
+        this.app.post(BASE_URL_TURNIER + '/addSpielToTurnier', [this.authenticateJWT, this.isUserAdmin], this.addSpielToTurnier.bind(this));
+        this.app.delete(BASE_URL_TURNIER + '/removeSpielFromTurnier/:gameID', [this.authenticateJWT, this.isUserAdmin], this.removeSpielFromTurnier.bind(this));
     }
 
     /**
@@ -235,7 +236,7 @@ export class Controller {
      */
     public startWebserver(): void {
         this.app.listen(this.port, () => {
-            console.log(`Turnierverwaltung: Server startet unter: http://localhost:${this.port}`);
+            console.log(`Turnierverwaltung: Server startet unter Port: ${this.port}${BASE_URL_TURNIER}`);
         });
     }
 

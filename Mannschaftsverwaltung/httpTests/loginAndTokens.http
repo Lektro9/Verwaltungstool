@@ -1,11 +1,11 @@
 # den accesstoken austesten (hier die Antwort vom login request einfügen)
-GET http://localhost:3006/getCurrentUser HTTP/1.1
+GET http://localhost:3005/getCurrentUser HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjExNjUzNDQwLCJleHAiOjE2MTE2NTQzNDB9.OGdAiE_BVn3N7deaf5HLyjItD43PQeomm-sLobjo0vE
 
 ###
 
 # einen Access- und Refreshtoken von der Zugriffsverwaltung holen
-POST http://localhost:3005/login HTTP/1.1
+POST http://localhost:3005/api/zugriffsverwaltung/login HTTP/1.1
 content-type: application/json
 
 {
@@ -16,4 +16,4 @@ content-type: application/json
 ###
 
 # einen neuen Accesstoken anfordern
-POST http://localhost:3005/token HTTP/1.1
+POST http://localhost:3005/api/zugriffsverwaltung/token HTTP/1.1

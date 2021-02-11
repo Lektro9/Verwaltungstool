@@ -15,7 +15,6 @@ import ErrorIcon from "@material-ui/icons/Error";
 
 /*---Comps---*/
 import { usePersons } from "../../../hooks/usePerson";
-import Axios from "axios";
 
 const useStyles = makeStyles({
   main: {
@@ -35,9 +34,7 @@ const getSteps = () => {
   return ["Personendaten", "Typdaten"];
 };
 
-const BASE_URL_PERSONEN =
-  process.env.BASE_URL_PERSONEN ||
-  "http://localhost:3004/api/v1/personenverwaltung/persons/";
+const REACT_APP_PERSONEN = process.env.REACT_APP_PERSONEN || "http://localhost:3004/api/personenverwaltung";
 
 const CreatePersonModal = ({ handleDialogClose, person }) => {
   const classes = useStyles();
@@ -80,7 +77,7 @@ const CreatePersonModal = ({ handleDialogClose, person }) => {
     updated[personSpecificKeys[person[0].type]] = specific;
 
     axios
-      .put(BASE_URL_PERSONEN + person[0].id, updated)
+      .put(REACT_APP_PERSONEN + '/persons/' + person[0].id, updated)
       .then((response) => {
         if (response.status === 200) {
           personState.persons.forEach((p) => {
@@ -90,7 +87,7 @@ const CreatePersonModal = ({ handleDialogClose, person }) => {
               p.birthday = response.data.birthday;
               p[p.type][personSpecificKeys[person[0].type]] =
                 response.data[person[0].type][
-                  personSpecificKeys[person[0].type]
+                personSpecificKeys[person[0].type]
                 ];
               personState.setPersons([...personState.persons]);
             }
@@ -298,17 +295,17 @@ const CreatePersonModal = ({ handleDialogClose, person }) => {
             </Button>
           </div>
         ) : (
-          <div>
-            <Typography className={classes.instructions}>
-              {getStepContent(activeStep)}
-            </Typography>
             <div>
-              <Button variant="contained" color="primary" onClick={handleNext}>
-                Weiter
+              <Typography className={classes.instructions}>
+                {getStepContent(activeStep)}
+              </Typography>
+              <div>
+                <Button variant="contained" color="primary" onClick={handleNext}>
+                  Weiter
               </Button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export class Controller {
   app: Application;
   connection: Connection;
   port: number = 3004;
-  apiPath: string = "/api/v1/personenverwaltung";
+  apiPath: string = process.env.BASE_URL_PERSON || "/api/personenverwaltung";
   // Repositories
   personRepository: Repository<Person>;
   fussballspielerRepository: Repository<Fussballspieler>;
@@ -301,7 +301,7 @@ export class Controller {
    */
   public startWebserver(): void {
     this.app.listen(this.port, () => {
-      console.log(`Personenverwaltung: Server startet unter: http://localhost:${this.port}`);
+      console.log(`Personenverwaltung: Server startet unter dem Port: ${this.port}${this.apiPath}`);
     });
   }
 

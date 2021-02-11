@@ -12,6 +12,7 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 };
 
+const REACT_APP_ZUGRIFF = process.env.REACT_APP_ZUGRIFF || 'http://localhost:3005/api/zugriffsverwaltung'
 
 export const AuthProvider = (props) => {
   // check if refreshToken is in httponly cookie
@@ -19,7 +20,7 @@ export const AuthProvider = (props) => {
   // else you have to login again
 
   useEffect(() => {
-    axios.get('http://localhost:3005/token', { withCredentials: true })
+    axios.get(REACT_APP_ZUGRIFF + '/token', { withCredentials: true })
       .then(function (response) {
         setAccessToken(response.data.accessToken);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken; // for all requests

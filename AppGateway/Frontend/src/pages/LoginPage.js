@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Redirect, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-const URL = 'http://localhost:3005/login'
+const REACT_APP_ZUGRIFF = process.env.REACT_APP_ZUGRIFF || 'http://localhost:3005/api/zugriffsverwaltung'
+
 
 const LoginPage = () => {
     const { state } = useLocation();
@@ -15,7 +16,8 @@ const LoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post(URL, { login: username, password: password }, { withCredentials: true }).then(function (response) {
+        console.log(REACT_APP_ZUGRIFF)
+        axios.post(REACT_APP_ZUGRIFF + '/login', { login: username, password: password }, { withCredentials: true }).then(function (response) {
             if (response.data.accessToken) {
                 setMessage();
                 authState.setAccessToken(response.data.accessToken);

@@ -1,37 +1,46 @@
 version: "3.7"
 services:
   appgateway:
-    build: ./AppGateway
+    build:
+      context: ./AppGateway
+      args:
+        [
+          'REACT_APP_ZUGRIFF=http://localhost:3005/api/zugriffsverwaltung',
+          'REACT_APP_TURNIER=http://localhost:3007/api/turnierverwaltung',
+          'REACT_APP_MANNSCHAFT=http://localhost:3006/api/mannschaftsverwaltung',
+          'REACT_APP_PERSONEN=http://localhost:3004/api/personenverwaltung'
+        ]
     container_name: appgateway
     environment:
       BASE_URL_APPGATEWAY: 'http://localhost:3000/'
+      REACT_APP_ZUGRIFF: 'http://localhost:3005/api/zugriffsverwaltung'
     ports:
       - "3000:3000"
   zugriffsverwaltung:
     build: ./Zugriffsverwaltung
     container_name: zugriffsverwaltung
     environment:
-      BASE_URL_ZUGRIFF: 'http://localhost:3005/'
+      BASE_URL_ZUGRIFF: ''
     ports:
       - "3005:3005"
   personenverwaltung:
     build: ./Personenverwaltung
     container_name: personenverwaltung
     environment:
-      BASE_URL_PERSONEN: 'http://localhost:3004/'
+      BASE_URL_PERSONEN: ''
     ports:
       - "3004:3004"
   turnierverwaltung:
     build: ./Turnierverwaltung
     container_name: turnierverwaltung
     environment:
-      BASE_URL_TURNIER: 'http://localhost:3007/'
+      BASE_URL_TURNIER: ''
     ports:
       - "3007:3007"
   mannschaftsverwaltung:
     build: ./Mannschaftsverwaltung
     container_name: mannschaftsverwaltung
     environment:
-      BASE_URL_MANNSCHAFT: 'http://localhost:3006/'
+      BASE_URL_MANNSCHAFT: ''
     ports:
       - "3006:3006"
