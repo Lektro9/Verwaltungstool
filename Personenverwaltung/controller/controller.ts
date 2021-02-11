@@ -91,7 +91,7 @@ export class Controller {
     // CREATE
     this.app.post(
       this.apiPath + "/persons",
-      this.authenticateJWT,
+      [this.authenticateJWT, this.isUserAdmin],
       this.createOnePerson.bind(this)
     );
 
@@ -110,14 +110,14 @@ export class Controller {
     // UPDATE
     this.app.put(
       this.apiPath + "/persons/:personId",
-      this.authenticateJWT,
+      [this.authenticateJWT, this.isUserAdmin],
       this.updatePersonById.bind(this)
     );
 
     // DELETE
     this.app.delete(
       this.apiPath + "/persons/:personId",
-      this.authenticateJWT,
+      [this.authenticateJWT, this.isUserAdmin],
       this.deletePersonById.bind(this)
     );
   }
@@ -329,6 +329,22 @@ export class Controller {
           next();
         }
       );
+    } else {
+      res.sendStatus(401);
+    }
+  }
+
+  /**
+  * isUserAdmin
+  * prüft ob nutzer aus dem tvaliden Token nötige Rechte besitzt
+  */
+  public isUserAdmin(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void {
+    if (req.user.role) {
+      next();
     } else {
       res.sendStatus(401);
     }

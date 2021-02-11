@@ -18,12 +18,13 @@ GET http://google.com HTTP/1.1
 ###
 
 POST http://localhost:3005/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjEzMDIyMjMxLCJleHAiOjE2MTMwMjMxMzF9.gPrngTyBStr94hWHomG-HW_qoxL-Iu0x5b-CkgMtUN8
 content-type: application/json
 
 {
-    "login": "user7", 
-    "password": "user", 
-    "role": 0
+    "login": "admin", 
+    "password": "admin", 
+    "role": 1
 }
 ###
 

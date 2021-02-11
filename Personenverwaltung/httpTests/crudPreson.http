@@ -42,6 +42,7 @@ content-type: application/json
 ### Tennisspieler
 
 POST http://localhost:3004/api/v1/personenverwaltung/persons
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjEzMDIzMzgzLCJleHAiOjE2MTMwMjQyODN9.su6UPbJ5MvgEsNC_zRI0FdZfL28aq08wd9NYjBtZPUc
 content-type: application/json
 
 {
