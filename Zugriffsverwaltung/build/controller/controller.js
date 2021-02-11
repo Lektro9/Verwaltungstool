@@ -42,7 +42,7 @@ class Controller {
         this.app.use(cookie_parser_1.default());
         //zum Loggen sämtlicher Zugriffe
         const infoLogger = (req, res, next) => {
-            console.log(`A ${req.method}-request was made by ${req.ip}`);
+            console.log(`Zugriffsverwaltung: A ${req.method}-request was made by ${req.ip}`);
             next();
         };
         this.app.use(infoLogger);
@@ -180,7 +180,7 @@ class Controller {
      */
     startWebserver() {
         this.app.listen(this.port, () => {
-            console.log(`Server startet unter: http://localhost:${this.port}`);
+            console.log(`Zugriffsverwaltung: Server startet unter: http://localhost:${this.port}`);
         });
     }
     /**

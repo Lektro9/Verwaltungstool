@@ -58,7 +58,7 @@ export class Controller {
   public useMiddleware(): void {
     //zum Loggen sämtlicher Zugriffe
     const infoLogger = (req: Request, res: Response, next: NextFunction) => {
-      console.log(`A ${req.method}-request was made by ${req.ip}`);
+      console.log(`Personenverwaltung: A ${req.method}-request was made by ${req.ip}`);
       next();
     };
     this.app.use(infoLogger);
@@ -301,7 +301,7 @@ export class Controller {
    */
   public startWebserver(): void {
     this.app.listen(this.port, () => {
-      console.log(`Server startet unter: http://localhost:${this.port}`);
+      console.log(`Personenverwaltung: Server startet unter: http://localhost:${this.port}`);
     });
   }
 

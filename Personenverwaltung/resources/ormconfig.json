@@ -4,7 +4,8 @@
    "synchronize": true,
    "logging": false,
    "entities": [
-      "./model/**/*.ts"
+      "./model/*.entity.ts",
+      "build/**/*.entity.js"
    ],
    "migrations": [
       "./migration/**/*.ts"

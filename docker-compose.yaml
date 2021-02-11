@@ -14,6 +14,13 @@ services:
       BASE_URL_ZUGRIFF: 'http://localhost:3005/'
     ports:
       - "3005:3005"
+  personenverwaltung:
+    build: ./Personenverwaltung
+    container_name: personenverwaltung
+    environment:
+      BASE_URL_PERSONEN: 'http://localhost:3004/'
+    ports:
+      - "3004:3004"
   turnierverwaltung:
     build: ./Turnierverwaltung
     container_name: turnierverwaltung

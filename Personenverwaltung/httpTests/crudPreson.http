@@ -93,8 +93,8 @@ DELETE  http://localhost:3004/person/5
 
 ###
 
-PUT  http://localhost:3004/api/v1/personenverwaltung/persons/23
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjEyOTYzMjM5LCJleHAiOjE2MTI5NjQxMzl9.1Kua_UK1wNAeyA_CajdnfIGZhnUQp_xwdL_QvGQ4oe0
+PUT  http://localhost:3004/api/v1/personenverwaltung/persons/25
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6MSwiaWF0IjoxNjEyOTY0MTU2LCJleHAiOjE2MTI5NjUwNTZ9.06bEmVPffkMU5MjuqP3kI20gXKhlSjFqKf3g25Hg_OU
 content-type: application/json
 
 {

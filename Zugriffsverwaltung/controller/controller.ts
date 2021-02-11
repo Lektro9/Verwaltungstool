@@ -52,7 +52,7 @@ export class Controller {
             res: Response,
             next: NextFunction,
         ) => {
-            console.log(`A ${req.method}-request was made by ${req.ip}`);
+            console.log(`Zugriffsverwaltung: A ${req.method}-request was made by ${req.ip}`);
             next();
         };
         this.app.use(infoLogger);
@@ -222,7 +222,7 @@ export class Controller {
      */
     public startWebserver(): void {
         this.app.listen(this.port, () => {
-            console.log(`Server startet unter: http://localhost:${this.port}`);
+            console.log(`Zugriffsverwaltung: Server startet unter: http://localhost:${this.port}`);
         });
     }
 
