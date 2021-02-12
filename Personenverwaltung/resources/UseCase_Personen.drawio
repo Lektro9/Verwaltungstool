@@ -1,55 +1,5 @@
-<mxfile host="app.diagrams.net" modified="2021-01-22T11:17:26.539Z" agent="5.0 (Windows)" etag="ozI5Dy3XgW5fYwa9RI1V" version="14.2.6" type="github">
-  <diagram id="TC80ESlUJ-ryNiTJTaMj" name="Page-1">
-    <mxGraphModel dx="2889" dy="1151" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-14" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="-45" y="320" width="515" height="520" as="geometry" />
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-2" value="Benutzer" style="shape=umlActor;html=1;verticalLabelPosition=bottom;verticalAlign=top;align=center;" vertex="1" parent="1">
-          <mxGeometry x="-220" y="505" width="80" height="160" as="geometry" />
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-3" value="Personenverwaltung" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=36;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="27.5" y="260" width="370" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-5" value="Personen holen" style="shape=ellipse;html=1;strokeWidth=1;fontStyle=0;whiteSpace=wrap;align=center;perimeter=ellipsePerimeter;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="30" y="360" width="160" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-6" value="Person hinzufügen" style="shape=ellipse;html=1;strokeWidth=1;fontStyle=0;whiteSpace=wrap;align=center;perimeter=ellipsePerimeter;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="30" y="480" width="160" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-7" value="Person bearbeiten" style="shape=ellipse;html=1;strokeWidth=1;fontStyle=0;whiteSpace=wrap;align=center;perimeter=ellipsePerimeter;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="30" y="600" width="160" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-8" value="Person löschen" style="shape=ellipse;html=1;strokeWidth=1;fontStyle=0;whiteSpace=wrap;align=center;perimeter=ellipsePerimeter;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="30" y="720" width="160" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-9" value="" style="edgeStyle=none;html=1;endArrow=none;verticalAlign=bottom;fontSize=16;" edge="1" parent="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="-120" y="540" as="sourcePoint" />
-            <mxPoint x="20" y="420" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-10" value="" style="edgeStyle=none;html=1;endArrow=none;verticalAlign=bottom;fontSize=16;" edge="1" parent="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="-110" y="569" as="sourcePoint" />
-            <mxPoint x="20" y="530" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-11" value="" style="edgeStyle=none;html=1;endArrow=none;verticalAlign=bottom;fontSize=16;" edge="1" parent="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="-110" y="600" as="sourcePoint" />
-            <mxPoint x="10" y="640" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="_moWUIZJevrUnD5Z6SPv-13" value="" style="edgeStyle=none;html=1;endArrow=none;verticalAlign=bottom;fontSize=16;" edge="1" parent="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="-110" y="620" as="sourcePoint" />
-            <mxPoint x="20" y="730" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e" modified="2021-02-12T05:22:49.650Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.52.1 Chrome/83.0.4103.122 Electron/9.3.5 Safari/537.36" etag="FShclHLvq58KKB-zm_tK" scale="1" border="10" version="14.2.4" type="embed">
+    <diagram id="TC80ESlUJ-ryNiTJTaMj" name="Page-1">
+        7Zhdb9sgFIZ/jS87xSa208sm6bpNmxQpqir1ZiL2qY2GwcI4SfPrBzH+JJ7armkv2qvAAQ6c9zlgiIMW2f5G4Dz9xWOgjjeJ9w5aOp7nTgNf/WjLY2XxwqAyJILEplNrWJMDGOPEWEsSQ9HrKDmnkuR9Y8QZg0j2bFgIvut3e+C0P2uOE7AM6whT23pHYplW1pkXtvZvQJK0ntkNLquWDNedTSRFimO+65jQtYMWgnNZlbL9AqgWr9alGvd1pLVZmAAmnzLgd8bvbr/f/4CtuGVL/z5Yr7YX7rRys8W0NBGb1crHWgLBSxaD9jJx0HyXEgnrHEe6daegK1sqM6pqrioWUvA/jVTa8sCZNFzdQNXtdZtQtiAk7DsmE8cN8AykeFRdTOvF1GSVSSpUa7xrEfmu6ZN28Ph1R2zSIml8t8qpghHvGUJ6lo5zYKU8gLD0VImQ62KZ0atIctEXUKtAVP79xBugK14QSThTbRsuJc86Ha4oSXSD5BoBNrVIqQrilWRuctfo7E98S+fZxJbZDc4lM7JkXoEoOAOmwtphKkuWWIKrcGVfZEutoagZiWM9fC6gIAe8ObrS6Z9zwuQxKn/u+Evtq5SKUpXf/XRHQV03azmxZ58NxQu/9JPfC+zkR+EJKv65oPijUPQKONW/I3tAeVcnOTzpDDGjxw4hi2kOgqgAdbmeZ9WaznEuof52QSfINFujS+byXGSCETJ6fsIO5YOzQM58kXxUQtPZexMKxwltAIsNKBk/KJxg8t5wZuNw6HHnBEWUflQ84YlL19viubTwWCQgVrd5U2Xqi9RHASy+0m+EtnF4D2huXU/WU8/4TzVPySWAYkm2/TfHKb2Mu5W+hXQuau7wojYdaF7wUkRghnUfCQNPAz/T4X1ZYpGAtPwc8TUxvpxo/er7RHrhugOk9cPyP5H66I2Rup9IR5A2H7jnIh36Ge72cyO1X2GfSA2K4YH5wl0avtouVdX2P6aqe/tPHbr+Cw==
+    </diagram>
 </mxfile>
