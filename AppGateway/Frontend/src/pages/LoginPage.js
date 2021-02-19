@@ -74,7 +74,6 @@ const LoginPage = () => {
                         </Button>
                 </form>
                 <p>{JSON.stringify(message)}</p>
-                <p>{JSON.stringify(authState)}</p>
             </Container>
         </div>
     )

@@ -7,28 +7,7 @@ export const MannProvider = (props) => {
   };
 
   const initState = {
-    mannschaften: [
-      {
-        id: 0,
-        name: 'hey',
-        mitglieder: [1, 2, 4, 6, 3, 5, 698],
-      },
-      {
-        id: 1,
-        name: 'hey',
-        mitglieder: [2, 4, 6],
-      },
-      {
-        id: 2,
-        name: 'hey',
-        mitglieder: [1, 2, 3],
-      },
-      {
-        id: 3,
-        name: 'team5',
-        mitglieder: [3, 4, 9],
-      },
-    ],
+    mannschaften: [],
     setMannschaften: setMannschaften,
   };
 

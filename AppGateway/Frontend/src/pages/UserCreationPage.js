@@ -9,7 +9,7 @@ export const UserCreationPage = () => {
     const authState = useContext(useAuth);
     const [username, setUsername] = useState(false)
     const [password, setPassword] = useState(false)
-    const [message, setMessage] = useState("hey")
+    const [message, setMessage] = useState("")
     const [role, setRole] = useState(0)
 
     const handleSubmit = (event) => {
