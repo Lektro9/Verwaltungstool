@@ -64,7 +64,7 @@ export class Controller {
         //setzt CORS Header 'Access-Control-Allow-Origin' und welche REST-Methoden von wem genutzt werden dürfen
         //hier: alle dürfen alles
         this.app.use(
-            cors({ credentials: true, origin: 'http://localhost:3000' }),
+            cors({ credentials: true, origin: 'https://verwaltungstool.shmiede.de' }),
         );
         //statische html-Dateien im Ordner freigeben
         this.app.use(express.static('buildFrontend', { etag: false }));
